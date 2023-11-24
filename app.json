@@ -1,13 +1,11 @@
 {
   "expo": {
     "name": "lasalle",
-    "slug": "lasalle",
+    "slug": "lasalleapp",
     "version": "1.0.0",
-    
-      "web": {
-        "favicon": "./assets/favicon.png"
-      },
-    
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -27,6 +25,12 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d2c03fcf-6e62-481f-b1c0-27c74b6f241e"
+      }
+    },
+    "owner": "manuelg"
   }
 }

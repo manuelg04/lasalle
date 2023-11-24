@@ -32,7 +32,7 @@ const SignUpTeacher = () => {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        alert('Todos los campos son requeridos');
+        alert('Todos los campos son requeridoss');
       } else {
         alert('Algo salió mal');
       }
