@@ -1,48 +1,58 @@
+import { Feather } from '@expo/vector-icons';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Text, View } from 'react-native';
 
-	import { Feather } from "@expo/vector-icons";
-	import { NavigationContainer } from "@react-navigation/native";
-	import { createStackNavigator } from "@react-navigation/stack";
-	
-		import { Text, View } from "react-native";
-	
+import LoginScreen from '../screens/Auth/LoginScreen';
+import SignUpGeneralScreen from '../screens/Auth/SignUpGeneralScreen';
+import SignUpStudent from '../screens/Auth/SignUpStudent';
+import SignUpTeacher from '../screens/Auth/SignUpTeacher';
+import Recordemos from '../screens/Recordemos';
+import Temas from '../screens/Temas';
+import FirstScreen from '../screens/first-screen';
 
-	import Overview from "../screens/overview";
-	import Details from "../screens/details";
+export type RootStackParamList = {
+  FirstScreen: undefined;
+  LoginScreen: undefined;
+  SignUpGeneralScreen: undefined;
+  SignUpStudent: undefined;
+  SignUpTeacher: undefined;
+  Temas: undefined;
+  Recordemos: undefined;
+};
 
-	export type RootStackParamList = {
-		Overview: undefined;
-		Details: { name: string };
-	};
+const Stack = createStackNavigator<RootStackParamList>();
 
-	const Stack = createStackNavigator<RootStackParamList>();
+export default function RootStack() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="FirstScreen">
+        <Stack.Screen name="FirstScreen" component={FirstScreen} />
+        <Stack.Screen name="SignUpGeneralScreen" component={SignUpGeneralScreen} />
+        <Stack.Screen name="SignUpStudent" component={SignUpStudent} />
+        <Stack.Screen name="SignUpTeacher" component={SignUpTeacher} />
+        <Stack.Screen name="Temas" component={Temas} />
+        <Stack.Screen name="Recordemos" component={Recordemos} />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={({ navigation }) => ({
+            headerLeft: () => (
+              <View className={styles.backButton}>
+                <Feather name="chevron-left" size={16} color="#007AFF" />
+                <Text className={styles.backButtonText} onPress={navigation.goBack}>
+                  Back
+                </Text>
+              </View>
+            ),
+          })}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
 
-	export default function RootStack() {
-		return (
-			<NavigationContainer>
-				<Stack.Navigator initialRouteName="Overview">
-					<Stack.Screen name="Overview" component={Overview} />
-					<Stack.Screen
-						name="Details"
-						component={Details}
-						
-							options={({ navigation }) => ({
-								headerLeft: () => (
-									<View className={styles.backButton}>
-										<Feather name="chevron-left" size={16} color="#007AFF" />
-										<Text className={styles.backButtonText} onPress={navigation.goBack}>Back</Text>
-									</View>
-								)
-							})}
-						
-					/>
-				</Stack.Navigator>
-			</NavigationContainer>
-		);
-	}
-
-	
-		const styles = {
-			backButton: "flex-row",
-			backButtonText: "text-blue-500 ml-1"
-		};
-	
+const styles = {
+  backButton: 'flex-row',
+  backButtonText: 'text-blue-500 ml-1',
+};
