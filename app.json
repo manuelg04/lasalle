@@ -28,9 +28,15 @@
     },
     "extra": {
       "eas": {
-        "projectId": "d2c03fcf-6e62-481f-b1c0-27c74b6f241e"
+        "projectId": "a2d0a8b2-c2c8-4e06-a013-ee3c5fd93fed"
       }
     },
-    "owner": "manuelg"
+    "owner": "manuelg",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a2d0a8b2-c2c8-4e06-a013-ee3c5fd93fed"
+    }
   }
 }

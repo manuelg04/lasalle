@@ -7,6 +7,8 @@ import LoginScreen from '../screens/Auth/LoginScreen';
 import SignUpGeneralScreen from '../screens/Auth/SignUpGeneralScreen';
 import SignUpStudent from '../screens/Auth/SignUpStudent';
 import SignUpTeacher from '../screens/Auth/SignUpTeacher';
+import EstudiemosOptimizacion from '../screens/Estudiemos-optimizacion';
+import EstudiemosRazonDeCambio from '../screens/Estudiemos-razon-de-cambio';
 import Recordemos from '../screens/Recordemos';
 import Temas from '../screens/Temas';
 import FirstScreen from '../screens/first-screen';
@@ -19,6 +21,8 @@ export type RootStackParamList = {
   SignUpTeacher: undefined;
   Temas: undefined;
   Recordemos: undefined;
+  EstudiemosRazonDeCambio: undefined;
+  EstudiemosOptimizacion: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -33,6 +37,8 @@ export default function RootStack() {
         <Stack.Screen name="SignUpTeacher" component={SignUpTeacher} />
         <Stack.Screen name="Temas" component={Temas} />
         <Stack.Screen name="Recordemos" component={Recordemos} />
+        <Stack.Screen name="EstudiemosRazonDeCambio" component={EstudiemosRazonDeCambio} />
+        <Stack.Screen name="EstudiemosOptimizacion" component={EstudiemosOptimizacion} />
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}

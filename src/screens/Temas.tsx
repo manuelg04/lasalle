@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
+
 
 import { RootStackParamList } from '../navigation';
 
@@ -13,6 +15,9 @@ const Temas = () => {
     const [token, setToken] = useState('');
     const navigation = useNavigation<OverviewScreenNavigationProps>();
 
+    const showAlert = () => {
+        Alert.alert("Vaya!", "No puedes continuar si no has completado las fases anteriores.");
+      };
     useEffect(() => {
         const checkToken = async () => {
           try {
@@ -36,11 +41,24 @@ const Temas = () => {
     return null; // O un componente de carga
   }
 
+  const handleLogout = () => {
+    AsyncStorage.removeItem('userToken') // Elimina el token almacenado
+      .then(() => {
+        navigation.replace('LoginScreen'); // Reemplaza la pantalla actual por la de inicio de sesión
+      })
+      .catch((error) => {
+        console.error('Error al cerrar sesión', error);
+      });
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.card}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Temas</Text>
+          <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+          <Ionicons name="log-out-outline" size={24} color="black" />
+        </TouchableOpacity>
           <Image
             style={styles.userIcon}
             source={{ uri: 'https://example.com/user-icon.png' }} // Reemplaza con la URL de tu imagen
@@ -55,10 +73,15 @@ const Temas = () => {
             onPress={() => navigation.navigate('Recordemos')}>
             <Text style={styles.buttonText}>Recordemos</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.yellowButton]}>
+          <TouchableOpacity 
+          style={[styles.button, styles.yellowButton]}
+          onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
+          
             <Text style={styles.buttonText}>Estudiemos</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.borderButton]}>
+          <TouchableOpacity
+           style={[styles.button, styles.borderButton]}
+           onPress={showAlert}>
             <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos</Text>
           </TouchableOpacity>
         </View>
@@ -67,13 +90,21 @@ const Temas = () => {
 
         <View style={styles.topic}>
           <Text style={styles.topicTitle}>Optimización</Text>
-          <TouchableOpacity style={[styles.button, styles.yellowButton]}>
+          <TouchableOpacity 
+          style={[styles.button, styles.yellowButton]}
+          onPress={() => navigation.navigate('Recordemos')}>
             <Text style={styles.buttonText}>Recordemos</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.yellowButton]}>
+          <TouchableOpacity 
+          style={[styles.button, styles.yellowButton]}
+          onPress={() => navigation.navigate('EstudiemosOptimizacion')}>
+          
             <Text style={styles.buttonText}>Estudiemos</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.borderButton]}>
+          <TouchableOpacity 
+          style={[styles.button, styles.borderButton]}
+          onPress={showAlert}
+          >
             <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos</Text>
           </TouchableOpacity>
         </View>
@@ -102,7 +133,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    paddingTop: 40, // Ajusta este valor para el padding superior según el diseño de tu app
+    paddingBottom: 20,
+    paddingHorizontal: 10,
   },
   headerText: {
     fontSize: 20,
@@ -151,6 +184,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E5E7EB',
     marginVertical: 20,
+  },
+  logoutButton: {
+    padding: 8,
+    backgroundColor: 'orange', // Un color de fondo para que sea visible, cámbialo como prefieras
+    borderRadius: 20, // Circular si el icono es redondo
+    marginLeft: 250,
+
   },
 });
 

@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   card: {
     width: width - 1, // Márgenes horizontales de 20
     maxWidth: 500,
-    height: height * 0.5,
+    height: height * 1,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',

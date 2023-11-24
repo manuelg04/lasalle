@@ -1,5 +1,8 @@
+/* eslint-disable prettier/prettier */
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
 import { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 
@@ -11,32 +14,52 @@ type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'Fi
 export default function LoginScreen() {
   const router = useRoute<DetailsSreenRouteProp>();
   const navigation = useNavigation<OverviewScreenNavigationProps>();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState('student'); // O 'professor', dependiendo del contexto
 
-  const handleLogin = () => {
-    // Aquí deberías poner tu lógica de verificación de las credenciales
-    // Por ahora, solo mostraré una alerta
-    Alert.alert('Login', 'Credenciales ingresadas. Implementar verificación.');
+  const handleLogin = async () => {
+    // Asegúrate de validar las entradas según sea necesario
+    if (!email || !password) {
+      Alert.alert('Error', 'Por favor, ingresa tu correo electrónico y contraseña.');
+      return;
+    }
+
+    try {
+      const response = await axios.post('https://lasalleapp-dev-sjta.1.us-1.fl0.io/login/login', {
+        email,
+        password,
+        userType, // Asegúrate de que este valor esté siendo recogido o manejado correctamente
+      });
+
+      if (response.status === 200) {
+        const token = response.data.token;
+        await AsyncStorage.setItem('userToken', token);
+        navigation.navigate('Temas');
+      }
+        
+
+    } catch (error) {
+      alert(error);
+ 
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           {/* Icono de flecha hacia atrás, puedes usar una imagen o crear tu propio componente */}
           <Text style={styles.backButtonText}>←</Text>
         </TouchableOpacity>
         <Text style={styles.title}>Ingresa a tu cuenta</Text>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Usuario</Text>
+          <Text style={styles.label}>Correo</Text>
           <TextInput
             style={styles.input}
-            onChangeText={setUsername}
-            value={username}
-            placeholder="Usuario"
+            onChangeText={setEmail}
+            value={email}
+            placeholder="Correo Institucional"
             autoCapitalize="none"
           />
         </View>
