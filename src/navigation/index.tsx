@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Text, View } from 'react-native';
 
+import Situacion1RazonDeCambio from '../Situaciones/RazonDeCambio-situacion1';
 import LoginScreen from '../screens/Auth/LoginScreen';
 import SignUpGeneralScreen from '../screens/Auth/SignUpGeneralScreen';
 import SignUpStudent from '../screens/Auth/SignUpStudent';
@@ -23,6 +24,7 @@ export type RootStackParamList = {
   Recordemos: undefined;
   EstudiemosRazonDeCambio: undefined;
   EstudiemosOptimizacion: undefined;
+  Situacion1RazonDeCambio: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -39,6 +41,7 @@ export default function RootStack() {
         <Stack.Screen name="Recordemos" component={Recordemos} />
         <Stack.Screen name="EstudiemosRazonDeCambio" component={EstudiemosRazonDeCambio} />
         <Stack.Screen name="EstudiemosOptimizacion" component={EstudiemosOptimizacion} />
+        <Stack.Screen name="Situacion1RazonDeCambio" component={Situacion1RazonDeCambio} />
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}

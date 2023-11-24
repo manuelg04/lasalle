@@ -1,9 +1,17 @@
 /* eslint-disable prettier/prettier */
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
+
+import { RootStackParamList } from '../navigation';
+
+type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'Situacion1RazonDeCambio'>;
+
 const EstudiemosRazonDeCambio = () => {
+    const navigation = useNavigation<OverviewScreenNavigationProps>();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -17,7 +25,10 @@ const EstudiemosRazonDeCambio = () => {
       </View>
 
       <View style={styles.card}>
-        <TouchableOpacity style={styles.situation}>
+        <TouchableOpacity 
+        style={styles.situation}
+        onPress={() => navigation.navigate('Situacion1RazonDeCambio')}
+        >
           <Text style={styles.situationText}>Situación 1 - RAZON DE CAMBIO</Text>
           <Ionicons name="bulb-outline" size={24} color="#fab005" />
         </TouchableOpacity>
