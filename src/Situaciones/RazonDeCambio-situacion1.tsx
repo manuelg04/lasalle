@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
@@ -34,7 +34,7 @@ const situacion1 :any = [
                 "tip": "Recuerde que para ayudarse en la comprensión de un problema es importante identificar el objetivo de la situación que se plantea (incógnitas). Requiere revisar ejemplo en “Pasos para resolver un problema” en recordemos"
             },
             {
-                "enunciado": "La cantidad o dato que se proporcionan en el problema son (información dada): ",
+                "enunciado": "3. La cantidad o dato que se proporcionan en el problema son (información dada): ",
                 "respuestas": [
                     "Volumen del cubo",
                     "Arista del cubo",
@@ -45,7 +45,7 @@ const situacion1 :any = [
                 "tip": "Recuerde que para comprender un problema se debe identificar los datos o valores que da la situación planteada.Requiere revisar ejemplo en “Pasos para resolver un problema” en recordemos "
             },
             {
-                "enunciado": "Si a es la arista del cubo, entonces un diagrama que ilustre la situación es:",
+                "enunciado": "4. Si a es la arista del cubo, entonces un diagrama que ilustre la situación es:",
                 "imagen": "https://drive.google.com/file/d/12CWEv7izFJPPxSTMXjWeGtWJnZlJpATf/view?usp=sharing",
                 "respuestas": [
                     "a",
@@ -149,44 +149,81 @@ const situacion1 :any = [
 ]
 
 const Situacion1RazonDeCambio = () => {
-    const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState({}) as any;
+  const [isEnunciadoVisible, setIsEnunciadoVisible] = useState(true);
 
-  const handleAnswer = (preguntaIndex, respuesta, pregunta) => {
-    setSelectedAnswers(prev => ({ ...prev, [preguntaIndex]: respuesta }));
-    if (respuesta === pregunta.respuestaCorrecta) {
-      Alert.alert('¡Correcto!', '¡Felicidades, has seleccionado la respuesta correcta!');
-    } else {
-      Alert.alert('Incorrecto', pregunta.tip);
-    }
+  const situacion = situacion1[0]; // Asumiendo que solo trabajas con la situación 1
+
+  const handleAnswer = (respuesta:any) => {
+      const question = situacion.preguntas[currentQuestionIndex];
+      setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: respuesta });
+      if (respuesta === question.respuestaCorrecta) {
+          Alert.alert('Correcto', 'Has seleccionado la respuesta correcta.');
+      } else {
+          Alert.alert('Incorrecto', question.tip);
+      }
   };
-  return (
-<ScrollView style={styles.container}>
-  {situacion1.map((situacion, index) => (
-    <View key={index} style={styles.situacion}>
-      <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
-      <Text style={styles.enunciado}>{situacion.enunciado}</Text>
-      <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
-      {situacion.preguntas.map((pregunta, preguntaIndex) => (
-        <View key={preguntaIndex} style={styles.preguntaContainer}>
-          <Text style={styles.preguntaEnunciado}>{pregunta.enunciado}</Text>
-          {pregunta.respuestas.map((respuesta, respuestaIndex) => (
-            <TouchableOpacity 
-              key={respuestaIndex} 
-              style={[
-                styles.respuesta, 
-                selectedAnswers[preguntaIndex] === respuesta && styles.selectedAnswer
-              ]}
-              onPress={() => handleAnswer(preguntaIndex, respuesta, pregunta)}
-            >
-              <Text>{respuesta}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      ))}
-    </View>
-  ))}
-</ScrollView>
 
+  const nextQuestion = () => {
+      if (currentQuestionIndex < situacion.preguntas.length - 1) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+      }
+  };
+
+  const previousQuestion = () => {
+      if (currentQuestionIndex > 0) {
+          setCurrentQuestionIndex(currentQuestionIndex - 1);
+      }
+  };
+
+  const renderRespuestas = (respuestas, pregunta) => {
+    return respuestas.map((respuesta, index) => (
+        <TouchableOpacity
+            key={index}
+            style={[
+                styles.respuesta,
+                selectedAnswers[currentQuestionIndex] === respuesta && styles.selectedAnswer,
+            ]}
+            onPress={() => handleAnswer(respuesta)}
+        >
+            <Text style={styles.respuestaText}>{respuesta}</Text>
+        </TouchableOpacity>
+    ));
+};
+
+  const renderImagen = (imagen) => {
+    if (!imagen) return null;
+    return <Image source={require('../../assets/situacion1_punto4.png')} style={styles.imagen} />;
+};
+
+  return (
+      <View style={styles.container}>
+          <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
+              <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
+          </TouchableOpacity>
+          {isEnunciadoVisible && (
+              <View>
+                  <Text style={styles.enunciado}>{situacion.enunciado}</Text>
+                  <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
+              </View>
+          )}
+          <ScrollView style={styles.scrollView}>
+              <View style={styles.preguntaContainer}>
+              <Text style={styles.preguntaEnunciado}>{situacion.preguntas[currentQuestionIndex].enunciado}</Text>
+                    {renderRespuestas(situacion.preguntas[currentQuestionIndex].respuestas, situacion.preguntas[currentQuestionIndex])}
+                    {situacion.preguntas[currentQuestionIndex].imagen && renderImagen(situacion.preguntas[currentQuestionIndex].imagen)}
+              </View>
+              <View style={styles.navigationContainer}>
+                  <TouchableOpacity onPress={previousQuestion} style={styles.navButton}>
+                      <Text>Anterior</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={nextQuestion} style={styles.navButton}>
+                      <Text>Siguiente</Text>
+                  </TouchableOpacity>
+              </View>
+          </ScrollView>
+      </View>
   );
 };
 
@@ -223,6 +260,7 @@ const styles = StyleSheet.create({
     },
     preguntaContainer: {
       marginBottom: 10,
+      
     },
     preguntaEnunciado: {
       fontSize: 16,
@@ -237,5 +275,29 @@ const styles = StyleSheet.create({
     selectedAnswer: {
         backgroundColor: '#e2e8f0',
       },
+      scrollView: {
+        maxHeight: 500, // Ajusta esto según el tamaño que desees
+    },
+    navigationContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 10,
+        // ... otros estilos que necesites
+    },
+    navButton: {
+        padding: 10,
+        backgroundColor: '#ddd', // Cambia esto por el color que prefieras
+        // ... otros estilos para tus botones
+    },
+    respuestaText: {
+      fontSize: 16,
+  },
+  imagen: {
+    width: '100%', // Puedes ajustar esto como necesites
+    height: 200, // Altura fija para la imagen, también es ajustable
+    resizeMode: 'contain', // Esto es para asegurarse de que la imagen se ajuste sin perder la proporción
+    marginTop: 20, // Añade un poco de espacio arriba de la imagen
+},
+
   });
 export default Situacion1RazonDeCambio;

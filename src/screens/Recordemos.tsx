@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Linking } from 'react-native';
 
 const recursos = {
@@ -128,31 +129,47 @@ const recursos = {
   };
 
 const Recordemos = () => {
+  const [expandedSections, setExpandedSections] = useState({}) as any;
+
+  const toggleSection = (category:any) => {
+    setExpandedSections(prev => ({
+        ...prev,
+        [category]: !prev[category]
+    }));
+};
 
     const openResource = (url: string) => {
         // Aquí puedes decidir cómo quieres abrir el recurso (WebView, Linking, etc.)
         Linking.openURL(url).catch((err) => console.error("No se pudo abrir el recurso", err));
       };
     
-      const renderResources = (category: keyof typeof recursos) => {
+      const renderResources = (category) => {
+        if (!expandedSections[category]) return null;
+
         return recursos[category].map((recurso, index) => (
-          <TouchableOpacity key={index} style={styles.subSection} onPress={() => openResource(recurso.url)}>
-            <Text>{recurso.subtematica}</Text>
-          </TouchableOpacity>
+            <TouchableOpacity key={index} style={styles.subSection} onPress={() => openResource(recurso.url)}>
+                <Text>{recurso.subtematica}</Text>
+            </TouchableOpacity>
         ));
-      };
+    };
   return (
     <ScrollView style={styles.container}>
-      {/* Iterar sobre cada categoría */}
-      {Object.keys(recursos).map((category, index) => (
+    <View style={{ flexDirection: 'row', alignItems: 'center', ...styles.header }}>
+        <Text style={styles.headerText}>Recordemos</Text>
+        <Ionicons name="trophy" size={24} color="black" />
+    </View>
+    {/* Iterar sobre cada categoría */}
+    {Object.keys(recursos).map((category, index) => (
         <View key={index} style={styles.section}>
-          <Text style={styles.sectionTitle}>{category}</Text>
-          <View style={styles.funBackground}>
-            {renderResources(category as keyof typeof recursos)}
-          </View>
+            <TouchableOpacity onPress={() => toggleSection(category)}>
+                <Text style={styles.sectionTitle}>{category.replace(/([A-Z])/g, ' $1').trim()}</Text>
+            </TouchableOpacity>
+            <View style={styles.funBackground}>
+                {renderResources(category)}
+            </View>
         </View>
-      ))}
-    </ScrollView>
+    ))}
+</ScrollView>
   );
 };
 

@@ -1,6 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 import { Text, View } from 'react-native';
 
 import Situacion1RazonDeCambio from '../Situaciones/RazonDeCambio-situacion1';
@@ -10,8 +11,10 @@ import SignUpStudent from '../screens/Auth/SignUpStudent';
 import SignUpTeacher from '../screens/Auth/SignUpTeacher';
 import EstudiemosOptimizacion from '../screens/Estudiemos-optimizacion';
 import EstudiemosRazonDeCambio from '../screens/Estudiemos-razon-de-cambio';
+import Experimentemos from '../screens/Experimentos';
 import Recordemos from '../screens/Recordemos';
 import Temas from '../screens/Temas';
+import TermsAndConditions from '../screens/TermsAndConditions';
 import FirstScreen from '../screens/first-screen';
 
 export type RootStackParamList = {
@@ -25,6 +28,8 @@ export type RootStackParamList = {
   EstudiemosRazonDeCambio: undefined;
   EstudiemosOptimizacion: undefined;
   Situacion1RazonDeCambio: undefined;
+  TermsAndConditions: undefined;
+  Experimentos: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -42,6 +47,8 @@ export default function RootStack() {
         <Stack.Screen name="EstudiemosRazonDeCambio" component={EstudiemosRazonDeCambio} />
         <Stack.Screen name="EstudiemosOptimizacion" component={EstudiemosOptimizacion} />
         <Stack.Screen name="Situacion1RazonDeCambio" component={Situacion1RazonDeCambio} />
+        <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
+        <Stack.Screen name="Experimentos" component={Experimentemos} />
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}

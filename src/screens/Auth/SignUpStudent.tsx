@@ -4,10 +4,12 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
+import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Platform, Alert, ScrollView } from 'react-native';
 
 import { RootStackParamList } from '../../navigation';
+import TermsAndConditions from '../TermsAndConditions';
 
 const facultadesConProgramas: any = {
   'Facultad de Economía Empresa y Desarrollo Sostenible FEEDS': [
@@ -56,6 +58,7 @@ const facultadesConProgramas: any = {
   ],
 };
 
+
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FirstScreen'>;
 const SignUpStudent = () => {
     const navigation = useNavigation<OverviewScreenNavigationProps>();
@@ -64,7 +67,70 @@ const SignUpStudent = () => {
   const [password, setPassword] = useState('');
   const [facultad, setFacultad] = useState('');
   const [programa, setPrograma] = useState('');
+  const [image, setImage] = useState<string | null>(null);
+  const [cameraPermission, requestCameraPermission] = ImagePicker.useCameraPermissions();
+
+
   const programas = facultad ? facultadesConProgramas[facultad] : [];
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+  
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+  
+  const handleTakePhoto = async () => {
+    // Verifica si ya tienes permiso
+    if (!cameraPermission?.granted) {
+      // Solicita permiso para acceder a la cámara
+      const permissionResult = await requestCameraPermission();
+      if (!permissionResult.granted) {
+        alert("Necesitas dar permiso para acceder a la cámara");
+        return;
+      }
+    }
+  
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+  
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+  
+  const showImagePickerOptions = () => {
+    Alert.alert(
+      "Seleccionar Imagen",
+      "Elige cómo quieres seleccionar tu imagen",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel"
+        },
+        {
+          text: "Tomar Foto",
+          onPress: handleTakePhoto
+        },
+        {
+          text: "Elegir de la Galería",
+          onPress: pickImage
+        }
+      ]
+    );
+  };
+  
 
   const handleRegister = async () => {
     if (!email || !fullName || !password || !facultad || !programa) {
@@ -89,7 +155,7 @@ const SignUpStudent = () => {
         const token = response.data.token;
         await AsyncStorage.setItem('userToken', token);
         alert('Registro completado');
-        navigation.navigate('Temas');
+        navigation.navigate('TermsAndConditions');
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -100,15 +166,23 @@ const SignUpStudent = () => {
     }
   };
 
+
   return (
+    <ScrollView style={styles.scrollView}>
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={styles.header}>
           <Text style={styles.title}>Registro</Text>
-          <View />
+          <Text style={styles.title}>Estudiante</Text>
         </View>
-        <Text style={styles.subtitle}>Estudiante</Text>
-        <View style={styles.iconWrapper} />
+        <TouchableOpacity onPress={showImagePickerOptions} style={styles.photoIcon}>
+        {image ? (
+          <Image source={{ uri: image }} style={styles.photo} />
+        ) : (
+          <Text style={styles.text}>Sube tu foto</Text>
+        )}
+      </TouchableOpacity>
+      
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Nombre completo</Text>
           <TextInput
@@ -172,10 +246,15 @@ const SignUpStudent = () => {
         </TouchableOpacity>
       </View>
     </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+    backgroundColor: '#FFF',
+  },
   container: {
     flex: 1,
     backgroundColor: '#F3F4F6',
@@ -240,6 +319,28 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: '500',
+  },
+  photoIcon: {
+    backgroundColor: '#FBBF24',
+    height: 85,
+    width: 85,
+    padding: 8,
+    borderRadius: 50,
+    alignSelf: 'center',
+    marginBottom: 16,
+  },
+  photo: {
+    height: '100%',
+    width: '100%',
+    borderRadius: 50,
+  },
+  text: {
+    color: 'black',
+    fontSize: 16,
+    fontWeight: '500',
+    textAlign: 'center',
+    padding: 8,
+    
   },
 });
 

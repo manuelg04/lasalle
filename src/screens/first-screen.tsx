@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import { RootStackParamList } from '../navigation';
+import React from 'react';
 const { width, height } = Dimensions.get('window');
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FirstScreen'>;
 

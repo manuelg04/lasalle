@@ -3,10 +3,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 
 import { RootStackParamList } from '../../navigation';
+
 
 type DetailsSreenRouteProp = RouteProp<RootStackParamList, 'LoginScreen'>;
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FirstScreen'>;
@@ -33,8 +34,9 @@ export default function LoginScreen() {
       });
 
       if (response.status === 200) {
-        const token = response.data.token;
+        const { token, userId } = response.data;
         await AsyncStorage.setItem('userToken', token);
+        await AsyncStorage.setItem('userId', userId);
         navigation.navigate('Temas');
       }
         

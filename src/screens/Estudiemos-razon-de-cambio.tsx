@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
@@ -16,6 +16,8 @@ const EstudiemosRazonDeCambio = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Estudiemos</Text>
+        <Ionicons name="md-school-sharp" size={32} color="green" />
+        
         {/* <View style={styles.menu}>
           <Ionicons name="menu" size={24} />
           <Ionicons name="wifi" size={24} />
@@ -24,17 +26,17 @@ const EstudiemosRazonDeCambio = () => {
         <Text style={styles.reflection}> Estas haciendo las situaciones 1 y 2 de la tematica razon de cambio</Text>
       </View>
 
-      <View style={styles.card}>
+      <View style={styles.card} >
         <TouchableOpacity 
         style={styles.situation}
         onPress={() => navigation.navigate('Situacion1RazonDeCambio')}
         >
           <Text style={styles.situationText}>Situación 1 - RAZON DE CAMBIO</Text>
-          <Ionicons name="bulb-outline" size={24} color="#fab005" />
+          <Ionicons  name="md-rocket-sharp" size={32} color="green" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.situation}>
           <Text style={styles.situationText}>Situación 2 - RAZON DE CAMBIO</Text>
-          <Ionicons name="bulb-outline" size={24} color="#fab005" />
+          <Ionicons name="md-rocket-sharp" size={32} color="green" />
         </TouchableOpacity>
       </View>
 

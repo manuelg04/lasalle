@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
@@ -19,7 +20,7 @@ const SignUpGeneralScreen = () => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('SignUpStudent')}>
-          <Text style={styles.buttonText}> Estudiantes </Text>
+          <Text style={styles.buttonText}> Estudiante </Text>
         </TouchableOpacity>
 
         <TouchableOpacity

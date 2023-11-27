@@ -14,6 +14,9 @@ type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'Fi
 const Temas = () => {
     const [token, setToken] = useState('');
     const navigation = useNavigation<OverviewScreenNavigationProps>();
+    const [isRazonDeCambioExpanded, setRazonDeCambioExpanded] = useState(false);
+    const [isOptimizacionExpanded, setOptimizacionExpanded] = useState(false);
+
 
     const showAlert = () => {
         Alert.alert("Vaya!", "No puedes continuar si no has completado las fases anteriores.");
@@ -51,11 +54,20 @@ const Temas = () => {
       });
   };
 
+  const toggleRazonDeCambio = () => {
+    setRazonDeCambioExpanded(!isRazonDeCambioExpanded);
+  };
+  
+  const toggleOptimizacion = () => {
+    setOptimizacionExpanded(!isOptimizacionExpanded);
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.card}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Temas</Text>
+          <Ionicons name="book-outline" size={24} color="black" />
           <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
           <Ionicons name="log-out-outline" size={24} color="black" />
         </TouchableOpacity>
@@ -64,51 +76,58 @@ const Temas = () => {
             source={{ uri: 'https://example.com/user-icon.png' }} // Reemplaza con la URL de tu imagen
           />
         </View>
-        <Text style={styles.description}>Escoge un tema que deseas reforzar</Text>
+        <Text style={styles.description}>¿Qué tema te gustaría reforzar?</Text>
 
-        <View style={styles.topic}>
+      {/* Tema: Razón de Cambio */}
+      <TouchableOpacity onPress={toggleRazonDeCambio}>
           <Text style={styles.topicTitle}>Razón de cambio</Text>
-          <TouchableOpacity 
-          style={[styles.button, styles.yellowButton]}
-            onPress={() => navigation.navigate('Recordemos')}>
-            <Text style={styles.buttonText}>Recordemos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={[styles.button, styles.yellowButton]}
-          onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
-          
-            <Text style={styles.buttonText}>Estudiemos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-           style={[styles.button, styles.borderButton]}
-           onPress={showAlert}>
-            <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos</Text>
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
+        {isRazonDeCambioExpanded && (
+          <>
+            <TouchableOpacity 
+              style={[styles.button, styles.yellowButton]}
+              onPress={() => navigation.navigate('Recordemos')}>
+              <Text style={styles.buttonText}>Recordemos</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.button, styles.yellowButton]}
+              onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
+              <Text style={styles.buttonText}>Estudiemos</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, styles.borderButton]}
+              onPress={() => navigation.navigate('Experimentos')}>
+              <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos</Text>
+            </TouchableOpacity>
+          </>
+        )}
 
         <View style={styles.divider} />
 
-        <View style={styles.topic}>
+        {/* Tema: Optimización */}
+        <TouchableOpacity onPress={toggleOptimizacion}>
           <Text style={styles.topicTitle}>Optimización</Text>
-          <TouchableOpacity 
-          style={[styles.button, styles.yellowButton]}
-          onPress={() => navigation.navigate('Recordemos')}>
-            <Text style={styles.buttonText}>Recordemos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={[styles.button, styles.yellowButton]}
-          onPress={() => navigation.navigate('EstudiemosOptimizacion')}>
-          
-            <Text style={styles.buttonText}>Estudiemos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={[styles.button, styles.borderButton]}
-          onPress={showAlert}
-          >
-            <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos</Text>
-          </TouchableOpacity>
+        </TouchableOpacity>
+        {isOptimizacionExpanded && (
+          <>
+            <TouchableOpacity 
+              style={[styles.button, styles.yellowButton]}
+              onPress={() => navigation.navigate('Recordemos')}>
+              <Text style={styles.buttonText}>Recordemos</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.button, styles.yellowButton]}
+              onPress={() => navigation.navigate('EstudiemosOptimizacion')}>
+              <Text style={styles.buttonText}>Estudiemos</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.button, styles.borderButton]}
+              onPress={showAlert}>
+              <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos</Text>
+            </TouchableOpacity>
+          </>
+          )}
         </View>
-      </View>
     </ScrollView>
   );
 };
@@ -141,6 +160,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#1F2937',
+    paddingRight: 10,
   },
   userIcon: {
     width: 24,
@@ -189,7 +209,7 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: 'orange', // Un color de fondo para que sea visible, cámbialo como prefieras
     borderRadius: 20, // Circular si el icono es redondo
-    marginLeft: 250,
+    marginLeft: 220,
 
   },
 });
