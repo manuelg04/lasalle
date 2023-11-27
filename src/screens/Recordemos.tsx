@@ -11,9 +11,9 @@ const recursos = {
       }
       // Aquí puedes añadir más recursos...
     ],
-    Algebra: [
+    Álgebra: [
       {
-        subtematica: "Traduccion de enunciados",
+        subtematica: "Traducción de enunciados",
         url: "https://h5p.org/h5p/embed/131374"
       },
         {
@@ -25,7 +25,7 @@ const recursos = {
             url: "https://unisallevirtual.lasalle.edu.co/mod/hvp/embed.php?id=1766793"
         },
         {
-            subtematica: "Factorizacion",
+            subtematica: "Factorización",
             url: "https://h5p.org/h5p/embed/135794"
         },
         {
@@ -41,7 +41,7 @@ const recursos = {
         url: "https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_EL_APP5/OVA_Ecuaciones_Lineales_V2/"
       },
       {
-        subtematica: "Ecuaciones Cuadraticas",
+        subtematica: "Ecuaciones Cuadráticas",
         url: "https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_EC_APP7/OVA_EC_APP/"
       },
       {
@@ -49,15 +49,15 @@ const recursos = {
         url: "https://h5p.org/h5p/embed/220693"
       }
     ],
-    Geometria: [
+    Geometría: [
       {
-        subtematica: "Areas y Volumenes",
+        subtematica: "Áreas y Volúmenes",
         url: "https://drive.google.com/file/d/10Xx_scheSiMvdZzWwVYWywBrNRADtoZ6/view?usp=sharing"
       },
     ],
     Funciones: [
       {
-        subtematica: "Introduccion a las funciones",
+        subtematica: "Introducción a las funciones",
         url: "https://www.youtube.com/watch?v=-UPzQwTQhAU"
       },
         {
@@ -104,11 +104,11 @@ const recursos = {
                 url: "https://www.youtube.com/watch?v=cSpbZpIZrcM"
             },
             {
-                subtematica: "Ejemplo 2 razon de cambio",
+                subtematica: "Ejemplo 2 razón de cambio",
                 url: "https://drive.google.com/file/d/17mUip9XYdjUBO02LbdtTYXXahhoKpDVR/view?usp=sharing"
             },
             {
-                subtematica: "Maximos y minimos",
+                subtematica: "Máximos y mínimos",
                 url: "https://drive.google.com/file/d/1Jtv0g2NSgsnac35AMC8bxREeRDBLh5qh/view?usp=sharing"
             },
             {

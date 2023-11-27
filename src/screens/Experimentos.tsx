@@ -43,7 +43,9 @@ const Experimentemos = () => {
             });
 
             if (response.status === 201) {
-                setGeneratedProblem(response.data.problem);
+                // Acceder a la propiedad content del objeto problem
+                const problemText = response.data.problem.content;
+                setGeneratedProblem(problemText);
             }
         } catch (error) {
             console.error('Error al generar el problema:', error);

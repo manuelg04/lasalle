@@ -8,10 +8,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const situacion1 :any = [
     {
-        "tituloSituacion": "Situación 1. Razón de cambio",
+        "tituloSituacion": "Situación 1. ¡Hoy nos tocó empacar! ",
         "enunciado": "Un estudiante desea realizar su proyecto de pasantía en un laboratorio donde frecuentemente se requiere el empaque y traslado de insumos pequeños de laboratorio. Normalmente estos insumos se empacan en diferentes cajas en forma de cubo. Estas cajas cambian de tamaño según la cantidad de insumos a empacar. Debido a estos cambios, el estudiante se inquieta por conocer la variación del volumen de una de estas cajas con respecto a la longitud de la arista, cuando la arista mide 3 cm.",
         "postEnunciado": "Con respecto a la situación planteada anteriormente responda:",
-        "Subtitulo": "Comprensión del problema",
+        "Subtitulo": "¿Qué comprendes de la situación?",
         "postSubtitulo": "En el problema se debe",
         "preguntas": [
             {
@@ -20,7 +20,7 @@ const situacion1 :any = [
                     "B. Hallar la razón a la cual cambia la arista con respecto al volumen"
                 ],
                 "respuestaCorrecta": "Hallar la razón a la cual cambia el volumen con respecto a la arista",
-                "tip": "Recuerde que para ayudarse en la comprensión de un problema es importante identificar el objetivo de la situación que se plantea (incógnitas). Requiere revisar ejemplo en “Pasos para resolver un problema” en recordemos"
+                "tip": "Es importante identificar el objetivo de la situación - Ten presente revisar la comprensión de una situación en Pasos para resolver un problema "
             },
             {
                 "enunciado": "2. La cantidad que se desconoce o lo solicitado en el problema es:",
@@ -31,7 +31,7 @@ const situacion1 :any = [
                     "Razón de cambio de la arista con respecto al volumen"
                 ],
                 "respuestaCorrecta": "Razón de cambio del volumen con respecto a la arista",
-                "tip": "Recuerde que para ayudarse en la comprensión de un problema es importante identificar el objetivo de la situación que se plantea (incógnitas). Requiere revisar ejemplo en “Pasos para resolver un problema” en recordemos"
+                "tip": "Es importante identificar la incógnita de la situación - Ten presente revisar la comprensión de una situación en Pasos para resolver un problema   "
             },
             {
                 "enunciado": "3. La cantidad o dato que se proporcionan en el problema son (información dada): ",
@@ -42,7 +42,7 @@ const situacion1 :any = [
                     "Razón de cambio de la arista del cubo"
                 ],
                 "respuestaCorrecta": "Arista del cubo",
-                "tip": "Recuerde que para comprender un problema se debe identificar los datos o valores que da la situación planteada.Requiere revisar ejemplo en “Pasos para resolver un problema” en recordemos "
+                "tip": "Es importante identificar los datos o valores que nos proporcionan - Ten presente revisar la comprensión de una situación en Pasos para resolver un problema  "
             },
             {
                 "enunciado": "4. Si a es la arista del cubo, entonces un diagrama que ilustre la situación es:",
@@ -54,10 +54,11 @@ const situacion1 :any = [
                     "d"
                 ],
                 "respuestaCorrecta": "b",
-                "tip": "Recuerde que el gráfico debe contener la variable que se define en la situación planteada. Esto le ayudaría a comprender la situación. Se sugiere estudiar la temática áreas y volúmenes en recordemos. "
+                "tip": "Es importante ayudarse de un gráfico para comprender la situación - Ten presente estudiar  áreas y volúmenes en recordemos. "
             },
             {
-                "enunciado": "En el problema se debe definir previamente:",
+                "enunciado": "5. En el problema se debe definir previamente:",
+                "Subtitulo": "¿Qué plan diseñarías?",
                 "respuestas": [
                     "a. La función arista que depende del volumen del cubo ",
                     "b. La función arista que depende de un volumen fijo 3",
@@ -65,7 +66,7 @@ const situacion1 :any = [
                     "d. La función volumen de un cubo que depende de su área superficial"
                 ],
                 "respuestaCorrecta": "c. La función volumen de un cubo que depende de la longitud de arista",
-                "tip": "Recuerde que se deben identificar conceptos previos relacionados con las temáticas involucradas en la situación planteada.Se sugiere estudiar la temática de introducción a las funciones en recordemos.  "
+                "tip": "Es importante identificar conceptos previos necesarios para resolver la situación - Ten presente estudiar la introducción a las funciones en recordemos. "
             },
             {
                 "enunciado": "Si a es la arista del cubo y V es el volumen del cubo, entonces una expresión para el volumen es:",

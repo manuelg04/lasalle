@@ -13,16 +13,16 @@ const EstudiemosOptimizacion = () => {
           <Ionicons name="wifi" size={24} />
           <Text style={styles.menuText}>Menu</Text>
         </View> */}
-        <Text style={styles.reflection}> Estas haciendo las situaciones 1 y 2 de la tematica optimizacion</Text>
+        <Text style={styles.reflection}>Estas haciendo las situaciones 1 y 2 de la temática optimización</Text>
       </View>
 
       <View style={styles.card}>
         <TouchableOpacity style={styles.situation}>
-          <Text style={styles.situationText}>Situación 1 - OPTIMIZACION</Text>
+          <Text style={styles.situationText}>Situación 1 - OPTIMIZACIÓN</Text>
           <Ionicons name="bulb-outline" size={24} color="#fab005" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.situation}>
-          <Text style={styles.situationText}>Situación 2 - OPTIMIZACION</Text>
+          <Text style={styles.situationText}>Situación 2 - OPTIMIZACIÓN</Text>
           <Ionicons name="bulb-outline" size={24} color="#fab005" />
         </TouchableOpacity>
       </View>
