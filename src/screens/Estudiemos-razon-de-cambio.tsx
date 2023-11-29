@@ -31,8 +31,10 @@ const EstudiemosRazonDeCambio = () => {
         style={styles.situation}
         onPress={() => navigation.navigate('Situacion1RazonDeCambio')}
         >
-          <Text style={styles.situationText}>Situación 1 - RAZÓN DE CAMBIO</Text>
-          <Ionicons  name="md-rocket-sharp" size={32} color="green" />
+          <Text style={styles.situationText}>Situación 1. Tiempo de empacar! - RAZÓN DE CAMBIO
+          <Ionicons style={styles.button} name="md-rocket-sharp" size={32} color="green" />
+          </Text>
+          
         </TouchableOpacity>
         <TouchableOpacity style={styles.situation}>
           <Text style={styles.situationText}>Situación 2 - RAZÓN DE CAMBIO</Text>
@@ -111,8 +113,8 @@ const styles = StyleSheet.create({
   },
   situation: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderBottomColor: '#fab005',
     paddingBottom: 16,
@@ -135,6 +137,9 @@ const styles = StyleSheet.create({
     borderTopColor: '#e5e7eb',
     paddingVertical: 16,
     width: '100%',
+  },
+  button: {
+  marginLeft: 10,
   },
 });
 

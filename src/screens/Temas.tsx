@@ -4,10 +4,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView, Alert, Modal } from 'react-native';
 
 
 import { RootStackParamList } from '../navigation';
+import axios from 'axios';
 
 
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FirstScreen'>;
@@ -16,6 +17,8 @@ const Temas = () => {
     const navigation = useNavigation<OverviewScreenNavigationProps>();
     const [isRazonDeCambioExpanded, setRazonDeCambioExpanded] = useState(false);
     const [isOptimizacionExpanded, setOptimizacionExpanded] = useState(false);
+    const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
+    const [feedbackData, setFeedbackData] = useState(null);
 
 
     const showAlert = () => {
@@ -44,6 +47,31 @@ const Temas = () => {
     return null; // O un componente de carga
   }
 
+  const handleRocketIconPress = async () => {
+    try {
+      // Asumiendo que tienes el idEstudiante e idCuestionario almacenados o disponibles
+      const idEstudiante = await AsyncStorage.getItem('userId');
+      const idCuestionario = "Id del cuestionario aquí"; // Ajusta según tu lógica
+
+      if (!idEstudiante || !idCuestionario) {
+        console.error('Falta ID del estudiante o ID del cuestionario');
+        return;
+      }
+
+      const response = await axios.post('https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas', {
+        idEstudiante,
+        idCuestionario
+      });
+
+      if (response.data.feedback) {
+        setFeedbackData(response.data.feedback);
+        setFeedbackModalVisible(true);
+      }
+    } catch (error) {
+      console.error('Error al obtener el feedback:', error);
+    }
+  };
+
   const handleLogout = () => {
     AsyncStorage.removeItem('userToken') // Elimina el token almacenado
       .then(() => {
@@ -64,71 +92,101 @@ const Temas = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.card}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Temas</Text>
-          <Ionicons name="book-outline" size={24} color="black" />
-          <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+    <View style={styles.card}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Temas</Text>
+        <Ionicons name="book-outline" size={24} color="black" />
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
           <Ionicons name="log-out-outline" size={24} color="black" />
         </TouchableOpacity>
-          <Image
-            style={styles.userIcon}
-            source={{ uri: 'https://example.com/user-icon.png' }} // Reemplaza con la URL de tu imagen
-          />
-        </View>
-        <Text style={styles.description}>¿Qué tema te gustaría reforzar?</Text>
+        <Image
+          style={styles.userIcon}
+          source={{ uri: 'https://example.com/user-icon.png' }} // Reemplaza con la URL de tu imagen
+        />
+      </View>
+      <Text style={styles.description}>¿Qué tema te gustaría reforzar?</Text>
 
       {/* Tema: Razón de Cambio */}
-      <TouchableOpacity onPress={toggleRazonDeCambio}>
-          <Text style={styles.topicTitle}>Razón de cambio</Text>
-        </TouchableOpacity>
-        {isRazonDeCambioExpanded && (
-          <>
-            <TouchableOpacity 
-              style={[styles.button, styles.yellowButton]}
-              onPress={() => navigation.navigate('Recordemos')}>
-              <Text style={styles.buttonText}>Recordemos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.button, styles.yellowButton]}
-              onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
-              <Text style={styles.buttonText}>Estudiemos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.borderButton]}
-              onPress={() => navigation.navigate('Experimentos')}>
-              <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos</Text>
-            </TouchableOpacity>
-          </>
-        )}
+      <TouchableOpacity onPress={toggleRazonDeCambio} style={styles.topicHeader}>
+        <Text style={styles.topicTitle}>Razón de cambio</Text>
+        <Ionicons name={isRazonDeCambioExpanded ? "chevron-up-outline" : "chevron-down-outline"} size={24} color="black" />
+      </TouchableOpacity>
+      {isRazonDeCambioExpanded && (
+        <>
+          <TouchableOpacity 
+            style={[styles.button, styles.yellowButton]}
+            onPress={() => navigation.navigate('Recordemos')}>
+            <Text style={styles.buttonText}>Recordemos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.button, styles.yellowButton]}
+            onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
+            <Text style={styles.buttonText}>Estudiemos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, styles.borderButton]}
+            onPress={() => navigation.navigate('Experimentos')}>
+            <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos</Text>
+          </TouchableOpacity>
+        </>
+      )}
 
-        <View style={styles.divider} />
+      <View style={styles.divider} />
 
-        {/* Tema: Optimización */}
-        <TouchableOpacity onPress={toggleOptimizacion}>
-          <Text style={styles.topicTitle}>Optimización</Text>
-        </TouchableOpacity>
-        {isOptimizacionExpanded && (
-          <>
-            <TouchableOpacity 
-              style={[styles.button, styles.yellowButton]}
-              onPress={() => navigation.navigate('Recordemos')}>
-              <Text style={styles.buttonText}>Recordemos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.button, styles.yellowButton]}
-              onPress={() => navigation.navigate('EstudiemosOptimizacion')}>
-              <Text style={styles.buttonText}>Estudiemos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.button, styles.borderButton]}
-              onPress={showAlert}>
-              <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos</Text>
-            </TouchableOpacity>
-          </>
-          )}
+      {/* Tema: Optimización */}
+      <TouchableOpacity onPress={toggleOptimizacion} style={styles.topicHeader}>
+        <Text style={styles.topicTitle}>Optimización</Text>
+        <Ionicons name={isOptimizacionExpanded ? "chevron-up-outline" : "chevron-down-outline"} size={24} color="black" />
+      </TouchableOpacity>
+      {isOptimizacionExpanded && (
+        <>
+          <TouchableOpacity 
+            style={[styles.button, styles.yellowButton]}
+            onPress={() => navigation.navigate('Recordemos')}>
+            <Text style={styles.buttonText}>Recordemos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.button, styles.yellowButton]}
+            onPress={() => navigation.navigate('EstudiemosOptimizacion')}>
+            <Text style={styles.buttonText}>Estudiemos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.button, styles.borderButton]}
+            onPress={showAlert}>
+            <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos</Text>
+          </TouchableOpacity>
+        </>
+      )}
+
+      {/* Ícono del cohete para mostrar el modal de feedback */}
+      <TouchableOpacity onPress={handleRocketIconPress}>
+        <Ionicons name="rocket-outline" size={24} color="black" />
+      </TouchableOpacity>
+    </View>
+
+    {/* Modal para mostrar el feedback */}
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={feedbackModalVisible}
+      onRequestClose={() => {
+        setFeedbackModalVisible(false);
+      }}
+    >
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text>{feedbackData}</Text>
+          {/* Asumiendo que feedbackData es el texto del feedback */}
+          <TouchableOpacity
+            style={[styles.button, styles.buttonClose]}
+            onPress={() => setFeedbackModalVisible(false)}
+          >
+            <Text style={styles.textStyle}>Cerrar</Text>
+          </TouchableOpacity>
         </View>
-    </ScrollView>
+      </View>
+    </Modal>
+  </ScrollView>
   );
 };
 
@@ -211,6 +269,55 @@ const styles = StyleSheet.create({
     borderRadius: 20, // Circular si el icono es redondo
     marginLeft: 220,
 
+  },
+  gifContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  gif: {
+    width: 300, // Ajusta según el tamaño deseado
+    height: 200, // Ajusta según el tamaño deseado
+  },
+  topicHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semi-transparente
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3', // Color azul para el botón
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginTop: 15,
+    width: 100, // Ancho fijo para el botón
+    justifyContent: 'center', // Centrar el texto en el botón
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

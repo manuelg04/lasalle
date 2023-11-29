@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Linking } from 'react-native';
 
-const recursos = {
+export const recursos = {
     resolucionDeProblemas: [
       {
         subtematica: "Pasos para la resolución de problemas",
@@ -127,6 +127,7 @@ const recursos = {
         ],
 
   };
+
 
 const Recordemos = () => {
   const [expandedSections, setExpandedSections] = useState({}) as any;
