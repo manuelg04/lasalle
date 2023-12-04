@@ -12,8 +12,11 @@ import SignUpTeacher from '../screens/Auth/SignUpTeacher';
 import EstudiemosOptimizacion from '../screens/Estudiemos-optimizacion';
 import EstudiemosRazonDeCambio from '../screens/Estudiemos-razon-de-cambio';
 import Experimentemos from '../screens/Experimentos';
+import FeedbackScreen from '../screens/FeedbackScreen';
 import Recordemos from '../screens/Recordemos';
 import Temas from '../screens/Temas';
+import Perfil from '../screens/Perfil';
+import Situacion2RazonDeCambio from '../Situaciones/RazonDeCambio-situacion2';
 import TermsAndConditions from '../screens/TermsAndConditions';
 import FirstScreen from '../screens/first-screen';
 
@@ -25,11 +28,14 @@ export type RootStackParamList = {
   SignUpTeacher: undefined;
   Temas: undefined;
   Recordemos: undefined;
-  EstudiemosRazonDeCambio: undefined;
+  EstudiemosRazonDeCambio: { situacionCompletada?: boolean };
   EstudiemosOptimizacion: undefined;
   Situacion1RazonDeCambio: undefined;
   TermsAndConditions: undefined;
   Experimentos: undefined;
+  FeedbackScreen: undefined;
+  Situacion2RazonDeCambio: undefined;
+  Perfil: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -49,6 +55,9 @@ export default function RootStack() {
         <Stack.Screen name="Situacion1RazonDeCambio" component={Situacion1RazonDeCambio} />
         <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
         <Stack.Screen name="Experimentos" component={Experimentemos} />
+        <Stack.Screen name="FeedbackScreen" component={FeedbackScreen} />
+        <Stack.Screen name="Situacion2RazonDeCambio" component={Situacion2RazonDeCambio} />
+        <Stack.Screen name="Perfil" component={Perfil} />
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}

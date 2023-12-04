@@ -1,17 +1,42 @@
 /* eslint-disable prettier/prettier */
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 
 import { RootStackParamList } from '../navigation';
 
-type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'Situacion1RazonDeCambio'>;
+type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'Situacion1RazonDeCambio', 'Situacion2RazonDeCambio'  >;
 
 const EstudiemosRazonDeCambio = () => {
     const navigation = useNavigation<OverviewScreenNavigationProps>();
+    const [situacion1Completada, setSituacion1Completada] = useState(false);
+    const route = useRoute<RouteProp<RootStackParamList, 'EstudiemosRazonDeCambio'>>();
+
+  const verificarSiEstaCompletada = async () => {
+    try {
+      const completada = await AsyncStorage.getItem('situacion_1_completada');
+      if (completada === 'true') {
+        setSituacion1Completada(true);
+      }
+      if (route.params?.situacionCompletada) {
+        setSituacion1Completada(true);
+      }
+    } catch (error) {
+      console.error('Error al leer el estado de finalización', error);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      verificarSiEstaCompletada();
+      // No dependencias adicionales necesarias, el callback se ejecutará cada vez que el componente gane el foco
+    }, [route])
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -31,13 +56,20 @@ const EstudiemosRazonDeCambio = () => {
         style={styles.situation}
         onPress={() => navigation.navigate('Situacion1RazonDeCambio')}
         >
-          <Text style={styles.situationText}>Situación 1. Tiempo de empacar! - RAZÓN DE CAMBIO
-          <Ionicons style={styles.button} name="md-rocket-sharp" size={32} color="green" />
+          <Text style={styles.situationText}>Situación 1. Tiempo de empacar!
+          <Ionicons
+        name="md-rocket-sharp"
+        size={32}
+        color={situacion1Completada ? "green" : "grey"}
+      />
           </Text>
           
         </TouchableOpacity>
-        <TouchableOpacity style={styles.situation}>
-          <Text style={styles.situationText}>Situación 2 - RAZÓN DE CAMBIO</Text>
+        <TouchableOpacity 
+        style={styles.situation}
+        onPress={() => navigation.navigate('Situacion2RazonDeCambio')}
+        >
+          <Text style={styles.situationText}>Situación 2 - Caminando a la U</Text>
           <Ionicons name="md-rocket-sharp" size={32} color="green" />
         </TouchableOpacity>
       </View>

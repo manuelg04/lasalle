@@ -13,7 +13,7 @@ const EstudiemosOptimizacion = () => {
           <Ionicons name="wifi" size={24} />
           <Text style={styles.menuText}>Menu</Text>
         </View> */}
-        <Text style={styles.reflection}>Estas haciendo las situaciones 1 y 2 de la temática optimización</Text>
+        <Text style={styles.reflection}>Estas haciendo las situaciones 1 y 2  de la temática optimización</Text>
       </View>
 
       <View style={styles.card}>

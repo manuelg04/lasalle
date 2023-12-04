@@ -4,9 +4,9 @@ import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
 import { RootStackParamList } from '../../navigation';
+import { Ionicons } from '@expo/vector-icons';
 
 
 type DetailsSreenRouteProp = RouteProp<RootStackParamList, 'LoginScreen'>;
@@ -34,9 +34,10 @@ export default function LoginScreen() {
       });
 
       if (response.status === 200) {
-        const { token, userId } = response.data;
+        const { token, userId, fullName } = response.data;
         await AsyncStorage.setItem('userToken', token);
         await AsyncStorage.setItem('userId', userId);
+        await AsyncStorage.setItem('fullName', fullName);
         navigation.navigate('Temas');
       }
         
@@ -49,12 +50,14 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
+    
       <View style={styles.card}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           {/* Icono de flecha hacia atrás, puedes usar una imagen o crear tu propio componente */}
           <Text style={styles.backButtonText}>←</Text>
         </TouchableOpacity>
         <Text style={styles.title}>Ingresa a tu cuenta</Text>
+        <Ionicons name="person-circle-outline" size={40} color="#4a4a4a" style={styles.loginIcon} />
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Correo</Text>
           <TextInput
@@ -147,5 +150,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  logo: {
+    height: 100, // Ajusta estos valores según sea necesario
+    width: 100, // Ajusta estos valores según sea necesario
+    marginBottom: 20,
+  },
+  loginIcon: {
+    marginVertical: 10,
   },
 });

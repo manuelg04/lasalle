@@ -2,15 +2,19 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable prettier/prettier */
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert, Image, Modal, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Alert, Image, Modal, ActivityIndicator, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { RootStackParamList } from '../navigation';
 import {recursos} from "../screens/Recordemos"
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
-import FeedBackModal from '../utils/FeedbackModal';
+
+
 
 
 const situacion1 :any = [
@@ -196,6 +200,9 @@ const getSubtitulo = (questionIndex: any) => {
 
 type FeedbackState = 'correct' | 'incorrect' | null;
 ``
+type DetailsSreenRouteProp = RouteProp<RootStackParamList, 'Situacion1RazonDeCambio'>;
+type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FeedbackScreen'>;
+
 
 const Situacion1RazonDeCambio = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -207,6 +214,23 @@ const Situacion1RazonDeCambio = () => {
     visible: false,
     type: null, // 'correct' o 'incorrect'
 });
+const [startTime, setStartTime] = useState<Date | null>(null);
+const [endTime, setEndTime] = useState<Date | null>(null);
+const navigation = useNavigation<OverviewScreenNavigationProps>();
+const router = useRoute<DetailsSreenRouteProp>();
+const [situacionCompletada, setSituacionCompletada] = useState(false);
+
+  // Verifica si la situación ya ha sido completada
+  useEffect(() => {
+    const verificarCompletada = async () => {
+      const completada = await AsyncStorage.getItem('situacion1_completada');
+      if (completada === 'true') {
+        setSituacionCompletada(true);
+      }
+    };
+
+    verificarCompletada();
+  }, []);
 
 
 
@@ -282,83 +306,123 @@ const nextQuestion = () => {
     return <Image source={require('../../assets/situacion1_punto4.png')} style={styles.imagen} />;
 };
 
+const startCuestionario = () => {
+  // Guarda la hora de inicio
+  setStartTime(new Date());
+};
+
+useEffect(() => {
+  startCuestionario();
+}, []);
+
+const marcarComoCompletada = async () => {
+  try {
+    await AsyncStorage.setItem('situacion1_completada', 'true');
+    console.log('Situación 1 marcada como completada');
+  } catch (error) {
+    console.error('Error al marcar la situación como completada', error);
+  }
+};
+
 const enviarRespuestas = async () => {
-    setIsLoading(true);
-    const idCuestionario = situacion.tituloSituacion; // Asumiendo que situacion es situacion1[0]
-    const respuestasEstudiante = situacion.preguntas.map((pregunta, indice) => {
-      return {
-        preguntaId: indice,
-        respuestaSeleccionada: selectedAnswers[indice],
-        esRespuestaCorrecta: selectedAnswers[indice] === pregunta.respuestaCorrecta
-      };
+  setIsLoading(true);
+  if (!startTime) {
+    console.error('El tiempo de inicio no está establecido.');
+    setIsLoading(false);
+    return;
+  }
+
+  const end = new Date();
+  const tiempoTranscurridoMs = end.getTime() - startTime.getTime();
+  if (tiempoTranscurridoMs < 0) {
+    console.error('El tiempo de inicio es posterior al tiempo de finalización.');
+    setIsLoading(false);
+    return;
+  }
+
+  const tiempoTranscurridoMinutos = tiempoTranscurridoMs / 60000;
+  
+  try {
+    const idEstudiante = await AsyncStorage.getItem('userId');
+    const idCuestionario = situacion.tituloSituacion; // Asumiendo que 'situacion' es tu objeto de preguntas actual
+    console.log("🚀 ~ idCuestionario:", idCuestionario)
+
+    if (!idEstudiante || !idCuestionario) {
+      console.error('Falta ID del estudiante o ID del cuestionario');
+      setIsLoading(false);
+      return;
+    }
+
+    const respuestasEstudiante = situacion.preguntas.map((pregunta, indice) => ({
+      preguntaId: indice,
+      respuestaSeleccionada: selectedAnswers[indice],
+      esRespuestaCorrecta: selectedAnswers[indice] === pregunta.respuestaCorrecta
+    }));
+
+    const response = await axios.post('https://lasalleapp-dev-sjta.1.us-1.fl0.io/save-answer/guardar-respuesta', {
+      idEstudiante,
+      idCuestionario,
+      respuestasEstudiante,
+      tiempoTranscurrido: tiempoTranscurridoMinutos
     });
+
   
-    try {
-      // Leer idEstudiante e idCuestionario desde AsyncStorage
-      const idEstudiante = await AsyncStorage.getItem('userId');
-    
-  
-      if (!idEstudiante || !idCuestionario) {
-        console.error('Falta ID del estudiante o ID del cuestionario');
-        return;
-      }
-  
-      const response = await axios.post('https://lasalleapp-dev-sjta.1.us-1.fl0.io/save-answer/guardar-respuesta', {
+    if (response.status === 201) {
+      // Tras enviar las respuestas, procedemos a analizarlas
+      const analizarRespuestasUrl = 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas';
+      const responseAnalizar = await axios.post(analizarRespuestasUrl, {
         idEstudiante,
         idCuestionario,
-        respuestasEstudiante
+        tiempoTranscurridoMinutos
       });
-      console.log("🚀 ~ response:", response)
-      if (response.status === 201) {
-        alert('Respuestas enviadas correctamente');
-        const analizarRespuestasUrl = 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas';
-        const responseAnalizar = await axios.post(analizarRespuestasUrl, {
-        idEstudiante,
-        idCuestionario
-      });
-      setIsLoading(false);
+      
       if (responseAnalizar.data.feedback) {
-        setFeedbackModal({
-            visible: true,
-            feedback: responseAnalizar.data.feedback, // Aquí estableces el contenido del feedback
-            type: 'correct' // o 'incorrect', según necesites
-          });
+  
+        // Si recibimos feedback del análisis, lo mostramos
+        await marcarComoCompletada();
+        await AsyncStorage.setItem('feedback_situacion_1', JSON.stringify(responseAnalizar.data.feedback));
+        await AsyncStorage.setItem('situacion_1_completada', 'true');
+         navigation.navigate('FeedbackScreen', { 
+          feedbackData: responseAnalizar.data.feedback,
+          situacionCompletada: true
+         });
       }
+    }
+  } catch (error) {
+    console.error('Error al enviar respuestas:', error);
+    if (axios.isAxiosError(error) && error.response) {
+      // Manejo específico para errores de Axios con respuesta
+      console.error('Detalles del error:', error.response.data);
+    }
+  } finally {
+    setIsLoading(false); // Asegúrate de quitar el estado de carga independientemente del resultado
+  }
+};
+
+  // Maneja la visualización del feedback anterior
+  const mostrarFeedbackAnterior = async () => {
+    if (situacionCompletada) {
+      const feedbackData = await AsyncStorage.getItem('feedback_situacion_1');
+      if (feedbackData) {
+        navigation.navigate('FeedbackScreen', { feedbackData: JSON.parse(feedbackData) });
       }
-    
-      // Aquí puedes manejar la respuesta del servidor
-    } catch (error) {
-        setIsLoading(false);
-        if (axios.isAxiosError(error)) {
-            console.error('Error al enviar respuestas:', error.message);
-            if (error.response) {
-              // Aquí puedes ver la respuesta completa del error, incluyendo los datos que envía el servidor.
-              console.error('Detalles del error:', error.response.data);
-            }
-          } else {
-            // Manejar errores que no son de Axios
-            console.error('Error no relacionado con Axios:', error);
-          }
-      // Manejar el error
     }
   };
-  
-  
-
 
   return (
 <View style={styles.container}>
+{situacionCompletada && (
+        <Button
+          title="Ver Feedback Anterior"
+          onPress={mostrarFeedbackAnterior}
+        />
+      )}
     {isLoading ? (
       // Mostrar el loader cuando isLoading sea true
       <ActivityIndicator size="large" color="#0000ff" />
     ) : (
       // El contenido de tu pantalla cuando isLoading sea false
       <>
-        <FeedBackModal
-          isVisible={feedbackModal.visible}
-          feedback={feedbackModal.feedback}
-          onClose={() => setFeedbackModal({ ...feedbackModal, visible: false })}
-        />
 
         <Modal
           animationType="slide"

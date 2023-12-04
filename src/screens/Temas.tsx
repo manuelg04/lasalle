@@ -5,10 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView, Alert, Modal } from 'react-native';
-
-
 import { RootStackParamList } from '../navigation';
-import axios from 'axios';
+import NavBar from '../utils/NavBar';
 
 
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FirstScreen'>;
@@ -17,14 +15,12 @@ const Temas = () => {
     const navigation = useNavigation<OverviewScreenNavigationProps>();
     const [isRazonDeCambioExpanded, setRazonDeCambioExpanded] = useState(false);
     const [isOptimizacionExpanded, setOptimizacionExpanded] = useState(false);
-    const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
-    const [feedbackData, setFeedbackData] = useState(null);
-
+    const [fullName, setFullName] = useState('');
 
     const showAlert = () => {
         Alert.alert("Vaya!", "No puedes continuar si no has completado las fases anteriores.");
       };
-    useEffect(() => {
+      useEffect(() => {
         const checkToken = async () => {
           try {
             const storedToken = await AsyncStorage.getItem('userToken');
@@ -39,38 +35,26 @@ const Temas = () => {
           }
         };
     
+        const loadFullName = async () => {
+          try {
+            const storedName = await AsyncStorage.getItem('fullName');
+            if (storedName) {
+                setFullName(storedName);
+            }
+          } catch (error) {
+            console.error('Error al recuperar el nombre del usuario', error);
+          }
+        };
+    
         checkToken();
-      }, [navigation]);
+        loadFullName();  // Llamada a loadFullName fuera de checkToken
+    }, [navigation]);
+    
   // Aquí puedes agregar tu lógica para verificar el token JWT
 
   if (!token) {
     return null; // O un componente de carga
   }
-
-  const handleRocketIconPress = async () => {
-    try {
-      // Asumiendo que tienes el idEstudiante e idCuestionario almacenados o disponibles
-      const idEstudiante = await AsyncStorage.getItem('userId');
-      const idCuestionario = "Id del cuestionario aquí"; // Ajusta según tu lógica
-
-      if (!idEstudiante || !idCuestionario) {
-        console.error('Falta ID del estudiante o ID del cuestionario');
-        return;
-      }
-
-      const response = await axios.post('https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas', {
-        idEstudiante,
-        idCuestionario
-      });
-
-      if (response.data.feedback) {
-        setFeedbackData(response.data.feedback);
-        setFeedbackModalVisible(true);
-      }
-    } catch (error) {
-      console.error('Error al obtener el feedback:', error);
-    }
-  };
 
   const handleLogout = () => {
     AsyncStorage.removeItem('userToken') // Elimina el token almacenado
@@ -90,115 +74,109 @@ const Temas = () => {
     setOptimizacionExpanded(!isOptimizacionExpanded);
   };
 
+  
   return (
-    <ScrollView style={styles.container}>
-    <View style={styles.card}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Temas</Text>
-        <Ionicons name="book-outline" size={24} color="black" />
-        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-          <Ionicons name="log-out-outline" size={24} color="black" />
-        </TouchableOpacity>
-        <Image
-          style={styles.userIcon}
-          source={{ uri: 'https://example.com/user-icon.png' }} // Reemplaza con la URL de tu imagen
-        />
-      </View>
-      <Text style={styles.description}>¿Qué tema te gustaría reforzar?</Text>
+    <><ScrollView style={styles.container}>
+      <View style={styles.card}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Temas</Text>
+          <Ionicons name="book-outline" size={24} color="black" />
 
-      {/* Tema: Razón de Cambio */}
-      <TouchableOpacity onPress={toggleRazonDeCambio} style={styles.topicHeader}>
-        <Text style={styles.topicTitle}>Razón de cambio</Text>
-        <Ionicons name={isRazonDeCambioExpanded ? "chevron-up-outline" : "chevron-down-outline"} size={24} color="black" />
-      </TouchableOpacity>
-      {isRazonDeCambioExpanded && (
-        <>
-          <TouchableOpacity 
-            style={[styles.button, styles.yellowButton]}
-            onPress={() => navigation.navigate('Recordemos')}>
-            <Text style={styles.buttonText}>Recordemos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.button, styles.yellowButton]}
-            onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
-            <Text style={styles.buttonText}>Estudiemos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, styles.borderButton]}
-            onPress={() => navigation.navigate('Experimentos')}>
-            <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos</Text>
-          </TouchableOpacity>
-        </>
-      )}
-
-      <View style={styles.divider} />
-
-      {/* Tema: Optimización */}
-      <TouchableOpacity onPress={toggleOptimizacion} style={styles.topicHeader}>
-        <Text style={styles.topicTitle}>Optimización</Text>
-        <Ionicons name={isOptimizacionExpanded ? "chevron-up-outline" : "chevron-down-outline"} size={24} color="black" />
-      </TouchableOpacity>
-      {isOptimizacionExpanded && (
-        <>
-          <TouchableOpacity 
-            style={[styles.button, styles.yellowButton]}
-            onPress={() => navigation.navigate('Recordemos')}>
-            <Text style={styles.buttonText}>Recordemos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.button, styles.yellowButton]}
-            onPress={() => navigation.navigate('EstudiemosOptimizacion')}>
-            <Text style={styles.buttonText}>Estudiemos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.button, styles.borderButton]}
-            onPress={showAlert}>
-            <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos</Text>
-          </TouchableOpacity>
-        </>
-      )}
-
-      {/* Ícono del cohete para mostrar el modal de feedback */}
-      <TouchableOpacity onPress={handleRocketIconPress}>
-        <Ionicons name="rocket-outline" size={24} color="black" />
-      </TouchableOpacity>
-    </View>
-
-    {/* Modal para mostrar el feedback */}
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={feedbackModalVisible}
-      onRequestClose={() => {
-        setFeedbackModalVisible(false);
-      }}
-    >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Text>{feedbackData}</Text>
-          {/* Asumiendo que feedbackData es el texto del feedback */}
-          <TouchableOpacity
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => setFeedbackModalVisible(false)}
-          >
-            <Text style={styles.textStyle}>Cerrar</Text>
+          <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+            <Ionicons name="log-out-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
+       <View style={styles.SubtitleText}>
+       <Text style={styles.SubtitleText}>¡Nos alegra tenerte de vuelta! {fullName}
+        </Text>
+       </View>
+        <View style={styles.SubtitleText} >
+        <Text style={styles.description}>¿Qué tema te gustaría reforzar?</Text>
+        </View>
+        
+        {/* Tema: Razón de Cambio */}
+        <TouchableOpacity onPress={toggleRazonDeCambio} style={styles.topicHeader}>
+          <Text style={styles.topicTitle}>Razón de cambio</Text>
+          <Ionicons name={isRazonDeCambioExpanded ? "chevron-up-outline" : "chevron-down-outline"} size={24} color="black" />
+        </TouchableOpacity>
+        {isRazonDeCambioExpanded && (
+          <>
+            <TouchableOpacity
+              style={[styles.button, styles.yellowButton]}
+              onPress={() => navigation.navigate('Recordemos')}>
+
+              <Text style={styles.buttonText}>Recordemos
+                <Ionicons name="trophy" size={24} color="black" />
+              </Text>
+
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, styles.yellowButton]}
+              onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
+              <Text style={styles.buttonText}>Estudiemos
+                <Ionicons name="school-sharp" size={24} color="black" />
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, styles.borderButton]}
+              onPress={() => navigation.navigate('Experimentos')}>
+              <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos
+                <Ionicons name="cube-sharp" size={24} color="black" />
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
+
+        <View style={styles.divider} />
+
+        {/* Tema: Optimización */}
+        <TouchableOpacity onPress={toggleOptimizacion} style={styles.topicHeader}>
+          <Text style={styles.topicTitle}>Optimización</Text>
+          <Ionicons name={isOptimizacionExpanded ? "chevron-up-outline" : "chevron-down-outline"} size={24} color="black" />
+        </TouchableOpacity>
+        {isOptimizacionExpanded && (
+          <>
+            <TouchableOpacity
+              style={[styles.button, styles.yellowButton]}
+              onPress={() => navigation.navigate('Recordemos')}>
+              <Text style={styles.buttonText}>Recordemos
+                <Ionicons name="trophy" size={24} color="black" />
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, styles.yellowButton]}
+              onPress={() => navigation.navigate('EstudiemosOptimizacion')}>
+              <Text style={styles.buttonText}>Estudiemos
+                <Ionicons name="school-sharp" size={24} color="black" />
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, styles.borderButton]}
+              onPress={showAlert}>
+              <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos
+                <Ionicons name="cube-sharp" size={24} color="black" />
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
+
       </View>
-    </Modal>
-  </ScrollView>
+
+    </ScrollView>
+    <NavBar />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#f4f5f7', // Un fondo más suave
     padding: 10,
   },
   card: {
-    borderRadius: 10,
-    backgroundColor: '#FFF',
+    borderRadius: 15, // Bordes más redondeados
+    backgroundColor: '#ffffff', // Fondo blanco para la tarjeta
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
@@ -210,15 +188,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 40, // Ajusta este valor para el padding superior según el diseño de tu app
-    paddingBottom: 20,
-    paddingHorizontal: 10,
+    padding: 20, // Ajuste del padding,
   },
   headerText: {
+    fontSize: 24, // Tamaño de letra más grande
+    fontWeight: 'bold',
+    color: '#333', // Texto más oscuro para mejor contraste
+  },
+  SubtitleText: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#1F2937',
     paddingRight: 10,
+    paddingTop: 15,
+    alignItems: 'center',
+  },
+  reflection: {
+    textAlign: 'center',
+    fontSize: 14,
+    marginTop: 10,
   },
   userIcon: {
     width: 24,
@@ -227,7 +215,8 @@ const styles = StyleSheet.create({
   },
   description: {
     color: '#4B5563',
-    marginBottom: 20,
+    marginBottom: 70,
+
   },
   topic: {
     marginBottom: 20,
@@ -235,7 +224,7 @@ const styles = StyleSheet.create({
   topicTitle: {
     fontWeight: 'bold',
     fontSize: 18,
-    color: '#1F2937',
+    color: '#2c3e50', // Un color más oscuro para los títulos
     marginBottom: 10,
   },
   button: {
@@ -243,13 +232,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     marginBottom: 10,
+    backgroundColor: '#4b7bec', // Color principal para los botones
   },
   yellowButton: {
     backgroundColor: '#FBBF24',
   },
   buttonText: {
+    color: 'white', // Texto blanco para mejor contraste
     fontWeight: 'bold',
-    color: '#1F2937',
+    marginLeft: 8, // Espacio entre el icono y el texto
   },
   yellowText: {
     color: '#FBBF24',

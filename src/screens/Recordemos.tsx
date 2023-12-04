@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Linking } from 'react-native';
 
 export const recursos = {
-    resolucionDeProblemas: [
+    ResolucionDeProblemas: [
       {
         subtematica: "Pasos para la resolución de problemas",
         url: "https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/"
@@ -128,9 +128,22 @@ export const recursos = {
 
   };
 
+  const getIconName = (category) => {
+    switch (category) {
+      case 'ResolucionDeProblemas': return 'construct-outline';
+      case 'Álgebra': return 'calculator-outline';
+      case 'Ecuaciones': return 'trending-up-outline';
+      case 'Geometría': return 'shapes-outline';
+      case 'Funciones': return 'analytics-outline';
+      case 'Derivadas': return 'speedometer-outline';
+      default: return 'book-outline';
+    }
+  };
+
 
 const Recordemos = () => {
   const [expandedSections, setExpandedSections] = useState({}) as any;
+  
 
   const toggleSection = (category:any) => {
     setExpandedSections(prev => ({
@@ -162,15 +175,21 @@ const Recordemos = () => {
     {/* Iterar sobre cada categoría */}
     {Object.keys(recursos).map((category, index) => (
         <View key={index} style={styles.section}>
-            <TouchableOpacity onPress={() => toggleSection(category)}>
-                <Text style={styles.sectionTitle}>{category.replace(/([A-Z])/g, ' $1').trim()}</Text>
-            </TouchableOpacity>
-            <View style={styles.funBackground}>
-                {renderResources(category)}
-            </View>
+          <TouchableOpacity onPress={() => toggleSection(category)} style={styles.sectionHeader}>
+            <Ionicons name={getIconName(category)} size={24} color="black" />
+            <Text style={styles.sectionTitle}>{category.replace(/([A-Z])/g, ' $1').trim()}</Text>
+            <Ionicons 
+              name={expandedSections[category] ? 'chevron-up-outline' : 'chevron-down-outline'} 
+              size={24} 
+              color="black" 
+            />
+          </TouchableOpacity>
+          <View style={styles.funBackground}>
+            {renderResources(category)}
+          </View>
         </View>
-    ))}
-</ScrollView>
+      ))}
+    </ScrollView>
   );
 };
 
@@ -191,7 +210,6 @@ const styles = StyleSheet.create({
     color: '#1F2937',
   },
   progressText: {
-    color: '#6B7280',
     fontSize: 14,
     paddingHorizontal: 16,
     marginTop: 8,
@@ -216,7 +234,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     padding: 16,
     borderRadius: 8,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -225,11 +242,9 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#374151',
     marginBottom: 16,
   },
   funBackground: {
-    backgroundColor: '#FAF089',
     padding: 16,
     borderRadius: 8,
   },
@@ -249,6 +264,11 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 6,
     marginBottom: 8,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 
