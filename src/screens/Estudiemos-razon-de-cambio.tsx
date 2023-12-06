@@ -39,71 +39,54 @@ const EstudiemosRazonDeCambio = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Estudiemos</Text>
-        <Ionicons name="md-school-sharp" size={32} color="green" />
         
-        {/* <View style={styles.menu}>
-          <Ionicons name="menu" size={24} />
-          <Ionicons name="wifi" size={24} />
-          <Text style={styles.menuText}>Menu</Text>
-        </View> */}
-        <Text style={styles.reflection}>Estás haciendo las situaciones 1 y 2 de la temática razón de cambio</Text>
-      </View>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Estudiemos</Text>
+                    <Ionicons name="md-school-sharp" size={32} color="#4a90e2" />
+                </View>
 
-      <View style={styles.card} >
-        <TouchableOpacity 
-        style={styles.situation}
-        onPress={() => navigation.navigate('Situacion1RazonDeCambio')}
-        >
-          <Text style={styles.situationText}>Situación 1. Tiempo de empacar!
-          <Ionicons
-        name="md-rocket-sharp"
-        size={32}
-        color={situacion1Completada ? "green" : "grey"}
-      />
-          </Text>
-          
-        </TouchableOpacity>
-        <TouchableOpacity 
-        style={styles.situation}
-        onPress={() => navigation.navigate('Situacion2RazonDeCambio')}
-        >
-          <Text style={styles.situationText}>Situación 2 - Caminando a la U</Text>
-          <Ionicons name="md-rocket-sharp" size={32} color="green" />
-        </TouchableOpacity>
-      </View>
+                <View style={styles.cardContainer}>
+                    {/* Tarjetas interactivas */}
+                    {/* Tarjeta 1 */}
+                    <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Situacion1RazonDeCambio')}>
+                        <Ionicons name="md-rocket-sharp" size={32} color={situacion1Completada ? "green" : "grey"} />
+                        <Text style={styles.cardText}>Situación 1. ¡Tiempo de empacar!</Text>
+                    </TouchableOpacity>
+                    {/* Tarjeta 2 */}
+                    <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Situacion2RazonDeCambio')}>
+                        <Ionicons name="md-walk-sharp" size={32} color="green" />
+                        <Text style={styles.cardText}>Situación 2 - Caminando a la U</Text>
+                    </TouchableOpacity>
+                </View>
 
-      <Text style={styles.reflection}>
-        ¡Completa las situaciones para acceder a la reflexión!
-        Y continua perfeccionando tus conocimientos
-      </Text>
-
-      {/* <View style={styles.footer}>
-        <Ionicons name="home" size={24} />
-        <Ionicons name="mail" size={24} />
-        <Ionicons name="cube" size={24} />
-        <Ionicons name="menu" size={24} />
-      </View> */}
-    </View>
+                <Text style={styles.reflection}>
+                    ¡Completa las situaciones para acceder a la reflexión y continuar perfeccionando tus conocimientos!
+                </Text>
+        </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7fafc',
+    backgroundColor: '#f0f4f8',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
   },
   header: {
     alignItems: 'center',
+    marginBottom: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
+    color: '#333',
     marginBottom: 10,
   },
+  cardContainer: {
+    width: '100%',
+},
   menu: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -130,37 +113,46 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 8,
   },
+  cardText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#444',
+    marginLeft: 10,
+},
   card: {
     backgroundColor: '#fff',
-    height: '60%',
-    marginTop: 32,
-    width: '100%',
-    borderRadius: 8,
-    padding: 16,
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 1.41,
-    elevation: 2,
+    shadowRadius: 3,
+    elevation: 4,
   },
   situation: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
-    borderBottomColor: '#fab005',
+    borderBottomColor: '#e1e1e1',
     paddingBottom: 16,
     marginBottom: 16,
   },
   situationText: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#444',
   },
   reflection: {
     textAlign: 'center',
-    fontSize: 14,
+    fontSize: 16,
+    color: '#555',
     marginTop: 10,
-  },
+    paddingHorizontal: 20,
+},
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-around',

@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -56,14 +57,15 @@ const Experimentemos = () => {
     
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.contentContainer}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Experimentemos</Text>
-        </View>
+    <View style={styles.contentContainer}>
+                <View style={styles.header}>
+                    <Ionicons name="md-cube-outline" size={36} color="#4B5563" />
+                    <Text style={styles.headerText}>Experimentemos</Text>
+                </View>
 
-        <View style={styles.promptContainer}>
-          <Text style={styles.promptText}>¡Hola! Háblame de tu Hobby y deporte favoritos!</Text>
-        </View>
+                <View style={styles.promptContainer}>
+                    <Text style={styles.promptText}>¡Cuéntame sobre tu hobby y deporte favoritos!</Text>
+                </View>
 
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Programa</Text>
@@ -114,17 +116,19 @@ const Experimentemos = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F4F6', // Tailwind gray-100
+    backgroundColor: '#E5E7EB', // Gris claro
   },
   contentContainer: {
     padding: 16, // Adjust as needed
   },
   header: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    justifyContent: 'center',
+    marginBottom: 24,
   },
   headerText: {
-    color: '#1F2937', // Tailwind gray-800
+    color: '#111827', // Gris oscuro
     fontSize: 24,
     fontWeight: 'bold',
   },
@@ -140,7 +144,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   promptText: {
-    color: '#B45309', // Tailwind yellow-800
+    color: '#1E3A8A', // Azul oscuro
     fontSize: 18,
     fontWeight: '600',
   },
