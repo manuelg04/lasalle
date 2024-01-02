@@ -301,6 +301,37 @@ const nextQuestion = () => {
     ));
 };
 
+const renderImages = (opciones) => {
+  // Asigna la fuente de la imagen basada en la opción
+  const imageSource = (opcion) => {
+    switch (opcion) {
+      case 'a':
+        return require('../../assets/aResponse.png');
+      case 'b':
+        return require('../../assets/bResponse.png');
+      case 'c':
+        return require('../../assets/cResponse.png');
+      case 'd':
+        return require('../../assets/dResponse.png');
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <View style={styles.imagesContainer}>
+      {opciones.map((opcion, index) => (
+        <Image
+          key={index}
+          source={imageSource(opcion)}
+          style={styles.imagen}
+        />
+      ))}
+    </View>
+  );
+};
+
+
   const renderImagen = (imagen:any) => {
     if (!imagen) return null;
     return <Image source={require('../../assets/situacion1_punto4.png')} style={styles.imagen} />;
@@ -365,6 +396,7 @@ const enviarRespuestas = async () => {
       respuestasEstudiante,
       tiempoTranscurrido: tiempoTranscurridoMinutos
     });
+    console.log("🚀 ~ response:", response)
 
   
     if (response.status === 201) {
@@ -408,6 +440,29 @@ const enviarRespuestas = async () => {
       }
     }
   };
+
+  const renderImagenes = () => {
+    const opcionesDeRespuesta = [
+      { opcion: 'a', imagen: require('../../assets/aResponse.png') },
+      { opcion: 'b', imagen: require('../../assets/bResponse.png') },
+      { opcion: 'c', imagen: require('../../assets/cResponse.png') },
+      { opcion: 'd', imagen: require('../../assets/dResponse.png') },
+    ];
+  
+    return (
+      <View style={styles.imagesContainer}>
+        {opcionesDeRespuesta.map((item, index) => (
+          <View key={index} style={styles.imageOptionContainer}>
+            <Text style={styles.imageOptionText}>Opción {item.opcion.toUpperCase()}</Text>
+            <Image source={item.imagen} style={styles.imagen} />
+          </View>
+        ))}
+      </View>
+    );
+  };
+  
+  
+  
 
   return (
 <View style={styles.container}>
@@ -458,12 +513,14 @@ const enviarRespuestas = async () => {
         )}
 
         <ScrollView style={styles.scrollView}>
-          <View style={styles.preguntaContainer}>
-            <Text style={styles.subtitulo}>{getSubtitulo(currentQuestionIndex)}</Text>
-            <Text style={styles.preguntaEnunciado}>{situacion.preguntas[currentQuestionIndex].enunciado}</Text>
-            {renderRespuestas(situacion.preguntas[currentQuestionIndex].respuestas, situacion.preguntas[currentQuestionIndex])}
-            {situacion.preguntas[currentQuestionIndex].imagen && renderImagen(situacion.preguntas[currentQuestionIndex].imagen)}
-          </View>
+        <View style={styles.preguntaContainer}>
+  <Text style={styles.subtitulo}>{getSubtitulo(currentQuestionIndex)}</Text>
+  <Text style={styles.preguntaEnunciado}>{situacion.preguntas[currentQuestionIndex].enunciado}</Text>
+  {renderRespuestas(situacion.preguntas[currentQuestionIndex].respuestas, situacion.preguntas[currentQuestionIndex])}
+  {/* Verifica si la pregunta actual es la cuarta pregunta (índice 3 ya que los índices comienzan en 0) */}
+  {currentQuestionIndex === 3 && renderImagenes()}
+</View>
+
 
           <View style={styles.navigationContainer}>
             <TouchableOpacity onPress={previousQuestion} style={styles.navButton}>
@@ -482,7 +539,7 @@ const enviarRespuestas = async () => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#212121',
+        backgroundColor: 'white',
         flex: 1,
     },
     situacion: {
@@ -503,10 +560,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 16,
         borderBottomWidth: 1,
-        borderBottomColor: 'white',
+        borderBottomColor: 'black',
     },
     enunciado: {
-        color: 'white',
+        color: 'black',
         fontSize: 16,
         padding: 16,
     },
@@ -570,17 +627,17 @@ radioButton: {
     width: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: 'black',
     marginRight: 10,
 },
 radioButtonSelected: {
     height: 10,
     width: 10,
     borderRadius: 5,
-    backgroundColor: '#facc15',
+    backgroundColor: 'black',
 },
 radioButtonLabel: {
-    color: 'white', // Texto en blanco
+    color: 'black', // Texto en blanco
     fontSize: 16,
 },
 subtitulo: {
@@ -598,18 +655,9 @@ centeredView: {
 },
 modalView: {
     margin: 20,
-    backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-        width: 0,
-        height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
 },
 closeButton: {
     backgroundColor: '#2196F3',
@@ -618,6 +666,23 @@ closeButton: {
     elevation: 2,
     marginTop: 15
 },
+imagesContainer: {
+  flexDirection: 'row',
+  justifyContent: 'center',
+  flexWrap: 'wrap',
+  // Añade estilos adicionales si es necesario
+},
+imageOptionContainer: {
+  alignItems: 'center',
+  margin: 10,
+  // Añade estilos adicionales si es necesario
+},
+imageOptionText: {
+  marginBottom: 5,
+  fontWeight: 'bold',
+  // Añade estilos adicionales si es necesario
+},
+
 
   });
 export default Situacion1RazonDeCambio;

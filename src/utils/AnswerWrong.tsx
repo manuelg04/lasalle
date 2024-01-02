@@ -1,82 +1,72 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking, Platform } from 'react-native';
 
-const AnswerWrong = ({tip, url}) => {
-    const openResource = () => {
-        // Aquí puedes usar Linking de React Native o tu método preferido para abrir URLs
-        Linking.openURL(url);
-      };
+const AnswerWrong = ({ tip, url }) => {
+  const openResource = () => {
+    Linking.openURL(url);
+  };
+
   return (
     <View style={styles.card}>
       <View style={styles.content}>
-        <Text style={styles.title}>Tip!</Text>
+        <Text style={styles.title}>¡Un Consejo!</Text>
+        <Text style={styles.message}>{tip}</Text>
       </View>
-      <View style={styles.messageContainer}>
-        <Text style={styles.message}>
-        {tip}
-        </Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={openResource}>
-          <Text style={styles.buttonText}>Recurso</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={styles.button} onPress={openResource}>
+        <Text style={styles.buttonText}>Ver Recurso</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 8,
-    backgroundColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1,
-    width: 350,
-    padding: 16,
+    borderRadius: 10,
+    backgroundColor: '#ffffff',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+    width: '100%',
+    padding: 20,
+    marginVertical: 10,
   },
   content: {
-    flexDirection: 'column',
-    padding: 24,
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e1e1e1',
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#4a4a4a',
-  },
-  messageContainer: {
-    borderWidth: 2,
-    borderColor: 'red',
-    padding: 16,
-    borderRadius: 4,
-    marginTop: 16,
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#333333',
+    paddingBottom: 10,
+    textAlign: 'center',
   },
   message: {
-    fontSize: 14,
-    color: '#4a4a4a',
-  },
-  buttonContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 16,
-    padding: 24,
+    fontSize: 16,
+    color: '#666666',
+    lineHeight: 24,
   },
   button: {
-    alignItems: 'center',
+    marginTop: 20,
+    backgroundColor: '#007bff',
+    borderRadius: 20,
+    height: 50,
     justifyContent: 'center',
-    backgroundColor: '#007bff', // Replace with your primary color
-    borderRadius: 4,
-    height: 40,
-    width: '100%',
+    alignItems: 'center',
   },
   buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '500',
+    color: '#ffffff',
+    fontSize: 18,
+    fontWeight: '600',
   },
 });
 

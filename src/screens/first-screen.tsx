@@ -1,19 +1,9 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React = require('react');
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  Dimensions,
-  Image,
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Dimensions, Image } from 'react-native';
 
 import { RootStackParamList } from '../navigation';
-
 const { width, height } = Dimensions.get('window');
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FirstScreen'>;
 
@@ -23,18 +13,19 @@ export default function FirstScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.card}>
-        <Image
-          source={require('../../assets/lasallelogo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+      <View>
+          <Image
+            source={require('../../assets/lasallelogo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </View>
         <View style={styles.section}>
           <Text style={styles.title}>¿Ya tienes una cuenta?</Text>
           <Text style={styles.subtitle}>Si es así, haz click en acceder</Text>
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate('LoginScreen')}>
-            <Ionicons name="log-in-outline" size={24} color="black" />
             <Text style={styles.buttonText}>Acceder</Text>
           </TouchableOpacity>
         </View>
@@ -45,7 +36,6 @@ export default function FirstScreen() {
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate('SignUpGeneralScreen')}>
-            <Ionicons name="person-add-outline" size={24} color="black" />
             <Text style={styles.buttonText}>Crear una cuenta</Text>
           </TouchableOpacity>
         </View>
@@ -57,56 +47,55 @@ export default function FirstScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#eef2f3',
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
   },
   card: {
-    width: width - 20, // Márgenes horizontales ajustados
+    width: width - 1, // Márgenes horizontales de 20
     maxWidth: 500,
-    height: height * 0.8, // Altura ajustada
+    height: height * 0.5,
     backgroundColor: 'white',
-    justifyContent: 'space-around',
-    padding: 20,
-    borderRadius: 20,
-    shadowOpacity: 0.2,
-    shadowRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 50,
+    borderRadius: 10,
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
     shadowColor: '#000',
-    shadowOffset: { height: 10, width: 0 },
-    elevation: 5,
+    shadowOffset: { height: 0, width: 0 },
+    paddingBottom: 300,
   },
   section: {
     width: '100%',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   title: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#333',
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#4a4a4a',
     marginBottom: 10,
-    textAlign: 'center',
   },
   subtitle: {
-    fontSize: 16,
-    color: '#555',
+    fontSize: 14,
+    color: '#6e6e6e',
     marginBottom: 20,
-    textAlign: 'center',
   },
   button: {
     backgroundColor: '#facc15',
-    paddingVertical: 15,
+    paddingVertical: 12,
     width: '100%',
-    borderRadius: 10,
+    borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
     elevation: 3,
   },
   buttonText: {
-    color: 'black',
-    fontSize: 18,
-    fontWeight: '600',
-    marginLeft: 10,
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '500',
   },
   logo: {
     width: 300,

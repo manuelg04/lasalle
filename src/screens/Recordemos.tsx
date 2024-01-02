@@ -128,23 +128,8 @@ export const recursos = {
 
   };
 
-  const getIconName = (category) => {
-    switch (category) {
-      case 'ResolucionDeProblemas': return 'construct-outline';
-      case 'Álgebra': return 'calculator-outline';
-      case 'Ecuaciones': return 'trending-up-outline';
-      case 'Geometría': return 'shapes-outline';
-      case 'Funciones': return 'analytics-outline';
-      case 'Derivadas': return 'speedometer-outline';
-      default: return 'book-outline';
-    }
-  };
-
-
 const Recordemos = () => {
-  const [expandedSections, setExpandedSections] = useState({}) as any;
-  
-
+    const [expandedSections, setExpandedSections] = useState({});
   const toggleSection = (category:any) => {
     setExpandedSections(prev => ({
         ...prev,
@@ -158,8 +143,6 @@ const Recordemos = () => {
       };
     
       const renderResources = (category) => {
-        if (!expandedSections[category]) return null;
-
         return recursos[category].map((recurso, index) => (
             <TouchableOpacity key={index} style={styles.subSection} onPress={() => openResource(recurso.url)}>
                 <Text>{recurso.subtematica}</Text>
@@ -168,24 +151,25 @@ const Recordemos = () => {
     };
   return (
     <ScrollView style={styles.container}>
-    <View style={{ flexDirection: 'row', alignItems: 'center', ...styles.header }}>
+         <View style={{ flexDirection: 'row', alignItems: 'center', ...styles.header }}>
         <Text style={styles.headerText}>Recordemos</Text>
         <Ionicons name="trophy" size={24} color="black" />
     </View>
     {/* Iterar sobre cada categoría */}
     {Object.keys(recursos).map((category, index) => (
         <View key={index} style={styles.section}>
-          <TouchableOpacity onPress={() => toggleSection(category)} style={styles.sectionHeader}>
-            <Ionicons name={getIconName(category)} size={24} color="black" />
-            <Text style={styles.sectionTitle}>{category.replace(/([A-Z])/g, ' $1').trim()}</Text>
-            <Ionicons 
-              name={expandedSections[category] ? 'chevron-up-outline' : 'chevron-down-outline'} 
-              size={24} 
-              color="black" 
-            />
-          </TouchableOpacity>
           <View style={styles.funBackground}>
-            {renderResources(category)}
+          <TouchableOpacity style={styles.sectionHeader} onPress={() => toggleSection(category)}>
+            <Text style={styles.sectionTitle}>{category.replace(/([A-Z])/g, ' $1').trim()}</Text>
+            {/* Agregar ícono de Chevron que cambia con el estado */}
+            <Ionicons
+                name={expandedSections[category] ? 'chevron-up-outline' : 'chevron-down-outline'}
+                size={24}
+                color="black"
+            />
+        </TouchableOpacity>
+        {/* Solo mostrar recursos si la sección está expandida */}
+        {expandedSections[category] && renderResources(category)}
           </View>
         </View>
       ))}

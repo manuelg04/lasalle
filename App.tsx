@@ -1,9 +1,10 @@
 import 'react-native-gesture-handler';
-
-import React from 'react';
+import React, { useState } from 'react';
 
 import RootStack from './src/navigation';
+import { Splash } from './src/screens/Splash';
 
 export default function App() {
-  return <RootStack />;
+  const [isAppReady, setAppReady] = useState(false);
+  return isAppReady ? <RootStack /> : <Splash onComplete={setAppReady} />;
 }

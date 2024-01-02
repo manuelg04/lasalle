@@ -80,8 +80,8 @@ const Temas = () => {
       <View style={styles.card}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Temas</Text>
-          <Ionicons name="book-outline" size={24} color="black" />
-
+          <Ionicons name="book-outline" size={24} color="black" style={styles.bookIcon} />
+        
           <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
             <Ionicons name="log-out-outline" size={24} color="black" />
           </TouchableOpacity>
@@ -258,7 +258,6 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: 'orange', // Un color de fondo para que sea visible, cámbialo como prefieras
     borderRadius: 20, // Circular si el icono es redondo
-    marginLeft: 220,
 
   },
   gifContainer: {
@@ -309,6 +308,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  bookIcon: {
+    marginLeft: -165, // Ajusta el valor según necesites para separar el icono del título
   },
 });
 

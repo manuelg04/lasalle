@@ -16,6 +16,7 @@ import {
   Button,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import ImageView from "react-native-image-viewing";
 
 import { RootStackParamList } from '../navigation';
 import { recursos } from '../screens/Recordemos';
@@ -192,6 +193,8 @@ type DetailsSreenRouteProp = RouteProp<RootStackParamList, 'Situacion2RazonDeCam
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FeedbackScreen'>;
 
 const Situacion2RazonDeCambio = () => {
+    const [visible, setIsVisible] = useState(false);
+    const [selectedImage, setSelectedImage] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState({}) as any;
     const [isEnunciadoVisible, setIsEnunciadoVisible] = useState(true);
@@ -206,6 +209,7 @@ const Situacion2RazonDeCambio = () => {
   const navigation = useNavigation<OverviewScreenNavigationProps>();
   const router = useRoute<DetailsSreenRouteProp>();
   const [situacionCompletada, setSituacionCompletada] = useState(false);
+  
   
     // Verifica si la situación ya ha sido completada
     useEffect(() => {
@@ -395,6 +399,43 @@ const Situacion2RazonDeCambio = () => {
         }
       }
     };
+
+    const opcionesDeRespuesta = [
+      { opcion: 'a', uri: require('../../assets/Aopcion.png') },
+      { opcion: 'b', uri: require('../../assets/Bopcion.png') },
+      { opcion: 'c', uri: require('../../assets/Copcion.png') },
+      // Agrega más si es necesario
+    ];
+
+    const renderImagenes = () => {
+      const opcionesDeRespuesta = [
+        { opcion: 'a', uri: require('../../assets/Aopcion.png') },
+        { opcion: 'b', uri: require('../../assets/Bopcion.png') },
+        { opcion: 'c', uri: require('../../assets/Copcion.png') },
+        // Agrega más si es necesario
+      ];
+    
+      const handleImagePress = (index) => {
+        console.log("Imagen presionada: ", index);
+        setSelectedImage([{ uri: Image.resolveAssetSource(opcionesDeRespuesta[index].uri).uri }]); // Asegúrate de que el URI corresponda a la estructura que espera ImageView
+        setIsVisible(true); // Asumiendo que tienes este estado para controlar la visibilidad
+      };
+    
+      return (
+        <View style={styles.imagesContainer}>
+      {opcionesDeRespuesta.map((item, index) => (
+        <TouchableOpacity key={index} >
+          <View style={styles.imageOptionContainer}  onPress={() => handleImagePress(index)} >
+            <Text style={styles.imageOptionText}>Opción {item.opcion.toUpperCase()}</Text>
+            <Image source={item.uri} style={styles.imagen} />
+          </View>
+        </TouchableOpacity>
+          ))}
+          </View>
+        );
+    };
+    
+    
   
     return (
   <View style={styles.container}>
@@ -445,12 +486,20 @@ const Situacion2RazonDeCambio = () => {
           )}
   
           <ScrollView style={styles.scrollView}>
-            <View style={styles.preguntaContainer}>
-              <Text style={styles.subtitulo}>{getSubtitulo(currentQuestionIndex)}</Text>
-              <Text style={styles.preguntaEnunciado}>{situacion.preguntas[currentQuestionIndex].enunciado}</Text>
-              {renderRespuestas(situacion.preguntas[currentQuestionIndex].respuestas, situacion.preguntas[currentQuestionIndex])}
-              {situacion.preguntas[currentQuestionIndex].imagen && renderImagen(situacion.preguntas[currentQuestionIndex].imagen)}
-            </View>
+          <View style={styles.preguntaContainer}>
+  <Text style={styles.subtitulo}>{getSubtitulo(currentQuestionIndex)}</Text>
+  <Text style={styles.preguntaEnunciado}>{situacion.preguntas[currentQuestionIndex].enunciado}</Text>
+  {renderRespuestas(situacion.preguntas[currentQuestionIndex].respuestas, situacion.preguntas[currentQuestionIndex])}
+  {/* Verifica si la pregunta actual es la tercera (índice 2 ya que los índices comienzan en 0) */}
+  {currentQuestionIndex === 2 && renderImagenes()}
+</View>
+
+  <ImageView
+    images={opcionesDeRespuesta}
+    imageIndex={0}
+    visible={visible}
+    onRequestClose={() => setIsVisible(false)}
+  />
   
             <View style={styles.navigationContainer}>
               <TouchableOpacity onPress={previousQuestion} style={styles.navButton}>
@@ -471,7 +520,7 @@ const Situacion2RazonDeCambio = () => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#212121',
+        backgroundColor: 'white',
         flex: 1,
     },
     situacion: {
@@ -492,10 +541,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 16,
         borderBottomWidth: 1,
-        borderBottomColor: 'white',
+        borderBottomColor: 'black',
     },
     enunciado: {
-        color: 'white',
+        color: 'black',
         fontSize: 16,
         padding: 16,
     },
@@ -545,8 +594,7 @@ const styles = StyleSheet.create({
   },
   imagen: {
     width: '100%', // Puedes ajustar esto como necesites
-    height: 200, // Altura fija para la imagen, también es ajustable
-    resizeMode: 'contain', // Esto es para asegurarse de que la imagen se ajuste sin perder la proporción
+    height: 200, // Altura fija para la imagen, también es ajustable // Esto es para asegurarse de que la imagen se ajuste sin perder la proporción
     marginTop: 20, // Añade un poco de espacio arriba de la imagen
 },
 radioButtonContainer: {
@@ -559,17 +607,17 @@ radioButton: {
     width: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: 'black',
     marginRight: 10,
 },
 radioButtonSelected: {
     height: 10,
     width: 10,
     borderRadius: 5,
-    backgroundColor: '#facc15',
+    backgroundColor: 'black',
 },
 radioButtonLabel: {
-    color: 'white', // Texto en blanco
+    color: 'black', // Texto en blanco
     fontSize: 16,
 },
 subtitulo: {
@@ -586,19 +634,10 @@ centeredView: {
     marginTop: 22,
 },
 modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-        width: 0,
-        height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
+  margin: 20,
+  borderRadius: 20,
+  padding: 35,
+  alignItems: 'center',
 },
 closeButton: {
     backgroundColor: '#2196F3',
@@ -606,6 +645,22 @@ closeButton: {
     padding: 10,
     elevation: 2,
     marginTop: 15
+},
+imagesContainer: {
+  flexDirection: 'row',
+  justifyContent: 'center',
+  flexWrap: 'wrap',
+  // Añade estilos adicionales si es necesario
+},
+imageOptionContainer: {
+  alignItems: 'center',
+  margin: 10,
+  // Añade estilos adicionales si es necesario
+},
+imageOptionText: {
+  marginBottom: 5,
+  fontWeight: 'bold',
+  // Añade estilos adicionales si es necesario
 },
 
   });
