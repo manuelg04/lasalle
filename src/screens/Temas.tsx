@@ -161,7 +161,7 @@ const Temas = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.button, styles.yellowButton]}
-                onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
+                onPress={() => navigation.navigate('EstudiemosOptimizacion')}>
                 <View style={styles.buttonContent}>
                   <Text style={styles.buttonText}>Estudiemos</Text>
                   <Ionicons name="school-sharp" size={24} color="black" style={styles.iconStyle} />
@@ -170,7 +170,7 @@ const Temas = () => {
               <TouchableOpacity
                 style={[styles.button, styles.borderButton]}
                 onPress={() => {
-                  setSelectedTheme('Optimización ');
+                  setSelectedTheme('Optimización');
                   navigation.navigate('Experimentemos', { theme: 'Optimización' });
                 }}>
                 <View style={styles.buttonContent}>
