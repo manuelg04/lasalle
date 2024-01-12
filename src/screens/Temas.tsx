@@ -16,6 +16,8 @@ const Temas = () => {
     const [isRazonDeCambioExpanded, setRazonDeCambioExpanded] = useState(false);
     const [isOptimizacionExpanded, setOptimizacionExpanded] = useState(false);
     const [fullName, setFullName] = useState('');
+    const [selectedTheme, setSelectedTheme] = useState('');
+
 
     const showAlert = () => {
         Alert.alert("Vaya!", "No puedes continuar si no has completado las fases anteriores.");
@@ -76,94 +78,111 @@ const Temas = () => {
 
   
   return (
-    <><ScrollView style={styles.container}>
-      <View style={styles.card}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Temas</Text>
-          <Ionicons name="book-outline" size={24} color="black" style={styles.bookIcon} />
-        
-          <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-            <Ionicons name="log-out-outline" size={24} color="black" />
+    <>
+      <ScrollView style={styles.container}>
+        <View style={styles.card}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Temas</Text>
+            <Ionicons name="book-outline" size={24} color="black" style={styles.bookIcon} />
+
+            <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+              <Ionicons name="log-out-outline" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.SubtitleText}>
+            <Text style={styles.SubtitleText}>¡Nos alegra tenerte de vuelta! {fullName}</Text>
+          </View>
+          <View style={styles.SubtitleText}>
+            <Text style={styles.description}>¿Qué tema te gustaría reforzar?</Text>
+          </View>
+
+          {/* Tema: Razón de Cambio */}
+          <TouchableOpacity onPress={toggleRazonDeCambio} style={styles.topicHeader}>
+            <Text style={styles.topicTitle}>Razón de cambio</Text>
+            <Ionicons
+              name={isRazonDeCambioExpanded ? 'chevron-up-outline' : 'chevron-down-outline'}
+              size={24}
+              color="black"
+            />
           </TouchableOpacity>
+          {isRazonDeCambioExpanded && (
+            <>
+              <TouchableOpacity
+                style={[styles.button, styles.yellowButton]}
+                onPress={() => navigation.navigate('Recordemos')}>
+                <View style={styles.buttonContent}>
+                  <Text style={styles.buttonText}>Recordemos</Text>
+                  <Ionicons name="trophy" size={24} color="black" style={styles.iconStyle} />
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.button, styles.yellowButton]}
+                onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
+                <View style={styles.buttonContent}>
+                  <Text style={styles.buttonText}>Estudiemos</Text>
+                  <Ionicons name="school-sharp" size={24} color="black" style={styles.iconStyle} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.borderButton]}
+                onPress={() => {
+                  setSelectedTheme('Razón de Cambio');
+                  navigation.navigate('Experimentemos', { theme: 'Razón de Cambio' });
+                }}>
+                <View style={styles.buttonContent}>
+                  <Text style={styles.buttonText}>Experimentemos</Text>
+                  <Ionicons name="cube-sharp" size={24} color="black" style={styles.iconStyle}  />
+                </View>
+              </TouchableOpacity>
+            </>
+          )}
+
+          <View style={styles.divider} />
+
+          {/* Tema: Optimización */}
+          <TouchableOpacity onPress={toggleOptimizacion} style={styles.topicHeader}>
+            <Text style={styles.topicTitle}>Optimización</Text>
+            <Ionicons
+              name={isOptimizacionExpanded ? 'chevron-up-outline' : 'chevron-down-outline'}
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
+          {isOptimizacionExpanded && (
+            <>
+            <TouchableOpacity
+                style={[styles.button, styles.yellowButton]}
+                onPress={() => navigation.navigate('Recordemos')}>
+                <View style={styles.buttonContent}>
+                  <Text style={styles.buttonText}>Recordemos</Text>
+                  <Ionicons name="trophy" size={24} color="black" style={styles.iconStyle} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.yellowButton]}
+                onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
+                <View style={styles.buttonContent}>
+                  <Text style={styles.buttonText}>Estudiemos</Text>
+                  <Ionicons name="school-sharp" size={24} color="black" style={styles.iconStyle} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.borderButton]}
+                onPress={() => {
+                  setSelectedTheme('Optimización ');
+                  navigation.navigate('Experimentemos', { theme: 'Optimización' });
+                }}>
+                <View style={styles.buttonContent}>
+                  <Text style={styles.buttonText}>Experimentemos</Text>
+                  <Ionicons name="cube-sharp" size={24} color="black" style={styles.iconStyle}  />
+                </View>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
-       <View style={styles.SubtitleText}>
-       <Text style={styles.SubtitleText}>¡Nos alegra tenerte de vuelta! {fullName}
-        </Text>
-       </View>
-        <View style={styles.SubtitleText} >
-        <Text style={styles.description}>¿Qué tema te gustaría reforzar?</Text>
-        </View>
-        
-        {/* Tema: Razón de Cambio */}
-        <TouchableOpacity onPress={toggleRazonDeCambio} style={styles.topicHeader}>
-          <Text style={styles.topicTitle}>Razón de cambio</Text>
-          <Ionicons name={isRazonDeCambioExpanded ? "chevron-up-outline" : "chevron-down-outline"} size={24} color="black" />
-        </TouchableOpacity>
-        {isRazonDeCambioExpanded && (
-          <>
-            <TouchableOpacity
-              style={[styles.button, styles.yellowButton]}
-              onPress={() => navigation.navigate('Recordemos')}>
-
-              <Text style={styles.buttonText}>Recordemos
-                <Ionicons name="trophy" size={24} color="black" />
-              </Text>
-
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.yellowButton]}
-              onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
-              <Text style={styles.buttonText}>Estudiemos
-                <Ionicons name="school-sharp" size={24} color="black" />
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.borderButton]}
-              onPress={() => navigation.navigate('Experimentos')}>
-              <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos
-                <Ionicons name="cube-sharp" size={24} color="black" />
-              </Text>
-            </TouchableOpacity>
-          </>
-        )}
-
-        <View style={styles.divider} />
-
-        {/* Tema: Optimización */}
-        <TouchableOpacity onPress={toggleOptimizacion} style={styles.topicHeader}>
-          <Text style={styles.topicTitle}>Optimización</Text>
-          <Ionicons name={isOptimizacionExpanded ? "chevron-up-outline" : "chevron-down-outline"} size={24} color="black" />
-        </TouchableOpacity>
-        {isOptimizacionExpanded && (
-          <>
-            <TouchableOpacity
-              style={[styles.button, styles.yellowButton]}
-              onPress={() => navigation.navigate('Recordemos')}>
-              <Text style={styles.buttonText}>Recordemos
-                <Ionicons name="trophy" size={24} color="black" />
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.yellowButton]}
-              onPress={() => navigation.navigate('EstudiemosOptimizacion')}>
-              <Text style={styles.buttonText}>Estudiemos
-                <Ionicons name="school-sharp" size={24} color="black" />
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.borderButton]}
-              onPress={showAlert}>
-              <Text style={[styles.buttonText, styles.yellowText]}>Experimentemos
-                <Ionicons name="cube-sharp" size={24} color="black" />
-              </Text>
-            </TouchableOpacity>
-          </>
-        )}
-
-      </View>
-
-    </ScrollView>
-    <NavBar />
+      </ScrollView>
+      <NavBar />
     </>
   );
 };
@@ -241,6 +260,10 @@ const styles = StyleSheet.create({
     color: 'white', // Texto blanco para mejor contraste
     fontWeight: 'bold',
     marginLeft: 8, // Espacio entre el icono y el texto
+    flexDirection: 'row', // Asegura que el texto y el ícono estén en la misma fila
+  alignItems: 'center', // Alinea verticalmente el ícono con el texto
+  justifyContent: 'center', // Centra horizontalmente el contenido
+  fontweight: 'bold',
   },
   yellowText: {
     color: '#FBBF24',
@@ -312,6 +335,15 @@ const styles = StyleSheet.create({
   bookIcon: {
     marginLeft: -165, // Ajusta el valor según necesites para separar el icono del título
   },
+  buttonContent: {
+    flexDirection: 'row', // Esto alinea los elementos hijo en una fila
+    alignItems: 'center', // Esto centra los elementos hijo verticalmente
+    justifyContent: 'center', // Esto centra los elementos hijo horizontalmente
+  },
+  iconStyle: {
+    marginLeft: 8, // Espacio entre el texto y el ícono
+  },
+
 });
 
 export default Temas;

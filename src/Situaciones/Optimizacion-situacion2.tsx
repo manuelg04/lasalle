@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-expressions */
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -14,166 +14,178 @@ import {recursos} from "../screens/Recordemos"
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
 
-
-
-
-const situacion1 :any = [
-    {
-        "tituloSituacion": "Situación 1. ¡Hoy nos tocó empacar! ",
-        "enunciado": "Un estudiante desea realizar su proyecto de pasantía en un laboratorio donde frecuentemente se requiere el empaque y traslado de insumos pequeños de laboratorio. Normalmente estos insumos se empacan en diferentes cajas en forma de cubo. Estas cajas cambian de tamaño según la cantidad de insumos a empacar. Debido a estos cambios, el estudiante se inquieta por conocer la variación del volumen de una de estas cajas con respecto a la longitud de la arista, cuando la arista mide 3 cm.",
-        "postEnunciado": "Con respecto a la situación planteada anteriormente responda:",
-        "Subtitulo": "¿Qué comprendes de la situación?",
-        "postSubtitulo": "En el problema se debe",
-        "preguntas": [
-            {
-                url: "https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/",
-                "respuestas": [
-                    "a. Hallar la razón a la cual cambia el volumen con respecto a la arista",
-                    "b. Hallar la razón a la cual cambia la arista con respecto al volumen"
-                ],
-                "respuestaCorrecta": 0,
-                "tip": "Es importante identificar el objetivo de la situación - Ten presente revisar la comprensión de una situación en Pasos para resolver un problema "
-            },
-            {
-                "enunciado": "2. La cantidad que se desconoce o lo solicitado en el problema es:",
-                url: "https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/",
-                "respuestas": [
-                    "a. Volumen del cubo",
-                    "b. Arista del cubo",
-                    "c. Razón de cambio del volumen con respecto a la arista",
-                    "d. Razón de cambio de la arista con respecto al volumen"
-                ],
-                "respuestaCorrecta": 2,
-                "tip": "Es importante identificar la incógnita de la situación - Ten presente revisar la comprensión de una situación en Pasos para resolver un problema   "
-            },
-            {
-                "enunciado": "3. La cantidad o dato que se proporcionan en el problema son (información dada): ",
-                url: "https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/",
-                "respuestas": [
-                    "a. Volumen del cubo",
-                    "b. Arista del cubo",
-                    "c. Razón de cambio del volumen con respecto a la arista",
-                    "d. Razón de cambio de la arista del cubo"
-                ],
-                "respuestaCorrecta": 1,
-                "tip": "Es importante identificar los datos o valores que nos proporcionan - Ten presente revisar la comprensión de una situación en Pasos para resolver un problema  "
-            },
-            {
-                "enunciado": "4. Si a es la arista del cubo, entonces un diagrama que ilustre la situación es:",
-                url: "https://drive.google.com/file/d/10Xx_scheSiMvdZzWwVYWywBrNRADtoZ6/view?usp=sharing",
-                "imagen": "https://drive.google.com/file/d/12CWEv7izFJPPxSTMXjWeGtWJnZlJpATf/view?usp=sharing",
-                "respuestas": [
-                    "a",
-                    "b",
-                    "c",
-                    "d"
-                ],
-                "respuestaCorrecta": 1,
-                "tip": "Es importante ayudarse de un gráfico para comprender la situación - Ten presente estudiar  áreas y volúmenes en recordemos. "
-            },
-            {
-                "Subtitulo": "¿Qué plan diseñarías?",
-                "enunciado": "5. En el problema se debe definir previamente:",
-                url: "https://www.youtube.com/watch?v=-UPzQwTQhAU",
-                
-                "respuestas": [
-                    "a. La función arista que depende del volumen del cubo ",
-                    "b. La función arista que depende de un volumen fijo 3",
-                    "c. La función volumen de un cubo que depende de la longitud de arista",
-                    "d. La función volumen de un cubo que depende de su área superficial"
-                ],
-                "respuestaCorrecta": 2,
-                "tip": "Es importante identificar conceptos previos necesarios para resolver la situación - Ten presente estudiar la introducción a las funciones en recordemos. "
-            },
-            {
-                "enunciado": "6. Si a es la arista del cubo y V es el volumen del cubo, entonces una expresión para el volumen es:",
-                url: "https://h5p.org/h5p/embed/131374",
-                "respuestas": [
-                    "a. V = 3a",
-                    "b. V = 8a",
-                    "c. V = a^2",
-                    "d. V = a^3"
-                ],
-                "respuestaCorrecta": 3,
-                "tip": "Es importante identificar conceptos previos necesarios para resolver la situación - Ten presente estudiar  traducción de enunciados en recordemos"
-            },
-            {
-                "enunciado": "7. Para encontrar la variación solicitada, el estudiante debe proceder:",
-                url: "Derivadas",
-                "respuestas": [
-                    "a. Definiendo la arista en función del volumen, derivar dicha función y sustituir el valor de 3 cm de la arista",
-                    "b. Definiendo el volumen en función del tiempo, derivar dicha función y sustituir el valor de 3 cm dado por la arista.  ",
-                    "c. Definiendo el volumen en función de la arista, derivar dicha función y sustituir el valor de 3 cm dado por la arista.  ",
-                    "d. Definiendo el volumen en función del cubo, derivar dicha función y sustituir el valor de 3 cm dado por la arista"
-                ],
-                "respuestaCorrecta": 2,
-                "tip": "Es importante identificar conceptos previos necesarios para resolver la situación - Ten presente estudiar la razón de cambio en recordemos."
-            },
-            {
-                "Subtitulo": "¿Cómo llevarías a cabo el plan?",
-                "enunciado": "8. Al derivar el volumen V=a3 con respecto a a, se obtiene",
-                url: "https://www.youtube.com/watch?v=gl9oK_LVPow",
-                "respuestas": [
-                    "a. dV/da=3a",
-                    "b. dV/da=3a^2",
-                    "c. da/dV=3a",
-                    "d. dV/da=a^2"
-                ],
-                "respuestaCorrecta":1,
-                "tip": "Es importante aplicar correctamente los procedimientos, reglas o estrategias para resolver la situación. - Ten presente  estudiar reglas de derivación en recordemos."
-            },
-            {
-                "enunciado": "9. Para encontrar la variación solicitada se debe: ",
-                url: "Derivadas",
-                "respuestas": [
-                    "a. Reemplazar el valor de  a=3  en la ecuación V=a^3 ",
-                    "b. Reemplazar el valor de a=3  en la ecuación  dV/da=3a^2 ",
-                    "c. Reemplazar el valor de V=3  en la ecuación  dV/da=3a^2  y despejar  a",
-                    "d. Reemplazar el valor de a=3  en la ecuación  dV/da=a^2 "
-                ],
-                "respuestaCorrecta": 1,
-                "tip": "Es importante aplicar correctamente los procedimientos, reglas o estrategias para resolver la situación planteada. - Ten presente estudiar la razón de cambio en recordemos "
-            },
-            {
-                "Subtitulo": "¿Qué resultados obtienes?",
-                "enunciado": "10. La tasa de cambio del volumen de la caja en forma de cubo con respecto a la longitud de la arista, cuando la arista mide 3 mm es de:",
-                url: "Derivadas",
-                "respuestas": [
-                    "a. 3 m^3/mm",
-                    "b. 6 m^3/mm",
-                    "c. 9 m^3/mm",
-                    "d. 27 m^3/mm"
-                ],
-                "respuestaCorrecta": 3,
-                "tip": "Es importante analizar otras formas de obtener y mostrar la solución - Ten presente estudiar la razón de cambio en recordemos "
-            },
-            {
-                "enunciado": "11. En la solución obtenida el valor de  27 m^3/mm   representa",
-                url: "Derivadas",
-                "respuestas": [
-                    "a. La velocidad de crecimiento del volumen con respecto a la medida de la arista cuando la misma arista tiene una longitud de 3 mm.",
-                    "b. la velocidad de crecimiento de la arista con respecto a la medida del volumen cuando la misma arista tiene una longitud de 3 mm.",
-                    "c. El volumen en función de la medida de la arista cuando la misma arista tiene una longitud de 3 mm.",
-                    "d. La velocidad de decrecimiento del volumen con respecto a la medida de la arista cuando la misma arista tiene una longitud de 3 mm."
-                ],
-                "respuestaCorrecta": 0,
-                "tip": "Es importante analizar otras formas de obtener y mostrar la solución  - Ten presente estudiar la razón de cambio en recordemos "
-            },
-            {
-                "enunciado": "12. Con respecto al problema anterior, es correcto afirmar que:",
-                url: "Derivadas",
-                "respuestas": [
-                    "a. El volumen aumenta a razón de 27 cuando la arista tiene una longitud de 1 cm",
-                    "b. El volumen disminuye a razón de 3 cuando la arista tiene una longitud de 1 cm",
-                    "c. El volumen aumenta a razón de 3 cuando la arista tiene una longitud de 1 cm",
-                    "d. el volumen disminuye a razón de 1 cuando la arista tiene una longitud de 3 cm"
-                ],
-                "respuestaCorrecta": 2,
-                "tip": "Es importante comprobar la solución que se encontró - Ten presente estudiar la razón de cambio en recordemos "
-            }
-        ]
-    },
-]
+const situacion2Opt = [
+  {
+    tituloSituacion: 'Situación 4. Aprovechando los matariales',
+    enunciado:
+      'Una empresa de ingeniería necesita enviar insumos para la terminación de una obra. Decide empacarlos en una caja de almacenaje con base cuadrada y sin tapa para garantizar la ventilación y temperatura adecuada. Para que los insumos no se maltraten se decide que la caja debe tener un volumen de 2048 pulgadas cúbicas. La empresa quiere determinar las dimensiones de cada caja que le proporcionen la menor cantidad de material utilizado Con respecto a la situación planteada anteriormente responda: ',
+    Subtitulo: '¿Qué comprendes de la situación?',
+    postSubtitulo: 'El objetivo de la situacion es:',
+    preguntas: [
+      {
+        enunciado: '1. El objetivo de la situación es:',
+        url: 'https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/',
+        respuestas: ['a. Minimizar una funcion', 'b. Maximizar una funcion'],
+        respuestaCorrecta: 1,
+        tip: 'Es importante identificar el objetivo de la situación. Ten presente revisar la comprensión de una situación en Pasos para resolver un problema  ',
+      },
+      {
+        enunciado: '2. ¿En este problema se debe?',
+        url: 'https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/',
+        respuestas: [
+          'a. Maximizar un volumen',
+          'b. Maximizar un area superficial',
+          'c. Minimizar un costo',
+          'd. Maximiar un volumen',
+        ],
+        respuestaCorrecta: 1,
+        tip: 'Es importante identificar la incógnita de la situación. Ten presente revisar la comprensión de una situación en Pasos para resolver un problema',
+      },
+      {
+        enunciado:
+          '3. La cantidad o dato que se proporciona en el problema es (información dada): ',
+          url: 'https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/',
+        respuestas: [
+          'a. volumen',
+          'b. Area superficial',
+          'c. Altura de la caja',
+          'd. Ancho de la base',
+        ],
+        respuestaCorrecta: 0,
+        tip: 'Es importante identificar los datos que da la situación. Ten presente revisar la comprensión de una situación en Pasos para resolver un problema  ',
+      },
+      {
+        enunciado: '4. La cantidad que se desconoce del problema son:',
+        url: 'https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/',
+        respuestas: [
+          'a. volumen',
+          'b. Area superficial',
+          'c. Altura de la caja',
+          'd. Ancho de la base',
+        ],
+        respuestaCorrecta: 1 || 2 || 3,
+        tip: 'Es importante identificar las cantidades desconocidas de la situación. Ten presente revisar la comprensión de una situación en Pasos para resolver un problema ',
+      },
+      {
+        enunciado:
+          '5. Si L es el largo, A es el ancho y h la altura, entonces un diagrama que ilustre la situación es:',
+          url: 'https://drive.google.com/file/d/10Xx_scheSiMvdZzWwVYWywBrNRADtoZ6/view?usp=sharing',
+        imagen:
+          'https://drive.google.com/file/d/1Q-V9EJF2L9NtkTL1o0yIgGFM3lOW55k2/view?usp=sharing',
+        respuestas: ['a', 'b', 'c'],
+        respuestaCorrecta: 1,
+        tip: 'Es importante ayudarse de un gráfico para comprender la situación. Ten presente  estudiar áreas y volúmenes ',
+      },
+      {
+        Subtitulo: '¿Qué plan diseñarías?',
+        enunciado:
+          '6. Si A es el largo de la base y h la altura de la caja de almacenaje, entonces una expresión para el volumen es:  ',
+          url: "https://youtu.be/xOOMcb5OrWo",
+        respuestas: ['a. 2048=A^2+4Ah', 'b. 2048=A^2 (4h)', 'c. 2048=A^2 h^2', 'd. 2048=A^2 h'],
+        respuestaCorrecta: 3,
+        tip: 'Es importante identificar conceptos previos de apoyo para resolver la situación. Ten presente estudiar operaciones algebraicas',
+      },
+      {
+        enunciado:
+          '7. Si A es el largo de la base y h la altura, entonces el área superficial de la caja para el almacenaje es:',
+          url: "https://youtu.be/xOOMcb5OrWo" && "https://drive.google.com/file/d/10Xx_scheSiMvdZzWwVYWywBrNRADtoZ6/view?usp=sharing",
+        respuestas: ['a. 〖2A〗^2+4Ah ', 'b. A^2+4Ah', 'c. A^2+2Ah', 'd. 6Ah'],
+        respuestaCorrecta: 1,
+        tip: 'Es importante identificar conceptos previos de apoyo para resolver la situación. Ten presente estudiar áreas, volúmenes y operaciones algebraicas.',
+      },
+      {
+        enunciado: '8. Para resolver el problema se debe plantear una función que expresa:',
+        url: "https://www.youtube.com/watch?v=-UPzQwTQhAU",
+        respuestas: [
+          'a. El volumen en función del largo del área superficial ',
+          'b. El área superficial en función del ancho de la base',
+          'c. El área superficial en función del volumen ',
+          'd. El volumen en función de la altura ',
+        ],
+        respuestaCorrecta: 1,
+        tip: 'Es importante identificar conceptos previos de apoyo para resolver la situación.. Ten presente estudiar la introducción a las funciones',
+      },
+      {
+        enunciado:
+          '9. La cantidad de material utilizado en función del ancho de la base A es se puede representar por la expresión:',
+          url:"https://h5p.org/h5p/embed/1465798",
+        respuestas: ['a. A^2+2048/A', 'b. A^2+8192/A', 'c. A^2-8192/A', 'd. A^2+8192/A^2'],
+        respuestaCorrecta: 1,
+        tip: 'Es importante identificar conceptos previos de apoyo para resolver la situación. Ten presente estudiar funciones',
+      },
+      {
+        Subtitulo: '¿Cómo llevarías a cabo el plan?',
+        enunciado:
+          '10, Al derivar la expresión que me determina la cantidad de material utilizado se obtiene:',
+          url:"https://view.genial.ly/5d6d7ca539c592100c2d71fd",
+        respuestas: ['a. 2A-2048/A', 'b. 2A+8192/A', 'c. 2A-8192/A^2', 'd. 2A+8192/A^2 '],
+        respuestaCorrecta: 2,
+        tip: 'Es importante realizar correctamente los procedimientos. Ten presente estudiar  reglas de derivación',
+      },
+      {
+        enunciado:
+          '11. El punto crítico por analizar para que el ancho de la base A sea un extremo absoluto es: ',
+          url:"https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_EL_APP5/OVA_Ecuaciones_Lineales_V2/",
+        respuestas: ['a. 64', 'b. 32', 'c. 16', 'd. 8'],
+        respuestaCorrecta: 2,
+        tip: 'Es importante realizar correctamente los procedimientos. Ten presente estudiar ecuaciones',
+      },
+      {
+        enunciado:
+          '12. Al usar el criterio de la primera derivada en la función “cantidad de material utilizado” (área superficial), es correcto afirmar que para el valor del ancho de la base A se cumple: ',
+            url:"https://drive.google.com/file/d/1mns5u6TVmj5pV0AQBKjH8OwBC9ZAl4md/view?usp=sharing",
+        respuestas: [
+          'a. La derivada es positiva antes del punto 16 y negativa después del 16, por lo tanto, en 16 hay un punto mínimo.',
+          'b. La derivada es negativa antes del punto 16 y positiva después del 16, por lo tanto, en 16 hay un punto mínimo.',
+          'c. La derivada es negativa antes del punto 16 y negativa después del 16, por lo tanto, en 16 hay un punto máximo',
+          'd. La derivada es positiva antes del punto 16 y positiva después del 16, por lo tanto, en 16 hay un punto máximo',
+        ],
+        respuestaCorrecta: 1,
+        tip: 'Es importante realizar correctamente los procedimientos. Ten presente estudiar el criterio de la primera derivada',
+      },
+      {
+        Subtitulo: '¿Qué resultados obtienes?',
+        enunciado:
+          '13. Las dimensiones de la caja que proporcionan la menor cantidad de material utilizado son',
+          url:"https://drive.google.com/file/d/1mns5u6TVmj5pV0AQBKjH8OwBC9ZAl4md/view?usp=sharing",
+        respuestas: [
+          'a. El ancho de la base 8 pulgadas y altura 16 pulgadas',
+          'b. El ancho de la base 8 pulgadas y altura 32 pulgadas',
+          'c. El ancho de la base 8 pulgadas y altura 8 pulgadas',
+          'd. El ancho de la base 16 pulgadas y altura 8 pulgadas',
+        ],
+        respuestaCorrecta: 3,
+        tip: 'Es importante comprobar el resultado obtenido. Ten presente estudiar el criterio de la primera derivada',
+      },
+      {
+        enunciado:
+          '14. Si el área de la base es de 256 pulgadas cuadradas, entonces es correcto afirmar que menor cantidad de material utilizado en la fabricación de una caja es de:  ',
+          url:"https://drive.google.com/file/d/1mns5u6TVmj5pV0AQBKjH8OwBC9ZAl4md/view?usp=sharing",
+        respuestas: [
+          'a. 2048 pulgadas cuadradas',
+          'b. 768 pulgadas cuadradas',
+          'c. 919.2 pulgadas cuadradas aproximadamente',
+          'd. 32 pulgadas cuadradas',
+        ],
+        respuestaCorrecta: 1,
+        tip: 'Es importante comprobar el resultado obtenido. Ten presente estudiar el criterio de la primera derivada ',
+      },
+      {
+        enunciado:
+          '15. Otra forma de comprobar que en A=16 hay un valor mínimo asociado al ancho de la base de la caja es: ',
+          url:"https://drive.google.com/file/d/1sHFC150lWG3ZQ_5Kgiq1e_7H_ay_aYqX/view?usp=sharing",
+        respuestas: [
+          'a. Derivando la expresión 2A-8192/A^2  , evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo. ',
+          'b. Derivando la expresión 2A-8192/A^2  , evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo.',
+          'c. Derivando la expresión A^2+8192/A , evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo',
+          'd. Derivando la expresión A^2+8192/A , evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo.',
+        ],
+        respuestaCorrecta: 0,
+        tip: 'Es importante analizar otras formas de obtener y mostrar la solución. Ten presente estudiar la prueba de la segunda derivada',
+      },
+    ],
+  },
+];
 
 const RadioButton = ({ label, isSelected, onPress }) => (
     <TouchableOpacity style={styles.radioButtonContainer} onPress={onPress}>
@@ -186,13 +198,13 @@ const RadioButton = ({ label, isSelected, onPress }) => (
 );
 
 const getSubtitulo = (questionIndex: any) => {
-    if (questionIndex >= 0 && questionIndex <= 3) {
+    if (questionIndex >= 0 && questionIndex <= 4) {
         return "¿Qué comprendes de la situación?";
-    } else if (questionIndex >= 4 && questionIndex <= 6) {
+    } else if (questionIndex >= 5 && questionIndex <= 8) {
         return "¿Qué plan diseñarías?";
-    } else if (questionIndex >= 7 && questionIndex <= 8) {
-        return "¿Cómo llevarías a cabo el plan?";
     } else if (questionIndex >= 9 && questionIndex <= 11) {
+        return "¿Cómo llevarías a cabo el plan?";
+    } else if (questionIndex >= 12 && questionIndex <= 14) {
         return "¿Qué resultados obtienes?";
     }
     return "";
@@ -200,11 +212,11 @@ const getSubtitulo = (questionIndex: any) => {
 
 type FeedbackState = 'correct' | 'incorrect' | null;
 ``
-type DetailsSreenRouteProp = RouteProp<RootStackParamList, 'Situacion1RazonDeCambio'>;
+type DetailsSreenRouteProp = RouteProp<RootStackParamList, 'Situacion1Optimizacion'>;
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FeedbackScreen'>;
 
 
-const Situacion1RazonDeCambio = () => {
+const Situacion2Optimizacion = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({}) as any;
   const [isEnunciadoVisible, setIsEnunciadoVisible] = useState(true);
@@ -223,7 +235,7 @@ const [situacionCompletada, setSituacionCompletada] = useState(false);
   // Verifica si la situación ya ha sido completada
   useEffect(() => {
     const verificarCompletada = async () => {
-      const completada = await AsyncStorage.getItem('situacion1_completada');
+      const completada = await AsyncStorage.getItem('situacion4_completada');
       if (completada === 'true') {
         setSituacionCompletada(true);
       }
@@ -234,7 +246,7 @@ const [situacionCompletada, setSituacionCompletada] = useState(false);
 
 
 
-  const situacion = situacion1[0]; // Asumiendo que solo trabajas con la situación 1
+  const situacion = situacion2Opt[0]; // Asumiendo que solo trabajas con la situación 1
 
   const handleAnswer = (respuestaIndex) => {
     const question = situacion.preguntas[currentQuestionIndex];
@@ -348,7 +360,7 @@ useEffect(() => {
 
 const marcarComoCompletada = async () => {
   try {
-    await AsyncStorage.setItem('situacion1_completada', 'true');
+    await AsyncStorage.setItem('situacion4_completada', 'true');
     console.log('Situación 1 marcada como completada');
   } catch (error) {
     console.error('Error al marcar la situación como completada', error);
@@ -396,14 +408,12 @@ const enviarRespuestas = async () => {
       respuestasEstudiante,
       tiempoTranscurrido: tiempoTranscurridoMinutos
     });
-    console.log("🚀 ~ response:", response)
 
-    if( response.status === 201){
+    if(response.status === 201){
       await marcarComoCompletada();
       await mostrarFeedbackAnterior();
     }
 
-  
     // if (response.status === 201) {
     //   // Tras enviar las respuestas, procedemos a analizarlas
     //   const analizarRespuestasUrl = 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas';
@@ -426,7 +436,7 @@ const enviarRespuestas = async () => {
     //   }
     // }
   } catch (error) {
-    console.error('Error al enviar respuestas:', error.message);
+    console.error('Error al enviar respuestas:', error);
     if (axios.isAxiosError(error) && error.response) {
       // Manejo específico para errores de Axios con respuesta
       console.error('Detalles del error:', error.response.data);
@@ -438,42 +448,27 @@ const enviarRespuestas = async () => {
 
   // Maneja la visualización del feedback anterior
   const mostrarFeedbackAnterior = async () => {
+    // Si la situación ya ha sido completada, mostramos el feedback
     const idEstudiante = await AsyncStorage.getItem('userId');
-    const idCuestionarioNormalizado = "Situación 1. ¡Hoy nos tocó empacar!"
-         if (idEstudiante && idCuestionarioNormalizado) {
-      navigation.navigate('FeedbackScreen', { 
-        idEstudiante,
-        idCuestionarioNormalizado,
-      });
-    } else {
-      console.error('No se pudo obtener el idEstudiante o el idCuestionarioNormalizado');
-    }   
-  };
-
-  //   // Maneja la visualización del feedback anterior
-  //   const mostrarFeedbackAnterior = async () => {
-  //     // Si la situación ya ha sido completada, mostramos el feedback
-  //     const idEstudiante = await AsyncStorage.getItem('userId');
-  //     const idCuestionario = situacion.tituloSituacion;
-  //   // Solo procedemos si tenemos los IDs necesarios
-  //     if (idEstudiante && idCuestionario) {
-  //     navigation.navigate('FeedbackScreen', { 
-  //       idEstudiante,
-  //       idCuestionario,
-  //     });
-  //   } else {
-  //     // Manejar el caso donde no se puedan obtener los IDs
-  //     console.error('No se pudo obtener el idEstudiante o el idCuestionarioNormalizado');
-  //   }
-    
-  // };
+    const idCuestionarioNormalizado = situacion.tituloSituacion;
+  // Solo procedemos si tenemos los IDs necesarios
+    if (idEstudiante && idCuestionarioNormalizado) {
+    navigation.navigate('FeedbackScreen', { 
+      idEstudiante,
+      idCuestionarioNormalizado,
+    });
+  } else {
+    // Manejar el caso donde no se puedan obtener los IDs
+    console.error('No se pudo obtener el idEstudiante o el idCuestionarioNormalizado');
+  }
+  
+};
 
   const renderImagenes = () => {
     const opcionesDeRespuesta = [
-      { opcion: 'a', imagen: require('../../assets/aResponse.png') },
-      { opcion: 'b', imagen: require('../../assets/bResponse.png') },
-      { opcion: 'c', imagen: require('../../assets/cResponse.png') },
-      { opcion: 'd', imagen: require('../../assets/dResponse.png') },
+      { opcion: 'a', imagen: require('../../assets/5a.png') },
+      { opcion: 'b', imagen: require('../../assets/5b.png') },
+      { opcion: 'c', imagen: require('../../assets/5c.png') },
     ];
   
     return (
@@ -545,7 +540,7 @@ const enviarRespuestas = async () => {
   <Text style={styles.preguntaEnunciado}>{situacion.preguntas[currentQuestionIndex].enunciado}</Text>
   {renderRespuestas(situacion.preguntas[currentQuestionIndex].respuestas, situacion.preguntas[currentQuestionIndex])}
   {/* Verifica si la pregunta actual es la cuarta pregunta (índice 3 ya que los índices comienzan en 0) */}
-  {currentQuestionIndex === 3 && renderImagenes()}
+  {currentQuestionIndex === 4 && renderImagenes()}
 </View>
 
 
@@ -685,14 +680,13 @@ modalView: {
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-    justifyContent: 'center',
 },
 closeButton: {
-  marginTop: 10, // Ajusta este valor según sea necesario para dar espacio después del botón 'Ver Recurso'
-  backgroundColor: '#2196F3',
-  borderRadius: 20,
-  padding: 10,
-  elevation: 2,
+    backgroundColor: '#2196F3',
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginTop: 15
 },
 imagesContainer: {
   flexDirection: 'row',
@@ -713,4 +707,4 @@ imageOptionText: {
 
 
   });
-export default Situacion1RazonDeCambio;
+export default Situacion2Optimizacion;

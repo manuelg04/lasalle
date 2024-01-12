@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { Text, View } from 'react-native';
 
+import Situacion1Optimizacion from '../Situaciones/Optimizacion-situacion1';
+import Situacion2Optimizacion from '../Situaciones/Optimizacion-situacion2';
 import Situacion1RazonDeCambio from '../Situaciones/RazonDeCambio-situacion1';
 import Situacion2RazonDeCambio from '../Situaciones/RazonDeCambio-situacion2';
 import LoginScreen from '../screens/Auth/LoginScreen';
@@ -12,10 +14,12 @@ import SignUpStudent from '../screens/Auth/SignUpStudent';
 import SignUpTeacher from '../screens/Auth/SignUpTeacher';
 import EstudiemosOptimizacion from '../screens/Estudiemos-optimizacion';
 import EstudiemosRazonDeCambio from '../screens/Estudiemos-razon-de-cambio';
+import ExpCustomMission from '../screens/Exp-custom-mission';
 import Experimentemos from '../screens/Experimentos';
 import FeedbackScreen from '../screens/FeedbackScreen';
 import Perfil from '../screens/Perfil';
 import Recordemos from '../screens/Recordemos';
+import TeacherFirstScreen from '../screens/TeacherFirstScreen';
 import Temas from '../screens/Temas';
 import TermsAndConditions from '../screens/TermsAndConditions';
 import FirstScreen from '../screens/first-screen';
@@ -32,10 +36,14 @@ export type RootStackParamList = {
   EstudiemosOptimizacion: undefined;
   Situacion1RazonDeCambio: undefined;
   TermsAndConditions: undefined;
-  Experimentos: undefined;
+  Experimentemos: { theme: string };
   FeedbackScreen: undefined;
   Situacion2RazonDeCambio: undefined;
   Perfil: undefined;
+  Situacion1Optimizacion: undefined;
+  Situacion2Optimizacion: undefined;
+  ExpCustomMission: undefined;
+  TeacherFirstScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -79,8 +87,9 @@ export default function RootStack() {
         />
         <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
         <Stack.Screen
-          name="Experimentos"
+          name="Experimentemos"
           component={Experimentemos}
+          initialParams={{ theme: '' }}
           options={{ title: 'Experimentos' }}
         />
         <Stack.Screen
@@ -94,6 +103,26 @@ export default function RootStack() {
           options={{ title: 'Razon de cambio' }}
         />
         <Stack.Screen name="Perfil" component={Perfil} />
+        <Stack.Screen
+          name="Situacion1Optimizacion"
+          component={Situacion1Optimizacion}
+          options={{ title: 'Optimizacion' }}
+        />
+        <Stack.Screen
+          name="Situacion2Optimizacion"
+          component={Situacion2Optimizacion}
+          options={{ title: 'Optimizacion' }}
+        />
+        <Stack.Screen
+          name="ExpCustomMission"
+          component={ExpCustomMission}
+          options={{ title: 'Mision personalizada' }}
+        />
+        <Stack.Screen
+          name="TeacherFirstScreen"
+          component={TeacherFirstScreen}
+          options={{ title: 'Bienvenido' }}
+        />
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}

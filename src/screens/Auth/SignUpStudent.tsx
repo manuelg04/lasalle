@@ -137,8 +137,24 @@ const SignUpStudent = () => {
       alert('Todos los campos son requeridos');
       return;
     }
-
+ 
     try {
+        const formData = new FormData();
+        formData.append('file', {
+          uri: image,
+          name: 'profile.jpg',
+        });
+      const uploadResponse = await axios({
+        method: 'post',
+        url: 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/profileImage/upload',
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      if (uploadResponse.status === 200) {
+        // Manejar la respuesta exitosa aquí, como guardar el token JWT
+        console.log('Upload success');
+      }
+ 
       const response = await axios.post(
         'https://lasalleapp-dev-sjta.1.us-1.fl0.io/student/register',
         {
@@ -147,20 +163,30 @@ const SignUpStudent = () => {
           password,
           career: programa,
           faculty: facultad,
+          imageUrl: uploadResponse.data.url,
         }
       );
 
       if (response.status === 201) {
         // Manejar la respuesta exitosa aquí, como guardar el token JWT
         const token = response.data.token;
+        const imageUrl = response.data.imageUrl;
+        const fullName = response.data.fullName;
+        const career = response.data.career;
+        const faculty = response.data.faculty;
+        await AsyncStorage.setItem('career', career);
+        await AsyncStorage.setItem('faculty', faculty);
+        await AsyncStorage.setItem('fullName', fullName);
         await AsyncStorage.setItem('userToken', token);
+        await AsyncStorage.setItem('userImageUrl', imageUrl);
         alert('Registro completado');
         navigation.navigate('TermsAndConditions');
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        alert('Todos los campos son requeridos');
+        console.log(error.response.data);
       } else {
+        error.response && console.log(error.response.data);
         alert('Algo salió mal');
       }
     }

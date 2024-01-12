@@ -25,7 +25,7 @@ export default function LoginScreen() {
       Alert.alert('Error', 'Por favor, ingresa tu correo electrónico y contraseña.');
       return;
     }
-
+   
     try {
       const response = await axios.post('https://lasalleapp-dev-sjta.1.us-1.fl0.io/login/login', {
         email,
@@ -34,15 +34,26 @@ export default function LoginScreen() {
       });
 
       if (response.status === 200) {
-        const { token, userId, fullName } = response.data;
+        const { token, userId, fullName, userType } = response.data;
         await AsyncStorage.setItem('userToken', token);
         await AsyncStorage.setItem('userId', userId);
         await AsyncStorage.setItem('fullName', fullName);
+        await AsyncStorage.setItem('userType', userType);
+        
+       // Verificar si el usuario es un estudiante o un profesor y navegar a la pantalla correspondiente
+       if (userType === 'student') {
         navigation.navigate('Temas');
+      } else if (userType === 'professor') {
+        navigation.navigate('TeacherFirstScreen'); // Asegúrate de que esta pantalla esté definida en tu Stack Navigator
+      } else {
+        // Manejar otros casos o erroresj
+        console.error('Tipo de usuario no reconocido:', userType);
       }
+    }
         
 
     } catch (error) {
+    console.log("🚀 ~ error:", error.message)
       alert(error);
  
     }
@@ -58,7 +69,20 @@ export default function LoginScreen() {
         </TouchableOpacity>
         <Text style={styles.title}>Ingresa a tu cuenta</Text>
         <Ionicons name="person-circle-outline" size={40} color="#4a4a4a" style={styles.loginIcon} />
+        <View style={styles.selectorContainer}>
+          <TouchableOpacity
+            style={[styles.selectorButton, userType === 'student' && styles.selected]}
+            onPress={() => setUserType('student')}>
+            <Text style={[styles.selectorText, userType === 'student' && styles.selectedText]}>Estudiante</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.selectorButton, userType === 'professor' && styles.selected]}
+            onPress={() => setUserType('professor')}>
+            <Text style={[styles.selectorText, userType === 'professor' && styles.selectedText]}>Profesor</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.inputContainer}>
+    
           <Text style={styles.label}>Correo</Text>
           <TextInput
             style={styles.input}
@@ -158,5 +182,41 @@ const styles = StyleSheet.create({
   },
   loginIcon: {
     marginVertical: 10,
+  },
+  userTypeContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  selectedButton: {
+    backgroundColor: '#facc15',
+    paddingVertical: 12,
+    borderRadius: 5,
+    width: '50%',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  selectorButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    borderColor: 'grey',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  selected: {
+    backgroundColor: '#facc15', // o cualquier otro color para destacar la selección
+  },
+  selectedText: {
+    color: 'white', // El color del texto cuando el botón está seleccionado
+    fontWeight: 'bold',
+  },
+  selectorText: {
+    color: 'black', // El color por defecto del texto
+  },
+  selectorContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 20,
   },
 });

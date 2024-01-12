@@ -1,10 +1,17 @@
 /* eslint-disable prettier/prettier */
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
 
+import { RootStackParamList } from '../../navigation';
+
+
+type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FirstScreen'>;
 const SignUpTeacher = () => {
+  const navigation = useNavigation<OverviewScreenNavigationProps>();
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
@@ -29,6 +36,8 @@ const SignUpTeacher = () => {
         const token = response.data.token;
         await AsyncStorage.setItem('userToken', token);
         alert('Registro completado');
+        // Navegar a la pantalla específica del profesor
+        navigation.navigate('TeacherFirstScreen');
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {

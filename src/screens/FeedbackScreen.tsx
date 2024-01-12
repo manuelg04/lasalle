@@ -1,46 +1,120 @@
 /* eslint-disable prettier/prettier */
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { collection, query, where, orderBy, limit, getDocs } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+
+import { RootStackParamList } from '../navigation';
+import firebase from '../utils/firebase';
+const { db } = firebase;
+
+
+type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FeedbackScreen'>;
 
 const FeedbackScreen = ({ route }) => {
-    const navigation = useNavigation();
-    const { feedbackData } = route.params;
+    const navigation = useNavigation<OverviewScreenNavigationProps>();
+    const [feedbackData, setFeedbackData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const { idCuestionarioNormalizado, idEstudiante } = route.params;
+    console.log(`idCuestionarioNormalizado: ${idCuestionarioNormalizado}, idEstudiante: ${idEstudiante}`);
 
-    // Función para añadir estilos a cada tipo de línea
-    const renderFeedbackText = (text) => {
-      return text.split('\n\n').map((paragraph, index) => {
-        let lines = paragraph.split('\n');
-        let firstLine = lines.shift(); // Separamos la pregunta del resto del párrafo
-    
-        let questionStyle = firstLine.includes('incorrecta') ? styles.incorrectFeedback : styles.correctFeedback;
-        let iconName = firstLine.includes('incorrecta') ? 'close-circle-outline' : 'checkmark-circle-outline';
-        let iconColor = firstLine.includes('incorrecta') ? '#D32F2F' : '#388E3C';
-    
+
+  useEffect(() => {
+      const fetchLatestAttempt = async () => {
+          const q = query(
+              collection(db, 'respuestas_estudiantes'),
+              where('idCuestionarioNormalizado', '==', idCuestionarioNormalizado),
+              where('idEstudiante', '==', idEstudiante),
+              orderBy('fechaIntento', 'desc'),
+              limit(1)
+          );
+       
+          try {
+              const querySnapshot = await getDocs(q);
+              if (!querySnapshot.empty) {
+                  const latestAttemptData = querySnapshot.docs[0].data();
+                  console.log("🚀 ~ latestAttemptData:", latestAttemptData)
+                  setFeedbackData(latestAttemptData); // Aquí estableces la data de Firestore en el estado
+                  setIsLoading(false); // Data ha sido cargada
+              }else {
+                console.log(`No se encontraron intentos para el cuestionario: ${idCuestionarioNormalizado} y estudiante: ${idEstudiante}`);
+                setIsLoading(false);
+              }
+          } catch (error) {
+              console.error("Error al obtener el último intento: ", error);
+              setIsLoading(false);
+          }
+      };
+
+      fetchLatestAttempt();
+  }, [idCuestionarioNormalizado, idEstudiante]);
+
+     // Verificar si está cargando y mostrar el indicador de carga
+     if (isLoading) {
         return (
-          <View key={`feedback_paragraph_${index}`} style={styles.feedbackParagraph}>
-            <View style={styles.feedbackLine}>
-              <Ionicons name={iconName} size={20} color={iconColor} style={styles.icon} />
-              <Text style={questionStyle}>{firstLine}</Text>
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" color="#0000ff" />
             </View>
-            <Text style={styles.feedbackText}>{lines.join('\n')}</Text>
-          </View>
         );
-      });
-    };
-    
+    }
+    const fasesOrdenadas = [
+        '¿Qué comprendes de la situación?',
+        '¿Qué plan diseñarías?',
+        '¿Cómo llevarías a cabo el plan?',
+        '¿Qué resultados obtienes?',
+      ];
+  const renderFeedbackInfo = (feedback) => {
+    if (!feedback || !feedback.respuestasPorFase) {
+      return null;
+    }
+
+    // Usamos el arreglo fasesOrdenadas para asegurarnos de que las fases se muestren en el orden correcto
+  return fasesOrdenadas.map((faseOrdenada, index) => {
+    const preguntas = feedback.respuestasPorFase[faseOrdenada];
+    if (!preguntas) return null; // Si no hay preguntas para la fase, no renderizar nada
+  
+    // Mapeamos sobre las fases y renderizamos la información de cada una
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.feedbackContainer}>
-                <Text style={styles.headerText}>Retroalimentación</Text>
-                {renderFeedbackText(feedbackData)}
-                <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-                    <Text style={styles.buttonText}>Continuar Estudiando</Text>
-                </TouchableOpacity>
+        <View key={index} style={styles.feedbackParagraph}>
+          <Text style={styles.questionText}>{faseOrdenada}</Text>
+          {preguntas.map((pregunta, preguntaIdx) => (
+            <View key={`pregunta_${preguntaIdx}`} style={styles.preguntaContainer}>
+              <Text style={styles.feedbackText}>{pregunta.enunciado}</Text>
+              <Text style={styles.feedbackText}>Respuestas Posibles:</Text>
+              {pregunta.respuestasPosibles.map((respuesta, respuestaIdx) => (
+                <Text key={`respuesta_${respuestaIdx}`} style={styles.answerText}>
+                  {respuestaIdx + 1}: {respuesta}
+                </Text>
+              ))}
+              <Text style={styles.feedbackText}>
+                Respuesta Seleccionada: {pregunta.respuestasPosibles[pregunta.respuestaSeleccionada]}
+              </Text>
+              {pregunta.esCorrecta
+                ? <Text style={styles.correctText}>La respuesta que seleccionaste es correcta.</Text>
+                : <Text style={styles.incorrectText}>La respuesta que seleccionaste es incorrecta.</Text>
+              }
             </View>
-        </ScrollView>
-    );
+          ))}
+        </View>
+      );
+    });
+  };
+  
+  
+  
+
+  return (
+      <ScrollView style={styles.container}>
+          <View style={styles.feedbackContainer}>
+              <Text style={styles.headerText}>Retroalimentación</Text>
+              {renderFeedbackInfo(feedbackData)}
+              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
+                  <Text style={styles.buttonText}>Continuar Estudiando</Text>
+              </TouchableOpacity>
+          </View>
+      </ScrollView>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -68,11 +142,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     feedbackText: {
-      flex: 1, // Permite que el texto ocupe el espacio restante.
       fontSize: 16,
       color: '#555',
       lineHeight: 24,
       marginRight: 10,
+      textAlign: 'justify', // Justifica el texto para una lectura más natural
     },
     correctText: {
         color: '#4CAF50', // Verde para respuestas correctas
@@ -97,22 +171,28 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     questionText: {
-      fontWeight: 'bold',
+      fontWeight: '600', // Más bold que las respuestas, pero no tan bold como un título
       fontSize: 18,
-      marginTop: 20,
-      color: '#173753', // Un azul oscuro para mayor formalidad
+      marginBottom: 5, // Espacio entre la pregunta y la respuesta
+      color: '#173753',
     },
     correctFeedback: {
       fontSize: 16,
       color: '#388E3C', // Un verde oscuro para mejor legibilidad
       marginLeft: 10,
       marginBottom: 10,
+      backgroundColor: '#d4edda', // Fondo verde claro para respuestas correctas
+    padding: 5, // Espaciado interno
+    borderRadius: 5, // Bordes redondeados
     },
     incorrectFeedback: {
       fontSize: 16,
       color: '#D32F2F', // Un rojo oscuro para mejor legibilidad
       marginLeft: 10,
       marginBottom: 10,
+      backgroundColor: '#f8d7da', // Fondo rojo claro para respuestas incorrectas
+    padding: 5, // Espaciado interno
+    borderRadius: 5, // Bordes redondeados
     },
     feedbackLine: {
     flexDirection: 'row',
@@ -124,6 +204,41 @@ const styles = StyleSheet.create({
       marginRight: 20,
  
     },
+    feedbackParagraph: {
+      marginBottom: 20, // Añade espacio entre cada párrafo de retroalimentación
+      borderBottomWidth: 1, // Añade una línea divisoria sutil
+      borderBottomColor: '#DDDDDD', // Color gris claro para la línea divisoria
+      paddingBottom: 10, // Espacio debajo del texto antes de la línea divisoria
+      padding: 10, // Añadir espaciado interno para cada sección de retroalimentación
+    backgroundColor: '#fff', // Fondo blanco para resaltar el bloque
+    borderRadius: 5, // Bordes redondeados
+    shadowColor: '#000', // Sombras para dar profundidad
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+    },
+    preguntaContainer: {
+        backgroundColor: '#f8f9fa', // Un fondo ligeramente diferente para cada pregunta
+        borderRadius: 5, // Bordes redondeados
+        padding: 10, // Espaciado interno
+        marginBottom: 15, // Espaciado entre pregunta
+    },
+    answerText: {
+        fontSize: 14,
+        color: '#333', // Color oscuro para texto normal
+        marginVertical: 2, // Espaciado vertical para las respuestas
+      },
+      selectedAnswerText: {
+        fontWeight: 'bold', // Hacer la respuesta seleccionada más prominente
+      },
+      centered: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ECEFF1', // Fondo gris claro
+    },
+    
 });
 
 export default FeedbackScreen;

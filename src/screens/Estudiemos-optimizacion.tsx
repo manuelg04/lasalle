@@ -1,29 +1,45 @@
 /* eslint-disable prettier/prettier */
 import { Ionicons } from '@expo/vector-icons';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
+import { RootStackParamList } from '../navigation';
+import NavBar from '../utils/NavBar';
+
+type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'Situacion1Optimizacion', 'Situacion2Optimizacion'  >;
+
 const EstudiemosOptimizacion = () => {
+  const route = useRoute<RouteProp<RootStackParamList, 'EstudiemosOptimizacion'>>();
+  const navigation = useNavigation<OverviewScreenNavigationProps>();
   return (
-    <View style={styles.container}>
+    <><View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Estudiemos</Text>
+        <Ionicons name="md-school-sharp" size={32} color="green" />
         {/* <View style={styles.menu}>
-          <Ionicons name="menu" size={24} />
-          <Ionicons name="wifi" size={24} />
-          <Text style={styles.menuText}>Menu</Text>
-        </View> */}
+      <Ionicons name="menu" size={24} />
+      <Ionicons name="wifi" size={24} />
+      <Text style={styles.menuText}>Menu</Text>
+    </View> */}
         <Text style={styles.reflection}>Estas haciendo las situaciones 1 y 2  de la temática optimización</Text>
       </View>
 
       <View style={styles.card}>
-        <TouchableOpacity style={styles.situation}>
-          <Text style={styles.situationText}>Situación 1 - OPTIMIZACIÓN</Text>
-          <Ionicons name="bulb-outline" size={24} color="#fab005" />
+        <TouchableOpacity
+          style={styles.situation}
+          onPress={() => navigation.navigate('Situacion1Optimizacion')}
+        >
+          <Text style={styles.situationText}>Situación 1 - Construyendo mi empresa</Text>
+          <Ionicons name="build" size={24} color="#fab005" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.situation}>
-          <Text style={styles.situationText}>Situación 2 - OPTIMIZACIÓN</Text>
-          <Ionicons name="bulb-outline" size={24} color="#fab005" />
+        <TouchableOpacity
+          style={styles.situation}
+          onPress={() => navigation.navigate('Situacion2Optimizacion')}
+        >
+          <Text style={styles.situationText}>Situación 2 - Aprovechando los materiales</Text>
+          <Ionicons name="ios-reload-circle-sharp" size={24} color="#fab005" />
         </TouchableOpacity>
       </View>
 
@@ -33,12 +49,12 @@ const EstudiemosOptimizacion = () => {
       </Text>
 
       {/* <View style={styles.footer}>
-        <Ionicons name="home" size={24} />
-        <Ionicons name="mail" size={24} />
-        <Ionicons name="cube" size={24} />
-        <Ionicons name="menu" size={24} />
-      </View> */}
-    </View>
+      <Ionicons name="home" size={24} />
+      <Ionicons name="mail" size={24} />
+      <Ionicons name="cube" size={24} />
+      <Ionicons name="menu" size={24} />
+    </View> */}
+    </View><NavBar /></>
   );
 };
 

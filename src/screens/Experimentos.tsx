@@ -1,16 +1,24 @@
 /* eslint-disable prettier/prettier */
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 
-const Experimentemos = () => {
+import { RootStackParamList } from '../navigation';
+
+type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'ExpCustomMission'>;
+const Experimentemos = ({ route }) => {
+  const navigation = useNavigation<OverviewScreenNavigationProps>();
     const [studentCareer, setStudentCareer] = useState('');
     const [favoriteSport, setFavoriteSport] = useState('');
     const [favoriteHobby, setFavoriteHobby] = useState('');
     const [generatedProblem, setGeneratedProblem] = useState('');
     const [loading, setLoading] = useState(false);
+    const { theme } = route.params;
+    console.log("🚀 ~ theme:", theme)
 
     const fetchStudentCareer = async (userId:any) => {
         try {
@@ -41,12 +49,15 @@ const Experimentemos = () => {
                 input1: studentCareer,
                 input2: favoriteSport,
                 input3: favoriteHobby,
+                theme,
             });
 
             if (response.status === 201) {
                 // Acceder a la propiedad content del objeto problem
                 const problemText = response.data.problem.content;
                 setGeneratedProblem(problemText);
+                // Navegar a la pantalla de ExpCustomMission
+                navigation.navigate('ExpCustomMission', { problemText });
             }
         } catch (error) {
             console.error('Error al generar el problema:', error);

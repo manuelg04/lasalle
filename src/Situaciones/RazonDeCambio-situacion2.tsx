@@ -357,28 +357,33 @@ const Situacion2RazonDeCambio = () => {
         respuestasEstudiante,
         tiempoTranscurrido: tiempoTranscurridoMinutos
       });
+
+      if( response.status === 201){
+        await marcarComoCompletada();
+        await mostrarFeedbackAnterior();
+      }
      
-      if (response.status === 201) {
-        // Tras enviar las respuestas, procedemos a analizarlas
-        const analizarRespuestasUrl = 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas';
-        const responseAnalizar = await axios.post(analizarRespuestasUrl, {
-          idEstudiante,
-          idCuestionario,
-          tiempoTranscurridoMinutos
-        });
+      // if (response.status === 201) {
+      //   // Tras enviar las respuestas, procedemos a analizarlas
+      //   const analizarRespuestasUrl = 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas';
+      //   const responseAnalizar = await axios.post(analizarRespuestasUrl, {
+      //     idEstudiante,
+      //     idCuestionario,
+      //     tiempoTranscurridoMinutos
+      //   });
 
   
-        if (responseAnalizar.data.feedback) {
-          // Si recibimos feedback del análisis, lo mostramos
-          await marcarComoCompletada();
-          await AsyncStorage.setItem('feedback_situacion_2', JSON.stringify(responseAnalizar.data.feedback));
-          await AsyncStorage.setItem('situacion_2_completada', 'true');
-           navigation.navigate('FeedbackScreen', { 
-            feedbackData: responseAnalizar.data.feedback,
-            situacionCompletada: true
-           });
-        }
-      }
+      //   if (responseAnalizar.data.feedback) {
+      //     // Si recibimos feedback del análisis, lo mostramos
+      //     await marcarComoCompletada();
+      //     await AsyncStorage.setItem('feedback_situacion_2', JSON.stringify(responseAnalizar.data.feedback));
+      //     await AsyncStorage.setItem('situacion_2_completada', 'true');
+      //      navigation.navigate('FeedbackScreen', { 
+      //       feedbackData: responseAnalizar.data.feedback,
+      //       situacionCompletada: true
+      //      });
+      //   }
+      // }
     } catch (error) {
       console.error('Error al enviar respuestas:', error);
       if (axios.isAxiosError(error) && error.response) {
@@ -392,12 +397,16 @@ const Situacion2RazonDeCambio = () => {
   
     // Maneja la visualización del feedback anterior
     const mostrarFeedbackAnterior = async () => {
-      if (situacionCompletada) {
-        const feedbackData = await AsyncStorage.getItem('feedback_situacion_1');
-        if (feedbackData) {
-          navigation.navigate('FeedbackScreen', { feedbackData: JSON.parse(feedbackData) });
-        }
-      }
+      const idEstudiante = await AsyncStorage.getItem('userId');
+      const idCuestionarioNormalizado = situacion.tituloSituacion;
+           if (idEstudiante && idCuestionarioNormalizado) {
+        navigation.navigate('FeedbackScreen', { 
+          idEstudiante,
+          idCuestionarioNormalizado,
+        });
+      } else {
+        console.error('No se pudo obtener el idEstudiante o el idCuestionarioNormalizado');
+      }   
     };
 
     const opcionesDeRespuesta = [

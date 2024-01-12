@@ -8,6 +8,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 
 import { RootStackParamList } from '../navigation';
+import NavBar from '../utils/NavBar';
 
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'Situacion1RazonDeCambio', 'Situacion2RazonDeCambio'  >;
 
@@ -38,30 +39,30 @@ const EstudiemosRazonDeCambio = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <><View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Estudiemos</Text>
         <Ionicons name="md-school-sharp" size={32} color="green" />
-        
+
         {/* <View style={styles.menu}>
-          <Ionicons name="menu" size={24} />
-          <Ionicons name="wifi" size={24} />
-          <Text style={styles.menuText}>Menu</Text>
-        </View> */}
+      <Ionicons name="menu" size={24} />
+      <Ionicons name="wifi" size={24} />
+      <Text style={styles.menuText}>Menu</Text>
+    </View> */}
         <Text style={styles.reflection}> Estas haciendo las situaciones 1 y 2 de la tematica razon de cambio</Text>
       </View>
 
-      <View style={styles.card} >
-        <TouchableOpacity 
-        style={styles.situation}
-        onPress={() => navigation.navigate('Situacion1RazonDeCambio')}
+      <View style={styles.card}>
+        <TouchableOpacity
+          style={styles.situation}
+          onPress={() => navigation.navigate('Situacion1RazonDeCambio')}
         >
           <Text style={styles.situationText}>Situación 1. ¡Tiempo de empacar!</Text>
-          <Ionicons  name="md-rocket-sharp" size={32} color="green" />
+          <Ionicons name="md-rocket-sharp" size={32} color="green" />
         </TouchableOpacity>
-        <TouchableOpacity 
-        style={styles.situation}
-        onPress={() => navigation.navigate('Situacion2RazonDeCambio')}
+        <TouchableOpacity
+          style={styles.situation}
+          onPress={() => navigation.navigate('Situacion2RazonDeCambio')}
         >
           <Text style={styles.situationText}>Situación 2 - Caminando a la U</Text>
           <Ionicons name="md-walk-sharp" size={32} color="green" />
@@ -74,12 +75,12 @@ const EstudiemosRazonDeCambio = () => {
       </Text>
 
       {/* <View style={styles.footer}>
-        <Ionicons name="home" size={24} />
-        <Ionicons name="mail" size={24} />
-        <Ionicons name="cube" size={24} />
-        <Ionicons name="menu" size={24} />
-      </View> */}
-    </View>
+      <Ionicons name="home" size={24} />
+      <Ionicons name="mail" size={24} />
+      <Ionicons name="cube" size={24} />
+      <Ionicons name="menu" size={24} />
+    </View> */}
+    </View><NavBar /></>
   );
 };
 
