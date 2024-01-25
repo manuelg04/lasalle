@@ -69,17 +69,16 @@ const styles = StyleSheet.create({
     padding: scaledSize(20),
   },
   card: {
-    width: '100%', // Usa el 100% del contenedor
-    maxWidth: 500,
-    height: height * 0.5,
+    width: '100%', // Utiliza el 100% del ancho del contenedor
+    maxWidth: scaledSize(500), // Usa el máximo de 500 o menos según la escala
+    minHeight: height * 0.5, // Usa minHeight para asegurar contenido visible
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
     shadowOpacity: 0.1,
-    shadowRadius: 10,
+    shadowRadius: scaledSize(10),
     shadowColor: '#000',
     shadowOffset: { height: 0, width: 0 },
-    paddingBottom: 300,
     padding: scaledSize(20),
     borderRadius: scaledSize(10),
   },
