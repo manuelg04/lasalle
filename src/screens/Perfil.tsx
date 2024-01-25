@@ -8,18 +8,21 @@ import NavBar from '../utils/NavBar';
 const Perfil = () => {
   // Asumiendo que estos datos vendrán de alguna parte (estado, props, contexto, etc.)
   const [usuario, setUsuario] = useState({
-    nombre: null,
-    facultad: null,
-    carrera: null,
-    fotoPerfil: null, // inicialmente null, será actualizado después
+    nombre: '',
+    facultad: '',
+    carrera: '',
+    fotoPerfil: '', // inicialmente null, será actualizado después
   });
 
   useEffect(() => {
+    
     const obtenerDatosUsuario = async () => {
       const fullName = await AsyncStorage.getItem('fullName');
       const faculty = await AsyncStorage.getItem('faculty');
       const career = await AsyncStorage.getItem('career');
       const imageUrl = await AsyncStorage.getItem('userImageUrl');
+      console.log("🚀 ~ imageUrl:", imageUrl)
+      
 
       setUsuario({
         nombre: fullName,
@@ -27,10 +30,12 @@ const Perfil = () => {
         carrera: career,
         fotoPerfil: imageUrl,
       });
+      console.log("🚀 ~ usuario:", usuario)
     };
 
     obtenerDatosUsuario();
   }, []);
+
 
   return (
     <><View style={styles.container}>

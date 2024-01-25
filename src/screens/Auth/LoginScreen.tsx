@@ -34,11 +34,14 @@ export default function LoginScreen() {
       });
 
       if (response.status === 200) {
-        const { token, userId, fullName, userType } = response.data;
+        const { token, userId, fullName, userType, career, faculty, imageUrl} = response.data;
         await AsyncStorage.setItem('userToken', token);
         await AsyncStorage.setItem('userId', userId);
+        await AsyncStorage.setItem('career', career);
+        await AsyncStorage.setItem('faculty', faculty);
         await AsyncStorage.setItem('fullName', fullName);
         await AsyncStorage.setItem('userType', userType);
+        await AsyncStorage.setItem('userImageUrl', imageUrl); // Guarda la imageUrl en AsyncStorage
         
        // Verificar si el usuario es un estudiante o un profesor y navegar a la pantalla correspondiente
        if (userType === 'student') {

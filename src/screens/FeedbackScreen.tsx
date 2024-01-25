@@ -6,8 +6,9 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import { RootStackParamList } from '../navigation';
-import firebase from '../utils/firebase';
-const { db } = firebase;
+import db from '../utils/firebase'; // Asegúrate de importar db correctamente
+
+
 
 
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FeedbackScreen'>;
