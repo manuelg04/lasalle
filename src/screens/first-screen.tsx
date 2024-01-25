@@ -1,10 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Dimensions, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  Dimensions,
+  Image,
+} from 'react-native';
 
 import { RootStackParamList } from '../navigation';
 const { width, height } = Dimensions.get('window');
+
+// Ajustes para diferentes tamaños de pantalla
+const baseWidth = 375; // Ancho base, por ejemplo el del iPhone SE
+const scale = width / baseWidth; // Escala basada en el ancho de la pantalla
+
+const scaledSize = (size) => Math.ceil(size * scale);
+
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FirstScreen'>;
 
 export default function FirstScreen() {
@@ -13,7 +28,7 @@ export default function FirstScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.card}>
-      <View>
+        <View>
           <Image
             source={require('../../assets/lasallelogo.png')}
             style={styles.logo}
@@ -43,29 +58,30 @@ export default function FirstScreen() {
     </SafeAreaView>
   );
 }
-
+const logoWidth = scaledSize(250); // Tamaño base para el logo
+const logoHeight = logoWidth * (200 / 300); // Mantener la relación de aspecto del logo
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: scaledSize(20),
   },
   card: {
-    width: width - 1, // Márgenes horizontales de 20
+    width: '100%', // Usa el 100% del contenedor
     maxWidth: 500,
     height: height * 0.5,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 50,
-    borderRadius: 10,
     shadowOpacity: 0.1,
     shadowRadius: 10,
     shadowColor: '#000',
     shadowOffset: { height: 0, width: 0 },
     paddingBottom: 300,
+    padding: scaledSize(20),
+    borderRadius: scaledSize(10),
   },
   section: {
     width: '100%',
@@ -98,8 +114,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   logo: {
-    width: 300,
-    height: 200,
+    width: logoWidth,
+    height: logoHeight,
     backgroundColor: 'white',
+    resizeMode: 'contain', // Asegura que el logo se escale dentro de las dimensiones definidas
   },
 });
