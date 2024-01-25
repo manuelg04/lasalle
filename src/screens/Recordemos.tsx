@@ -62,7 +62,7 @@ export const recursos = {
       },
         {
             subtematica: "Concepto de funcion - Evaluacion de funciones, dominio, rango y grafica",
-            url: "El link proporcionado requiere iniciar sesion en la plataforma de la salle"
+            url: "https://h5p.org/h5p/embed/1465798"
         },
         {
             subtematica: "Tipos de funciones(funcion cuadratica y funcion lineal)",
@@ -93,7 +93,7 @@ export const recursos = {
             },
             {
                 subtematica: "Derivadas de funciones exponentes y logaritmicas",
-                url: "El link proporcionado requiere iniciar sesion en la plataforma de la salle"
+                url: "https://h5p.org/h5p/embed/1465796"
             },
             {
                 subtematica: "Regla de la cadena",
