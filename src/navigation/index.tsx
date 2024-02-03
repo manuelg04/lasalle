@@ -23,6 +23,7 @@ import TeacherFirstScreen from '../screens/TeacherFirstScreen';
 import Temas from '../screens/Temas';
 import TermsAndConditions from '../screens/TermsAndConditions';
 import FirstScreen from '../screens/first-screen';
+import FeedbackExperimentemos from '../screens/FeedBack-Experimentemos';
 
 export type RootStackParamList = {
   FirstScreen: undefined;
@@ -44,6 +45,7 @@ export type RootStackParamList = {
   Situacion2Optimizacion: undefined;
   ExpCustomMission: undefined;
   TeacherFirstScreen: undefined;
+  FeedbackExperimentemos: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -117,6 +119,11 @@ export default function RootStack() {
           name="ExpCustomMission"
           component={ExpCustomMission}
           options={{ title: 'Mision personalizada' }}
+        />
+        <Stack.Screen
+          name="FeedbackExperimentemos"
+          component={FeedbackExperimentemos}
+          options={{ title: 'Retroalimentacion' }}
         />
         <Stack.Screen
           name="TeacherFirstScreen"

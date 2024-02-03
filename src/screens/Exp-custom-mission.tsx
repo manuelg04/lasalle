@@ -81,10 +81,9 @@ const ExpCustomMission = () => {
             Alert.alert(
               "Éxito",
               "Misión finalizada con éxito",
-              [
-                { text: "OK", onPress: () => navigation.navigate('Temas') }
-              ]
+             
             );
+            navigation.navigate('FeedbackExperimentemos', { studentId , missionName: missionData.name });
 
           } else {
             // Manejar las respuestas que no son código 201

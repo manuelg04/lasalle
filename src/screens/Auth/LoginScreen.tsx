@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
 import { RootStackParamList } from '../../navigation';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,6 +18,14 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('student'); // O 'professor', dependiendo del contexto
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => null, // Esto elimina el botón de regreso
+      headerBackTitle: ' ', // Esto elimina el texto de regreso en iOS
+      gestureEnabled: false, // Esto deshabilita el gesto de deslizar para volver en iOS
+    });
+  }, [navigation]);
 
   const handleLogin = async () => {
     // Asegúrate de validar las entradas según sea necesario
@@ -37,11 +45,14 @@ export default function LoginScreen() {
         const { token, userId, fullName, userType, career, faculty, imageUrl} = response.data;
         await AsyncStorage.setItem('userToken', token);
         await AsyncStorage.setItem('userId', userId);
-        await AsyncStorage.setItem('career', career);
-        await AsyncStorage.setItem('faculty', faculty);
+        if (career !== undefined && faculty !== undefined && imageUrl !== undefined) {
+          await AsyncStorage.setItem('career', career);
+          await AsyncStorage.setItem('faculty', faculty);
+          await AsyncStorage.setItem('userImageUrl', imageUrl);
+        }        
         await AsyncStorage.setItem('fullName', fullName);
         await AsyncStorage.setItem('userType', userType);
-        await AsyncStorage.setItem('userImageUrl', imageUrl); // Guarda la imageUrl en AsyncStorage
+         // Guarda la imageUrl en AsyncStorage
         
        // Verificar si el usuario es un estudiante o un profesor y navegar a la pantalla correspondiente
        if (userType === 'student') {

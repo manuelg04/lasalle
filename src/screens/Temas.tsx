@@ -19,6 +19,14 @@ const Temas = () => {
     const [selectedTheme, setSelectedTheme] = useState('');
 
 
+    useEffect(() => {
+      navigation.setOptions({
+        headerLeft: () => null, // Esto elimina el botón de regreso
+        headerBackTitle: ' ', // Esto elimina el texto de regreso en iOS
+        gestureEnabled: false, // Esto deshabilita el gesto de deslizar para volver en iOS
+      });
+    }, [navigation]);
+
     const showAlert = () => {
         Alert.alert("Vaya!", "No puedes continuar si no has completado las fases anteriores.");
       };
@@ -58,15 +66,19 @@ const Temas = () => {
     return null; // O un componente de carga
   }
 
-  const handleLogout = () => {
-    AsyncStorage.removeItem('userToken') // Elimina el token almacenado
-      .then(() => {
-        navigation.replace('LoginScreen'); // Reemplaza la pantalla actual por la de inicio de sesión
-      })
-      .catch((error) => {
-        console.error('Error al cerrar sesión', error);
-      });
+  const handleLogout = async () => {
+    try {
+      // Enumera todas las claves que quieres eliminar
+      const keys = ['userToken', 'userId', 'career', 'faculty', 'fullName', 'userType', 'userImageUrl'];
+      // Elimina todas las claves
+      await AsyncStorage.multiRemove(keys);
+      // Navega a la pantalla de inicio de sesión
+      navigation.replace('LoginScreen');
+    } catch (error) {
+      console.error('Error al cerrar sesión', error);
+    }
   };
+  
 
   const toggleRazonDeCambio = () => {
     setRazonDeCambioExpanded(!isRazonDeCambioExpanded);

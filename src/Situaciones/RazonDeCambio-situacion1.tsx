@@ -444,6 +444,7 @@ const enviarRespuestas = async () => {
       navigation.navigate('FeedbackScreen', { 
         idEstudiante,
         idCuestionarioNormalizado,
+        situacionCompletada: true
       });
     } else {
       console.error('No se pudo obtener el idEstudiante o el idCuestionarioNormalizado');

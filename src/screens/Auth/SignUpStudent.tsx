@@ -137,6 +137,11 @@ const SignUpStudent = () => {
       alert('Todos los campos son requeridos');
       return;
     }
+
+    if(!email.endsWith('@unisalle.edu.co')){
+      alert('El correo debe ser del dominio @unisalle.edu.co');
+      return;
+    }
  
     try {
         const formData = new FormData();

@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Linking } from 'react-native';
 
 export const recursos = {
-    ResolucionDeProblemas: [
+  ResoluciónDeProblemas: [
       {
         subtematica: "Pasos para la resolución de problemas",
         url: "https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/"

@@ -230,7 +230,7 @@ const [startTime, setStartTime] = useState<Date | null>(null);
 const [endTime, setEndTime] = useState<Date | null>(null);
 const navigation = useNavigation<OverviewScreenNavigationProps>();
 const router = useRoute<DetailsSreenRouteProp>();
-const [situacionCompletada, setSituacionCompletada] = useState(false);
+const [situacionCompletada, setSituacionCompletada] = useState(true);
 
   // Verifica si la situación ya ha sido completada
   useEffect(() => {
@@ -410,6 +410,7 @@ const enviarRespuestas = async () => {
     });
 
     if(response.status === 201){
+      
       await marcarComoCompletada();
       await mostrarFeedbackAnterior();
     }
@@ -456,6 +457,7 @@ const enviarRespuestas = async () => {
     navigation.navigate('FeedbackScreen', { 
       idEstudiante,
       idCuestionarioNormalizado,
+      situacionCompletada: true
     });
   } else {
     // Manejar el caso donde no se puedan obtener los IDs

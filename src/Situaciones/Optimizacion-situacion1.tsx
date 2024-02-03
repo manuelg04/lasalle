@@ -5,11 +5,21 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert, Image, Modal, ActivityIndicator, Button } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  Image,
+  Modal,
+  ActivityIndicator,
+  Button,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { RootStackParamList } from '../navigation';
-import {recursos} from "../screens/Recordemos"
+import { recursos } from '../screens/Recordemos';
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
 
@@ -96,7 +106,7 @@ const situacion1Opt = [
       {
         enunciado:
           '8. Si 2000 es el número de unidades vendidas del material que determinan el ingreso total mayor, entonces usando el criterio de la primera derivada se debe cumplir que: ',
-          url: 'https://drive.google.com/file/d/1Jtv0g2NSgsnac35AMC8bxREeRDBLh5qh/view?usp=sharing',
+        url: 'https://drive.google.com/file/d/1Jtv0g2NSgsnac35AMC8bxREeRDBLh5qh/view?usp=sharing',
         respuestas: [
           'a. La derivada es positiva antes del punto 2000 y negativa después del 2000, por lo tanto, en 2000 hay un punto máximo',
           'b. La derivada es negativa antes del punto 2000 y positiva después del 2000, por lo tanto, en 2000 hay un punto máximo',
@@ -117,7 +127,7 @@ const situacion1Opt = [
       {
         enunciado:
           '10. Dado que el ingreso total es una función cuadrática, otra forma de comprobar que en el valor 2000 hay un máximo es',
-          url: 'https://h5p.org/h5p/embed/244800',
+        url: 'https://h5p.org/h5p/embed/244800',
         respuestas: [
           'a. Obteniendo el valor de x del vértice de la parábola de la siguiente manera -4000/2',
           'b. Derivando la expresión 2(x-2000), evaluando el punto crítico 2000 en la derivada encontrada y chequeando que el valor dado sea negativo.',
@@ -132,49 +142,45 @@ const situacion1Opt = [
 ];
 
 const RadioButton = ({ label, isSelected, onPress }) => (
-    <TouchableOpacity style={styles.radioButtonContainer} onPress={onPress}>
-        <View style={[
-            styles.radioButton,
-            isSelected ? styles.radioButtonSelected : null
-        ]} />
-        <Text style={styles.radioButtonLabel}>{label}</Text>
-    </TouchableOpacity>
+  <TouchableOpacity style={styles.radioButtonContainer} onPress={onPress}>
+    <View style={[styles.radioButton, isSelected ? styles.radioButtonSelected : null]} />
+    <Text style={styles.radioButtonLabel}>{label}</Text>
+  </TouchableOpacity>
 );
 
 const getSubtitulo = (questionIndex: any) => {
-    if (questionIndex >= 0 && questionIndex <= 2) {
-        return "¿Qué comprendes de la situación?";
-    } else if (questionIndex >= 3 && questionIndex <= 4) {
-        return "¿Qué plan diseñarías?";
-    } else if (questionIndex >= 5 && questionIndex <= 7) {
-        return "¿Cómo llevarías a cabo el plan?";
-    } else if (questionIndex >= 8 && questionIndex <= 9) {
-        return "¿Qué resultados obtienes?";
-    }
-    return "";
+  if (questionIndex >= 0 && questionIndex <= 2) {
+    return '¿Qué comprendes de la situación?';
+  } else if (questionIndex >= 3 && questionIndex <= 4) {
+    return '¿Qué plan diseñarías?';
+  } else if (questionIndex >= 5 && questionIndex <= 7) {
+    return '¿Cómo llevarías a cabo el plan?';
+  } else if (questionIndex >= 8 && questionIndex <= 9) {
+    return '¿Qué resultados obtienes?';
+  }
+  return '';
 };
 
 type FeedbackState = 'correct' | 'incorrect' | null;
-``
+``;
 type DetailsSreenRouteProp = RouteProp<RootStackParamList, 'Situacion1Optimizacion'>;
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FeedbackScreen'>;
-
 
 const Situacion1Optimizacion = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({}) as any;
   const [isEnunciadoVisible, setIsEnunciadoVisible] = useState(true);
   const [showFeedback, setShowFeedback] = useState<FeedbackState>(null);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState({
     visible: false,
     type: null, // 'correct' o 'incorrect'
-});
-const [startTime, setStartTime] = useState<Date | null>(null);
-const [endTime, setEndTime] = useState<Date | null>(null);
-const navigation = useNavigation<OverviewScreenNavigationProps>();
-const router = useRoute<DetailsSreenRouteProp>();
-const [situacionCompletada, setSituacionCompletada] = useState(false);
+  });
+  const [startTime, setStartTime] = useState<Date | null>(null);
+  const [endTime, setEndTime] = useState<Date | null>(null);
+  const navigation = useNavigation<OverviewScreenNavigationProps>();
+  const router = useRoute<DetailsSreenRouteProp>();
+  const [situacionCompletada, setSituacionCompletada] = useState(false);
 
   // Verifica si la situación ya ha sido completada
   useEffect(() => {
@@ -188,8 +194,6 @@ const [situacionCompletada, setSituacionCompletada] = useState(false);
     verificarCompletada();
   }, []);
 
-
-
   const situacion = situacion1Opt[0]; // Asumiendo que solo trabajas con la situación 1
 
   const handleAnswer = (respuestaIndex) => {
@@ -200,403 +204,385 @@ const [situacionCompletada, setSituacionCompletada] = useState(false);
     let resourceUrl;
 
     if (question.url.startsWith('http')) {
-        resourceUrl = question.url;
+      resourceUrl = question.url;
     } else if (recursos[question.url]) {
-        resourceUrl = recursos[question.url][0].url; // Asume que quieres el primer recurso de la temática
+      resourceUrl = recursos[question.url][0].url; // Asume que quieres el primer recurso de la temática
     }
 
     if (respuestaIndex === question.respuestaCorrecta) {
-        setFeedbackModal({
-            visible: true,
-            type: 'correct'
-        });
+      setFeedbackModal({
+        visible: true,
+        type: 'correct',
+      });
     } else {
-        setFeedbackModal({
-            visible: true,
-            type: 'incorrect',
-            tip : question.tip, // Pasa el tip aquí
-            url: resourceUrl, // Pasar URL aquí
-        });
-    }
-};
-
-
-
-const closeFeedbackModal = () => {
-    setFeedbackModal({ visible: false, type: null });
-};
-
-
-
-const nextQuestion = () => {
-    if (currentQuestionIndex < situacion.preguntas.length - 1) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setShowFeedback(null); // Resetear el estado de feedback
-    } else {
-        // Si es la última pregunta, envía las respuestas
-        enviarRespuestas();
+      setFeedbackModal({
+        visible: true,
+        type: 'incorrect',
+        tip: question.tip, // Pasa el tip aquí
+        url: resourceUrl, // Pasar URL aquí
+      });
     }
   };
-  
+
+  const closeFeedbackModal = () => {
+    setFeedbackModal({ visible: false, type: null });
+  };
+
+  const nextQuestion = () => {
+    if (currentQuestionIndex < situacion.preguntas.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setShowFeedback(null); // Resetear el estado de feedback
+    } else {
+      // Si es la última pregunta, envía las respuestas
+      enviarRespuestas();
+    }
+  };
 
   const previousQuestion = () => {
-      if (currentQuestionIndex > 0) {
-          setCurrentQuestionIndex(currentQuestionIndex - 1);
-          setShowFeedback(null); // Resetear el estado de feedback
-      }
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setShowFeedback(null); // Resetear el estado de feedback
+    }
   };
 
-  const renderRespuestas = (respuestas:any, pregunta) => {
-    return respuestas.map((respuesta:any, index:any) => (
-        <RadioButton
-            key={index}
-            label={respuesta}
-            isSelected={selectedAnswers[currentQuestionIndex] === index}
-            onPress={() => handleAnswer(index)}
-        />
+  const renderRespuestas = (respuestas: any, pregunta) => {
+    return respuestas.map((respuesta: any, index: any) => (
+      <RadioButton
+        key={index}
+        label={respuesta}
+        isSelected={selectedAnswers[currentQuestionIndex] === index}
+        onPress={() => handleAnswer(index)}
+      />
     ));
-};
+  };
 
+  const startCuestionario = () => {
+    // Guarda la hora de inicio
+    setStartTime(new Date());
+  };
 
+  useEffect(() => {
+    startCuestionario();
+  }, []);
 
-const startCuestionario = () => {
-  // Guarda la hora de inicio
-  setStartTime(new Date());
-};
+  const marcarComoCompletada = async () => {
+    try {
+      await AsyncStorage.setItem('situacion3_completada', 'true');
+      console.log('Situación 3 marcada como completada');
+    } catch (error) {
+      console.error('Error al marcar la situación como completada', error);
+    }
+  };
 
-useEffect(() => {
-  startCuestionario();
-}, []);
-
-const marcarComoCompletada = async () => {
-  try {
-    await AsyncStorage.setItem('situacion3_completada', 'true');
-    console.log('Situación 3 marcada como completada');
-  } catch (error) {
-    console.error('Error al marcar la situación como completada', error);
-  }
-};
-
-const enviarRespuestas = async () => {
-  setIsLoading(true);
-  if (!startTime) {
-    console.error('El tiempo de inicio no está establecido.');
-    setIsLoading(false);
-    return;
-  }
-
-  const end = new Date();
-  const tiempoTranscurridoMs = end.getTime() - startTime.getTime();
-  if (tiempoTranscurridoMs < 0) {
-    console.error('El tiempo de inicio es posterior al tiempo de finalización.');
-    setIsLoading(false);
-    return;
-  }
-
-  const tiempoTranscurridoMinutos = tiempoTranscurridoMs / 60000;
-  
-  try {
-    const idEstudiante = await AsyncStorage.getItem('userId');
-    const idCuestionario = situacion.tituloSituacion; // Asumiendo que 'situacion' es tu objeto de preguntas actual
-
-    if (!idEstudiante || !idCuestionario) {
-      console.error('Falta ID del estudiante o ID del cuestionario');
+  const enviarRespuestas = async () => {
+    setIsLoading(true);
+    if (!startTime) {
+      console.error('El tiempo de inicio no está establecido.');
       setIsLoading(false);
       return;
     }
 
-    const respuestasEstudiante = situacion.preguntas.map((pregunta, indice) => ({
-      preguntaId: indice,
-      respuestaSeleccionada: selectedAnswers[indice],
-      esRespuestaCorrecta: selectedAnswers[indice] === pregunta.respuestaCorrecta
-    }));
-
-    const response = await axios.post('https://lasalleapp-dev-sjta.1.us-1.fl0.io/save-answer/guardar-respuesta', {
-      idEstudiante,
-      idCuestionario,
-      respuestasEstudiante,
-      tiempoTranscurrido: tiempoTranscurridoMinutos
-    });
-    console.log("🚀 ~ response:", response)
-
-    if(response.status === 201){
-      await marcarComoCompletada();
-      await mostrarFeedbackAnterior();
+    const end = new Date();
+    const tiempoTranscurridoMs = end.getTime() - startTime.getTime();
+    if (tiempoTranscurridoMs < 0) {
+      console.error('El tiempo de inicio es posterior al tiempo de finalización.');
+      setIsLoading(false);
+      return;
     }
 
-  
-    // if (response.status === 201) {
-    //   // Tras enviar las respuestas, procedemos a analizarlas
-    //   const analizarRespuestasUrl = 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas';
-    //   const responseAnalizar = await axios.post(analizarRespuestasUrl, {
-    //     idEstudiante,
-    //     idCuestionario,
-    //     tiempoTranscurridoMinutos
-    //   });
-      
-    //   if (responseAnalizar.data.feedback) {
-  
-    //     // Si recibimos feedback del análisis, lo mostramos
-    //     await marcarComoCompletada();
-    //     await AsyncStorage.setItem('feedback_situacion_1', JSON.stringify(responseAnalizar.data.feedback));
-    //     await AsyncStorage.setItem('situacion_1_completada', 'true');
-    //      navigation.navigate('FeedbackScreen', { 
-    //       feedbackData: responseAnalizar.data.feedback,
-    //       situacionCompletada: true
-    //      });
-    //   }
-    // }
-  } catch (error) {
-    console.error('Error al enviar respuestas:', error);
-    if (axios.isAxiosError(error) && error.response) {
-      // Manejo específico para errores de Axios con respuesta
-      console.error('Detalles del error:', error.response.data);
+    const tiempoTranscurridoMinutos = tiempoTranscurridoMs / 60000;
+
+    try {
+      const idEstudiante = await AsyncStorage.getItem('userId');
+      const idCuestionario = situacion.tituloSituacion; // Asumiendo que 'situacion' es tu objeto de preguntas actual
+
+      if (!idEstudiante || !idCuestionario) {
+        console.error('Falta ID del estudiante o ID del cuestionario');
+        setIsLoading(false);
+        return;
+      }
+
+      const respuestasEstudiante = situacion.preguntas.map((pregunta, indice) => ({
+        preguntaId: indice,
+        respuestaSeleccionada: selectedAnswers[indice],
+        esRespuestaCorrecta: selectedAnswers[indice] === pregunta.respuestaCorrecta,
+      }));
+
+      const response = await axios.post(
+        'https://lasalleapp-dev-sjta.1.us-1.fl0.io/save-answer/guardar-respuesta',
+        {
+          idEstudiante,
+          idCuestionario,
+          respuestasEstudiante,
+          tiempoTranscurrido: tiempoTranscurridoMinutos,
+        }
+      );
+      console.log('🚀 ~ response:', response);
+
+      if (response.status === 201) {
+        await marcarComoCompletada();
+        await mostrarFeedbackAnterior();
+      }
+
+      // if (response.status === 201) {
+      //   // Tras enviar las respuestas, procedemos a analizarlas
+      //   const analizarRespuestasUrl = 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas';
+      //   const responseAnalizar = await axios.post(analizarRespuestasUrl, {
+      //     idEstudiante,
+      //     idCuestionario,
+      //     tiempoTranscurridoMinutos
+      //   });
+
+      //   if (responseAnalizar.data.feedback) {
+
+      //     // Si recibimos feedback del análisis, lo mostramos
+      //     await marcarComoCompletada();
+      //     await AsyncStorage.setItem('feedback_situacion_1', JSON.stringify(responseAnalizar.data.feedback));
+      //     await AsyncStorage.setItem('situacion_1_completada', 'true');
+      //      navigation.navigate('FeedbackScreen', {
+      //       feedbackData: responseAnalizar.data.feedback,
+      //       situacionCompletada: true
+      //      });
+      //   }
+      // }
+    } catch (error) {
+      console.error('Error al enviar respuestas:', error);
+      if (axios.isAxiosError(error) && error.response) {
+        // Manejo específico para errores de Axios con respuesta
+        console.error('Detalles del error:', error.response.data);
+      }
+    } finally {
+      setIsLoading(false); // Asegúrate de quitar el estado de carga independientemente del resultado
     }
-  } finally {
-    setIsLoading(false); // Asegúrate de quitar el estado de carga independientemente del resultado
-  }
-};
+  };
 
   // Maneja la visualización del feedback anterior
   const mostrarFeedbackAnterior = async () => {
-      // Si la situación ya ha sido completada, mostramos el feedback
-      const idEstudiante = await AsyncStorage.getItem('userId');
-      const idCuestionarioNormalizado = situacion.tituloSituacion;
+    // Si la situación ya ha sido completada, mostramos el feedback
+    const idEstudiante = await AsyncStorage.getItem('userId');
+    const idCuestionarioNormalizado = situacion.tituloSituacion;
     // Solo procedemos si tenemos los IDs necesarios
-      if (idEstudiante && idCuestionarioNormalizado) {
-      navigation.navigate('FeedbackScreen', { 
+    if (idEstudiante && idCuestionarioNormalizado) {
+      navigation.navigate('FeedbackScreen', {
         idEstudiante,
         idCuestionarioNormalizado,
+        situacionCompletada: true,
       });
     } else {
       // Manejar el caso donde no se puedan obtener los IDs
       console.error('No se pudo obtener el idEstudiante o el idCuestionarioNormalizado');
     }
-    
   };
 
-
-
-  
-
   return (
-<View style={styles.container}>
-{situacionCompletada && (
-        <Button
-          title="Ver Feedback Anterior"
-          onPress={mostrarFeedbackAnterior}
-        />
+    <View style={styles.container}>
+      {situacionCompletada && (
+        <Button title="Ver Feedback Anterior" onPress={mostrarFeedbackAnterior} />
       )}
-    {isLoading ? (
-      // Mostrar el loader cuando isLoading sea true
-      <ActivityIndicator size="large" color="#0000ff" />
-    ) : (
-      // El contenido de tu pantalla cuando isLoading sea false
-      <>
+      {isLoading ? (
+        // Mostrar el loader cuando isLoading sea true
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <>
+          <Modal
+            animationType="slide"
+            transparent
+            visible={feedbackModal.visible}
+            onRequestClose={closeFeedbackModal}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                {feedbackModal.type === 'correct' && <AnswerCorrectly />}
+                {feedbackModal.type === 'incorrect' && (
+                  <AnswerWrong tip={feedbackModal.tip} url={feedbackModal.url} />
+                )}
+                <TouchableOpacity style={styles.closeButton} onPress={closeFeedbackModal}>
+                  <Text>Cerrar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
 
-        <Modal
-          animationType="slide"
-          transparent
-          visible={feedbackModal.visible}
-          onRequestClose={closeFeedbackModal}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              {feedbackModal.type === 'correct' && <AnswerCorrectly />}
-              {feedbackModal.type === 'incorrect' && (
-                <AnswerWrong tip={feedbackModal.tip} url={feedbackModal.url} />
+          <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
+            <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
+          </TouchableOpacity>
+
+          {isEnunciadoVisible && (
+            <View>
+              <Text style={styles.enunciado}>{situacion.enunciado}</Text>
+              <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
+            </View>
+          )}
+
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.preguntaContainer}>
+              <Text style={styles.subtitulo}>{getSubtitulo(currentQuestionIndex)}</Text>
+              <Text style={styles.preguntaEnunciado}>
+                {situacion.preguntas[currentQuestionIndex].enunciado}
+              </Text>
+              {renderRespuestas(
+                situacion.preguntas[currentQuestionIndex].respuestas,
+                situacion.preguntas[currentQuestionIndex]
               )}
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={closeFeedbackModal}
-              >
-                <Text>Cerrar</Text>
+              {/* Verifica si la pregunta actual es la cuarta pregunta (índice 3 ya que los índices comienzan en 0) */}
+            </View>
+
+            <View style={styles.navigationContainer}>
+              <TouchableOpacity onPress={previousQuestion} style={styles.navButton}>
+                <Text>Anterior</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={nextQuestion} style={styles.navButton}>
+                <Text>Siguiente</Text>
               </TouchableOpacity>
             </View>
-          </View>
-        </Modal>
-
-        <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
-          <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
-        </TouchableOpacity>
-
-        {isEnunciadoVisible && (
-          <View>
-            <Text style={styles.enunciado}>{situacion.enunciado}</Text>
-            <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
-          </View>
-        )}
-
-        <ScrollView style={styles.scrollView}>
-        <View style={styles.preguntaContainer}>
-  <Text style={styles.subtitulo}>{getSubtitulo(currentQuestionIndex)}</Text>
-  <Text style={styles.preguntaEnunciado}>{situacion.preguntas[currentQuestionIndex].enunciado}</Text>
-  {renderRespuestas(situacion.preguntas[currentQuestionIndex].respuestas, situacion.preguntas[currentQuestionIndex])}
-  {/* Verifica si la pregunta actual es la cuarta pregunta (índice 3 ya que los índices comienzan en 0) */}
-</View>
-
-
-          <View style={styles.navigationContainer}>
-            <TouchableOpacity onPress={previousQuestion} style={styles.navButton}>
-              <Text>Anterior</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={nextQuestion} style={styles.navButton}>
-              <Text>Siguiente</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </>
-    )}
-  </View>
+          </ScrollView>
+        </>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'white',
-        flex: 1,
-    },
-    situacion: {
-      marginBottom: 20,
-      padding: 10,
-      backgroundColor: 'white',
-      borderRadius: 8,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 1.41,
-      elevation: 2,
-    },
-    tituloSituacion: {
-        color: '#facc15',
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        padding: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: 'black',
-    },
-    enunciado: {
-        color: 'black',
-        fontSize: 16,
-        padding: 16,
-    },
-    postEnunciado: {
-        color: '#facc15',
-        fontSize: 16,
-        fontWeight: 'bold',
-        padding: 16,
-        paddingTop: 0,
-    },
-    preguntaContainer: {
-        padding: 16,
-        paddingTop: 0,
-      
-    },
-    preguntaEnunciado: {
-        color: '#facc15',
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
-    respuesta: {
-      fontSize: 16,
-      paddingLeft: 20,
-      marginBottom: 2,
-    },
-    selectedAnswer: {
-        backgroundColor: '#e2e8f0',
-      },
-      scrollView: {
-        maxHeight: 500, // Ajusta esto según el tamaño que desees
-    },
-    navigationContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 10,
-        // ... otros estilos que necesites
-    },
-    navButton: {
-        padding: 10,
-        backgroundColor: '#ddd', // Cambia esto por el color que prefieras
-        // ... otros estilos para tus botones
-    },
-    respuestaText: {
-      fontSize: 16,
-    
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
+  situacion: {
+    marginBottom: 20,
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 1.41,
+    elevation: 2,
+  },
+  tituloSituacion: {
+    color: '#facc15',
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+  },
+  enunciado: {
+    color: 'black',
+    fontSize: 16,
+    padding: 16,
+  },
+  postEnunciado: {
+    color: '#facc15',
+    fontSize: 16,
+    fontWeight: 'bold',
+    padding: 16,
+    paddingTop: 0,
+  },
+  preguntaContainer: {
+    padding: 16,
+    paddingTop: 0,
+  },
+  preguntaEnunciado: {
+    color: '#facc15',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  respuesta: {
+    fontSize: 16,
+    paddingLeft: 20,
+    marginBottom: 2,
+  },
+  selectedAnswer: {
+    backgroundColor: '#e2e8f0',
+  },
+  scrollView: {
+    maxHeight: 500, // Ajusta esto según el tamaño que desees
+  },
+  navigationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+    // ... otros estilos que necesites
+  },
+  navButton: {
+    padding: 10,
+    backgroundColor: '#ddd', // Cambia esto por el color que prefieras
+    // ... otros estilos para tus botones
+  },
+  respuestaText: {
+    fontSize: 16,
   },
   imagen: {
     width: '100%', // Puedes ajustar esto como necesites
     height: 200, // Altura fija para la imagen, también es ajustable
     resizeMode: 'contain', // Esto es para asegurarse de que la imagen se ajuste sin perder la proporción
     marginTop: 20, // Añade un poco de espacio arriba de la imagen
-},
-radioButtonContainer: {
+  },
+  radioButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-},
-radioButton: {
+  },
+  radioButton: {
     height: 20,
     width: 20,
     borderRadius: 10,
     borderWidth: 2,
     borderColor: 'black',
     marginRight: 10,
-},
-radioButtonSelected: {
+  },
+  radioButtonSelected: {
     height: 10,
     width: 10,
     borderRadius: 5,
     backgroundColor: 'black',
-},
-radioButtonLabel: {
+  },
+  radioButtonLabel: {
     color: 'black', // Texto en blanco
     fontSize: 16,
-},
-subtitulo: {
+  },
+  subtitulo: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
     color: '#facc15',
-},
+  },
 
-centeredView: {
+  centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
-},
-modalView: {
+  },
+  modalView: {
     margin: 20,
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-},
-closeButton: {
+  },
+  closeButton: {
     backgroundColor: '#2196F3',
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    marginTop: 15
-},
-imagesContainer: {
-  flexDirection: 'row',
-  justifyContent: 'center',
-  flexWrap: 'wrap',
-  // Añade estilos adicionales si es necesario
-},
-imageOptionContainer: {
-  alignItems: 'center',
-  margin: 10,
-  // Añade estilos adicionales si es necesario
-},
-imageOptionText: {
-  marginBottom: 5,
-  fontWeight: 'bold',
-  // Añade estilos adicionales si es necesario
-},
-
-
-  });
+    marginTop: 15,
+  },
+  imagesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    // Añade estilos adicionales si es necesario
+  },
+  imageOptionContainer: {
+    alignItems: 'center',
+    margin: 10,
+    // Añade estilos adicionales si es necesario
+  },
+  imageOptionText: {
+    marginBottom: 5,
+    fontWeight: 'bold',
+    // Añade estilos adicionales si es necesario
+  },
+});
 export default Situacion1Optimizacion;

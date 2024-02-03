@@ -35,7 +35,6 @@ const FeedbackScreen = ({ route }) => {
               const querySnapshot = await getDocs(q);
               if (!querySnapshot.empty) {
                   const latestAttemptData = querySnapshot.docs[0].data();
-                  console.log("🚀 ~ latestAttemptData:", latestAttemptData)
                   setFeedbackData(latestAttemptData); // Aquí estableces la data de Firestore en el estado
                   setIsLoading(false); // Data ha sido cargada
               }else {
@@ -43,8 +42,11 @@ const FeedbackScreen = ({ route }) => {
                 setIsLoading(false);
               }
           } catch (error) {
-              console.error("Error al obtener el último intento: ", error);
-              setIsLoading(false);
+            console.error("Error completo:", error);
+            if (error) {
+              console.error("Detalles del error de Firestore:", error.code, error.message);
+            }
+            setIsLoading(false);
           }
       };
 
