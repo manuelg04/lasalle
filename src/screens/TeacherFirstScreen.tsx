@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { encode as btoa } from 'base-64';
 import * as FileSystem from 'expo-file-system';
@@ -8,8 +10,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Share } from 'react-native';
 
 import db from '../utils/firebase'; // Asegúrate de importar db correctamente
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Ionicons } from '@expo/vector-icons';
 
 const TeacherFirstScreen = ({ navigation }) => {
   const [students, setStudents] = useState([]);
