@@ -1,18 +1,32 @@
 /* eslint-disable prettier/prettier */
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
+import { RootStackParamList } from '../navigation';
 import NavBar from '../utils/NavBar';
+
+type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FirstScreen'>;
 
 const Perfil = () => {
   // Asumiendo que estos datos vendrán de alguna parte (estado, props, contexto, etc.)
+  const navigation = useNavigation<OverviewScreenNavigationProps>();
   const [usuario, setUsuario] = useState({
     nombre: '',
     facultad: '',
     carrera: '',
     fotoPerfil: '', // inicialmente null, será actualizado después
   });
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => null, // Esto elimina el botón de regreso
+      headerBackTitle: ' ', // Esto elimina el texto de regreso en iOS
+      gestureEnabled: false, // Esto deshabilita el gesto de deslizar para volver en iOS
+    });
+  }, [navigation]);
 
   useEffect(() => {
     
