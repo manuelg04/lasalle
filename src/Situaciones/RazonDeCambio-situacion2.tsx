@@ -80,7 +80,9 @@ const situacion2: any = [
         enunciado:
           '5. Para hallar la velocidad promedio de la partícula en un tiempo t1 y t2 específico se debe:',
         url: 'https://view.genial.ly/5d8387fa7d6fa60fcf658f94',
-        respuestas: ['$d=\\pm\\sqrt{a^2 + b^2}\\$', '$\\frac{t_2 - t_1}{x(t_2) - x(t_1)}$'],
+        respuestas: ['https://i.imgur.com/7Uqc7AJ.png', 
+        'https://i.imgur.com/7Uqc7AJ.png'
+      ],
         respuestaCorrecta: 0,
         tip: 'Es importante identificar los conceptos previos necesarios para resolver la situación - Ten presente estudiar la definición de derivada en recordemos',
       },
@@ -270,15 +272,34 @@ const Situacion2RazonDeCambio = () => {
   };
 
   // Luego, modificarías el renderizado de las respuestas:
-  const renderRespuestas = (respuestas: any, pregunta) => {
-    return respuestas.map((respuesta: any, index: any) => (
-      <RadioButton
-        key={index}
-        label={respuesta}
-        isSelected={selectedAnswers[currentQuestionIndex] === index}
-        onPress={() => handleAnswer(index)}
-      />
-    ));
+  const renderRespuestas = (respuestas, pregunta) => {
+    return respuestas.map((respuesta, index) => {
+      // Verificar si la respuesta es un URL de una imagen
+      const isImageUrl = respuesta.match(/\.(jpeg|jpg|gif|png)$/) != null;
+      const optionLabel = index === 0 ? 'Opción A' : 'Opción B'; // Etiqueta para la opción
+      
+      return (
+        <View key={index} style={styles.optionContainer}>
+          {isImageUrl ? (
+            <View>
+              <Text style={styles.optionLabel}>{optionLabel}</Text>
+              <TouchableOpacity onPress={() => handleAnswer(index)}>
+                <Image
+                  style={styles.imageStyle}
+                  source={{ uri: respuesta }}
+                />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <RadioButton
+              label={respuesta}
+              isSelected={selectedAnswers[currentQuestionIndex] === index}
+              onPress={() => handleAnswer(index)}
+            />
+          )}
+        </View>
+      );
+    });
   };
 
   const renderImagen = (imagen: any) => {
@@ -654,6 +675,16 @@ const styles = StyleSheet.create({
   imageOptionText: {
     marginBottom: 5,
     fontWeight: 'bold',
+    // Añade estilos adicionales si es necesario
+  },
+  imageStyle: {
+    width: 200,        // Ancho de la imagen
+    height: 100,       // Altura de la imagen
+    resizeMode: 'contain', // O 'cover' para llenar el espacio sin perder la proporción
+    marginVertical: 10,    // Espacio vertical arriba y abajo de la imagen
+    borderRadius: 10,      // Bordes redondeados
+    borderWidth: 1,        // Ancho del borde
+    borderColor: '#ddd',   // Color del borde, un gris claro en este caso
     // Añade estilos adicionales si es necesario
   },
 });
