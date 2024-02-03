@@ -219,12 +219,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20, // Ajuste del padding,
+    paddingHorizontal: 20, // Asegúrese de que esto no sea demasiado grande para pantallas pequeñas
+    paddingTop: 20, // Ajuste según sea necesario
+    paddingBottom: 20, // Ajuste según sea necesario
   },
   headerText: {
     fontSize: 24, // Tamaño de letra más grande
     fontWeight: 'bold',
     color: '#333', // Texto más oscuro para mejor contraste
+    textAlign: 'center',
+
   },
   SubtitleText: {
     fontSize: 20,
@@ -345,7 +349,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   bookIcon: {
-    marginLeft: -165, // Ajusta el valor según necesites para separar el icono del título
+    marginRight: 10, // Ajusta el valor según necesites para separar el icono del título
   },
   buttonContent: {
     flexDirection: 'row', // Esto alinea los elementos hijo en una fila

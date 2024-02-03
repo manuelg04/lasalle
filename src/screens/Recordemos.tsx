@@ -37,21 +37,21 @@ export const recursos = {
     ],
     Ecuaciones: [
       {
-        subtematica: "Ecuaciones Lineales",
+        subtematica: "Ecuaciones lineales",
         url: "https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_EL_APP5/OVA_Ecuaciones_Lineales_V2/"
       },
       {
-        subtematica: "Ecuaciones Cuadráticas",
+        subtematica: "Ecuaciones cuadráticas",
         url: "https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_EC_APP7/OVA_EC_APP/"
       },
       {
-        subtematica: "Inecuaciones Lineales y cuadraticas",
+        subtematica: "Inecuaciones lineales y cuadráticas",
         url: "https://h5p.org/h5p/embed/220693"
       }
     ],
     Geometría: [
       {
-        subtematica: "Áreas y Volúmenes",
+        subtematica: "Áreas y volúmenes",
         url: "https://drive.google.com/file/d/10Xx_scheSiMvdZzWwVYWywBrNRADtoZ6/view?usp=sharing"
       },
     ],
@@ -61,11 +61,11 @@ export const recursos = {
         url: "https://www.youtube.com/watch?v=-UPzQwTQhAU"
       },
         {
-            subtematica: "Concepto de funcion - Evaluacion de funciones, dominio, rango y grafica",
+            subtematica: "Concepto de función - Evaluación de funciones, dominio, rango y gráfica",
             url: "https://h5p.org/h5p/embed/1465798"
         },
         {
-            subtematica: "Tipos de funciones(funcion cuadratica y funcion lineal)",
+            subtematica: "Tipos de funciones (función cuadrática y función lineal)",
             url: "https://h5p.org/h5p/embed/244800"
         },
         {
@@ -76,23 +76,23 @@ export const recursos = {
     ],
         Derivadas: [
             {
-                subtematica: "Definicion de la derivada - La derivada como razon de cambio",
+                subtematica: "Definición de la derivada - La derivada como razón de cambio",
                 url: "https://view.genial.ly/5d8387fa7d6fa60fcf658f94"
             },
             {
-                subtematica: "Ejemplo de razon de cambio",
+                subtematica: "Ejemplo de razón de cambio",
                 url: "https://www.youtube.com/watch?v=D5hBaWuHRGQ"
             },
             {
-                subtematica: "Reglas de derivacion",
+                subtematica: "Reglas de derivación",
                 url: "https://view.genial.ly/5d6d7ca539c592100c2d71fd"
             },
             {
-                subtematica: "Ejemplo de reglas de derivacion",
+                subtematica: "Ejemplo de reglas de derivación",
                 url: "https://www.youtube.com/watch?v=gl9oK_LVPow"
             },
             {
-                subtematica: "Derivadas de funciones exponentes y logaritmicas",
+                subtematica: "Derivadas de funciones exponentes y logarítmicas",
                 url: "https://h5p.org/h5p/embed/1465796"
             },
             {
