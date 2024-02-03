@@ -100,11 +100,11 @@ export const recursos = {
                 url: "https://drive.google.com/file/d/1iKkEUAlG55TNTlzYQ5qAIWQXt1OBkQgv/view?usp=sharing"
             },
             {
-                subtematica: "Ejemplo 1 de regla de la cadena",
+                subtematica: "Ejemplo 1: regla de la cadena",
                 url: "https://www.youtube.com/watch?v=cSpbZpIZrcM"
             },
             {
-                subtematica: "Ejemplo 2 razón de cambio",
+                subtematica: "Ejemplo 2: razón de cambio",
                 url: "https://drive.google.com/file/d/17mUip9XYdjUBO02LbdtTYXXahhoKpDVR/view?usp=sharing"
             },
             {

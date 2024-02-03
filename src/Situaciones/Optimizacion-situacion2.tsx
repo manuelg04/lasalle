@@ -58,7 +58,7 @@ const situacion2Opt = [
         enunciado: '4. La cantidad que se desconoce del problema son:',
         url: 'https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/',
         respuestas: [
-          'a. volumen',
+          'a. Volumen',
           'b. Area superficial',
           'c. Altura de la caja',
           'd. Ancho de la base',

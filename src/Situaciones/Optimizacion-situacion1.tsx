@@ -445,6 +445,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
+    width: '100%',
   },
   situacion: {
     marginBottom: 20,
@@ -541,6 +542,9 @@ const styles = StyleSheet.create({
   radioButtonLabel: {
     color: 'black', // Texto en blanco
     fontSize: 16,
+    flex: 1,
+    flexShrink: 1,
+    marginLeft: 10,
   },
   subtitulo: {
     fontSize: 18,

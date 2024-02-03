@@ -202,9 +202,9 @@ const Temas = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f5f7', // Un fondo más suave
-    padding: 10,
-  },
+    backgroundColor: '#ECEFF1', // Fondo gris claro
+    width: '100%',
+},
   card: {
     borderRadius: 15, // Bordes más redondeados
     backgroundColor: '#ffffff', // Fondo blanco para la tarjeta

@@ -16,7 +16,7 @@ const EstudiemosOptimizacion = () => {
   return (
     <><View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Estudiemos</Text>
+        <Text style={styles.title}>Estudiemos optimización</Text>
         <Ionicons name="md-school-sharp" size={32} color="green" />
         {/* <View style={styles.menu}>
       <Ionicons name="menu" size={24} />

@@ -41,7 +41,7 @@ const EstudiemosRazonDeCambio = () => {
   return (
     <><View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Estudiemos</Text>
+        <Text style={styles.title}>Estudiemos razón de cambio</Text>
         <Ionicons name="md-school-sharp" size={32} color="green" />
 
         {/* <View style={styles.menu}>

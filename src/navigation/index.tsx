@@ -16,6 +16,7 @@ import EstudiemosOptimizacion from '../screens/Estudiemos-optimizacion';
 import EstudiemosRazonDeCambio from '../screens/Estudiemos-razon-de-cambio';
 import ExpCustomMission from '../screens/Exp-custom-mission';
 import Experimentemos from '../screens/Experimentos';
+import FeedbackExperimentemos from '../screens/FeedBack-Experimentemos';
 import FeedbackScreen from '../screens/FeedbackScreen';
 import Perfil from '../screens/Perfil';
 import Recordemos from '../screens/Recordemos';
@@ -23,7 +24,6 @@ import TeacherFirstScreen from '../screens/TeacherFirstScreen';
 import Temas from '../screens/Temas';
 import TermsAndConditions from '../screens/TermsAndConditions';
 import FirstScreen from '../screens/first-screen';
-import FeedbackExperimentemos from '../screens/FeedBack-Experimentemos';
 
 export type RootStackParamList = {
   FirstScreen: undefined;
@@ -81,7 +81,11 @@ export default function RootStack() {
           component={EstudiemosRazonDeCambio}
           options={{ title: 'Estudiemos' }}
         />
-        <Stack.Screen name="EstudiemosOptimizacion" component={EstudiemosOptimizacion} />
+        <Stack.Screen
+          name="EstudiemosOptimizacion"
+          component={EstudiemosOptimizacion}
+          options={{ title: 'Estudiemos' }}
+        />
         <Stack.Screen
           name="Situacion1RazonDeCambio"
           component={Situacion1RazonDeCambio}
