@@ -91,10 +91,10 @@ const situacion2: any = [
           '6. Una forma de encontrar la velocidad del estudiante en un instante de tiempo t es resolviendo el siguiente límite:',
         url: 'https://view.genial.ly/5d8387fa7d6fa60fcf658f94',
         respuestas: [
-          '(x(t_2 )-x(t_1 ))/(t_2-t_1 )',
-          '(x(t_2 )-x(t_1 ))/(t_2-t_1 )',
-          '(t_2-t_1)/(x(t_2 )-x(t_1 ) )',
-          '(v(t_2 )-v(t_1 ))/(t_2-t_1 )',
+          'https://i.imgur.com/aad4lw1.png',
+          'https://i.imgur.com/coEhCpL.png',
+          'https://i.imgur.com/RCkccE3.png',
+          'https://i.imgur.com/lLg2J1y.png',
         ],
         respuestaCorrecta: 1,
         tip: 'Es importante identificar los conceptos previos necesarios para resolver la situación - Ten presente estudiar la derivada como razón de cambio ',
@@ -273,10 +273,11 @@ const Situacion2RazonDeCambio = () => {
 
   // Luego, modificarías el renderizado de las respuestas:
   const renderRespuestas = (respuestas, pregunta) => {
+    const optionLabels = ['Opción A', 'Opción B', 'Opción C', 'Opción D'];
     return respuestas.map((respuesta, index) => {
       // Verificar si la respuesta es un URL de una imagen
       const isImageUrl = respuesta.match(/\.(jpeg|jpg|gif|png)$/) != null;
-      const optionLabel = index === 0 ? 'Opción A' : 'Opción B'; // Etiqueta para la opción
+      const optionLabel = optionLabels[index];
       
       return (
         <View key={index} style={styles.optionContainer}>
