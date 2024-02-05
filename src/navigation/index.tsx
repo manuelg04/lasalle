@@ -96,7 +96,7 @@ export default function RootStack() {
           name="Experimentemos"
           component={Experimentemos}
           initialParams={{ theme: '' }}
-          options={{ title: 'Experimentos' }}
+          options={{ title: 'Crea tu misión' }}
         />
         <Stack.Screen
           name="FeedbackScreen"

@@ -75,7 +75,7 @@ const Experimentemos = ({ route }) => {
                 </View>
 
                 <View style={styles.promptContainer}>
-                    <Text style={styles.promptText}>¡Cuéntame sobre tu hobby y deporte favoritos!</Text>
+                    <Text style={styles.promptText}>Voy a crear una misión especial para ti, para esto cuéntame ¿cuál es tu hobby y deporte favoritos?</Text>
                 </View>
 
         <View style={styles.inputGroup}>
@@ -89,6 +89,16 @@ const Experimentemos = ({ route }) => {
         </View>
 
         <View style={styles.inputGroup}>
+          <Text style={styles.label}>Hobby</Text>
+          <TextInput
+            placeholder="escribe un hobby favorito"
+            style={styles.input}
+            placeholderTextColor="#B45309"
+            onChangeText={setFavoriteHobby}
+          />
+        </View>
+
+        <View style={styles.inputGroup}>
           <Text style={styles.label}>Deporte</Text>
           <TextInput
             placeholder="escribe un deporte favorito"
@@ -98,15 +108,7 @@ const Experimentemos = ({ route }) => {
           />
         </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Hobby</Text>
-          <TextInput
-            placeholder="escribe un hobby favorito"
-            style={styles.input}
-            placeholderTextColor="#B45309"
-            onChangeText={setFavoriteHobby}
-          />
-        </View>
+  
 
         <TouchableOpacity style={styles.button} onPress={handleGenerateProblem}>
                     <Text style={styles.buttonText}>Genera tu propia Misión</Text>
@@ -158,6 +160,7 @@ const styles = StyleSheet.create({
     color: '#1E3A8A', // Azul oscuro
     fontSize: 18,
     fontWeight: '600',
+    justifyContent: 'center',
   },
   inputGroup: {
     alignItems: 'center',
