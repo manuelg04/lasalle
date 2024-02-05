@@ -6,16 +6,10 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "env": {
-        "ANDROID_SDK_ROOT": "/Users/Manull/AppData/Local/Android/Sdk"
-      },
       "channel": "development"
     },
     "preview": {
       "distribution": "internal",
-      "android": {
-        "buildType": "apk"
-      },
       "channel": "preview"
     },
     "production": {
