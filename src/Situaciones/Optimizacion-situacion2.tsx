@@ -14,6 +14,8 @@ import {recursos} from "../screens/Recordemos"
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import * as Progress from 'react-native-progress';
+
 
 const situacion2Opt = [
   {
@@ -188,15 +190,20 @@ const situacion2Opt = [
   },
 ];
 
-const RadioButton = ({ label, isSelected, onPress }) => (
-    <TouchableOpacity style={styles.radioButtonContainer} onPress={onPress}>
-        <View style={[
-            styles.radioButton,
-            isSelected ? styles.radioButtonSelected : null
-        ]} />
-        <Text style={styles.radioButtonLabel}>{label}</Text>
-    </TouchableOpacity>
+const RadioButton = ({ label, isSelected, onPress, disabled }) => (
+  <TouchableOpacity
+    style={styles.radioButtonContainer}
+    onPress={onPress}
+    disabled={disabled} // Deshabilita el botón si disabled es true
+  >
+    <View style={[
+      styles.radioButton,
+      isSelected ? styles.radioButtonSelected : null
+    ]} />
+    <Text style={styles.radioButtonLabel}>{label}</Text>
+  </TouchableOpacity>
 );
+
 
 const getSubtitulo = (questionIndex: any) => {
     if (questionIndex >= 0 && questionIndex <= 4) {
@@ -253,9 +260,10 @@ const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleAnswer = (respuestaIndex) => {
     const question = situacion.preguntas[currentQuestionIndex];
-
-    setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: respuestaIndex });
-
+    if (selectedAnswers[currentQuestionIndex] === undefined){
+      setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: respuestaIndex });
+    }
+    
     let resourceUrl;
 
     if (question.url.startsWith('http')) {
@@ -305,16 +313,20 @@ const nextQuestion = () => {
       }
   };
 
-  const renderRespuestas = (respuestas:any, pregunta) => {
-    return respuestas.map((respuesta:any, index:any) => (
-        <RadioButton
-            key={index}
-            label={respuesta}
-            isSelected={selectedAnswers[currentQuestionIndex] === index}
-            onPress={() => handleAnswer(index)}
-        />
+  const renderRespuestas = (respuestas, pregunta) => {
+    const isAnswerSelected = selectedAnswers[currentQuestionIndex] !== undefined;
+  
+    return respuestas.map((respuesta, index) => (
+      <RadioButton
+        key={index}
+        label={respuesta}
+        isSelected={selectedAnswers[currentQuestionIndex] === index}
+        onPress={() => handleAnswer(index)}
+        disabled={isAnswerSelected} // Deshabilita el botón si ya se seleccionó una respuesta
+      />
     ));
-};
+  };
+  
 
 const renderImages = (opciones) => {
   // Asigna la fuente de la imagen basada en la opción
@@ -508,10 +520,9 @@ const renderImagenes = () => {
   );
 };
 
+const totalQuestions = 15; // El número total de preguntas
+const progress = (currentQuestionIndex + 1) / totalQuestions;
   
-  
-  
-
   return (
 <View style={styles.container}>
 {situacionCompletada && (
@@ -548,7 +559,9 @@ const renderImagenes = () => {
             </View>
           </View>
         </Modal>
-
+        <View style={styles.progressContainer}>
+        <Progress.Bar progress={progress} width={null} />
+      </View>    
         <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
           <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
         </TouchableOpacity>
@@ -730,7 +743,11 @@ imageOptionText: {
   fontWeight: 'bold',
   // Añade estilos adicionales si es necesario
 },
-
+progressContainer: {
+  marginTop: 10,
+  padding: 10,
+  alignItems: 'stretch',
+},
 
   });
 export default Situacion2Optimizacion;

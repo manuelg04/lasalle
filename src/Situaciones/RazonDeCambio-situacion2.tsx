@@ -17,14 +17,15 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageView from 'react-native-image-viewing';
+import ImageViewer from 'react-native-image-zoom-viewer';
 import Katex from 'react-native-katex';
 import MathView, { MathText } from 'react-native-math-view';
+import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
 import { recursos } from '../screens/Recordemos';
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
-import ImageViewer from 'react-native-image-zoom-viewer';
 /* eslint-disable prettier/prettier */
 const situacion2: any = [
   {
@@ -166,12 +167,20 @@ const situacion2: any = [
   },
 ];
 
-const RadioButton = ({ label, isSelected, onPress }) => (
-  <TouchableOpacity style={styles.radioButtonContainer} onPress={onPress}>
-    <View style={[styles.radioButton, isSelected ? styles.radioButtonSelected : null]} />
+const RadioButton = ({ label, isSelected, onPress, disabled }) => (
+  <TouchableOpacity
+    style={styles.radioButtonContainer}
+    onPress={onPress}
+    disabled={disabled} // Deshabilita el botón si disabled es true
+  >
+    <View style={[
+      styles.radioButton,
+      isSelected ? styles.radioButtonSelected : null
+    ]} />
     <Text style={styles.radioButtonLabel}>{label}</Text>
   </TouchableOpacity>
 );
+
 
 const getSubtitulo = (questionIndex: any) => {
   if (questionIndex >= 0 && questionIndex <= 3) {
@@ -227,9 +236,10 @@ const Situacion2RazonDeCambio = () => {
 
   const handleAnswer = (respuestaIndex) => {
     const question = situacion.preguntas[currentQuestionIndex];
-
-    setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: respuestaIndex });
-
+    if (selectedAnswers[currentQuestionIndex] === undefined){
+      setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: respuestaIndex });
+    }
+  
     let resourceUrl;
 
     if (question.url.startsWith('http')) {
@@ -276,35 +286,19 @@ const Situacion2RazonDeCambio = () => {
 
   // Luego, modificarías el renderizado de las respuestas:
   const renderRespuestas = (respuestas, pregunta) => {
-    const optionLabels = ['Opción A', 'Opción B', 'Opción C', 'Opción D'];
-    return respuestas.map((respuesta, index) => {
-      // Verificar si la respuesta es un URL de una imagen
-      const isImageUrl = respuesta.match(/\.(jpeg|jpg|gif|png)$/) != null;
-      const optionLabel = optionLabels[index];
-      
-      return (
-        <View key={index} style={styles.optionContainer}>
-          {isImageUrl ? (
-            <View>
-              <Text style={styles.optionLabel}>{optionLabel}</Text>
-              <TouchableOpacity onPress={() => handleAnswer(index)}>
-                <Image
-                  style={styles.imageStyle}
-                  source={{ uri: respuesta }}
-                />
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <RadioButton
-              label={respuesta}
-              isSelected={selectedAnswers[currentQuestionIndex] === index}
-              onPress={() => handleAnswer(index)}
-            />
-          )}
-        </View>
-      );
-    });
+    const isAnswerSelected = selectedAnswers[currentQuestionIndex] !== undefined;
+  
+    return respuestas.map((respuesta, index) => (
+      <RadioButton
+        key={index}
+        label={respuesta}
+        isSelected={selectedAnswers[currentQuestionIndex] === index}
+        onPress={() => handleAnswer(index)}
+        disabled={isAnswerSelected} // Deshabilita el botón si ya se seleccionó una respuesta
+      />
+    ));
   };
+  
 
   const renderImagen = (imagen: any) => {
     if (!imagen) return null;
@@ -469,6 +463,9 @@ const Situacion2RazonDeCambio = () => {
       </View>
     );
   };
+
+  const totalQuestions = 12; // El número total de preguntas
+  const progress = (currentQuestionIndex + 1) / totalQuestions;
   
 
   return (
@@ -499,7 +496,9 @@ const Situacion2RazonDeCambio = () => {
               </View>
             </View>
           </Modal>
-
+          <View style={styles.progressContainer}>
+        <Progress.Bar progress={progress} width={null} />
+      </View>      
           <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
             <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
           </TouchableOpacity>
@@ -702,6 +701,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,        // Ancho del borde
     borderColor: '#ddd',   // Color del borde, un gris claro en este caso
     // Añade estilos adicionales si es necesario
+  },
+  progressContainer: {
+    marginTop: 10,
+    padding: 10,
+    alignItems: 'stretch',
   },
 });
 

@@ -17,6 +17,7 @@ import {
   Button,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
 import { recursos } from '../screens/Recordemos';
@@ -141,12 +142,20 @@ const situacion1Opt = [
   },
 ];
 
-const RadioButton = ({ label, isSelected, onPress }) => (
-  <TouchableOpacity style={styles.radioButtonContainer} onPress={onPress}>
-    <View style={[styles.radioButton, isSelected ? styles.radioButtonSelected : null]} />
+const RadioButton = ({ label, isSelected, onPress, disabled }) => (
+  <TouchableOpacity
+    style={styles.radioButtonContainer}
+    onPress={onPress}
+    disabled={disabled} // Deshabilita el botón si disabled es true
+  >
+    <View style={[
+      styles.radioButton,
+      isSelected ? styles.radioButtonSelected : null
+    ]} />
     <Text style={styles.radioButtonLabel}>{label}</Text>
   </TouchableOpacity>
 );
+
 
 const getSubtitulo = (questionIndex: any) => {
   if (questionIndex >= 0 && questionIndex <= 2) {
@@ -198,9 +207,10 @@ const Situacion1Optimizacion = () => {
 
   const handleAnswer = (respuestaIndex) => {
     const question = situacion.preguntas[currentQuestionIndex];
-
-    setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: respuestaIndex });
-
+    if (selectedAnswers[currentQuestionIndex] === undefined){
+      setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: respuestaIndex });
+    }
+    
     let resourceUrl;
 
     if (question.url.startsWith('http')) {
@@ -245,16 +255,20 @@ const Situacion1Optimizacion = () => {
     }
   };
 
-  const renderRespuestas = (respuestas: any, pregunta) => {
-    return respuestas.map((respuesta: any, index: any) => (
+  const renderRespuestas = (respuestas, pregunta) => {
+    const isAnswerSelected = selectedAnswers[currentQuestionIndex] !== undefined;
+  
+    return respuestas.map((respuesta, index) => (
       <RadioButton
         key={index}
         label={respuesta}
         isSelected={selectedAnswers[currentQuestionIndex] === index}
         onPress={() => handleAnswer(index)}
+        disabled={isAnswerSelected} // Deshabilita el botón si ya se seleccionó una respuesta
       />
     ));
   };
+  
 
   const startCuestionario = () => {
     // Guarda la hora de inicio
@@ -374,6 +388,9 @@ const Situacion1Optimizacion = () => {
     }
   };
 
+  const totalQuestions = 10; // El número total de preguntas
+  const progress = (currentQuestionIndex + 1) / totalQuestions;
+
   return (
     <View style={styles.container}>
       {situacionCompletada && (
@@ -401,7 +418,9 @@ const Situacion1Optimizacion = () => {
               </View>
             </View>
           </Modal>
-
+          <View style={styles.progressContainer}>
+        <Progress.Bar progress={progress} width={null} />
+      </View>      
           <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
             <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
           </TouchableOpacity>
@@ -587,6 +606,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontWeight: 'bold',
     // Añade estilos adicionales si es necesario
+  },
+  progressContainer: {
+    marginTop: 10,
+    padding: 10,
+    alignItems: 'stretch',
   },
 });
 export default Situacion1Optimizacion;
