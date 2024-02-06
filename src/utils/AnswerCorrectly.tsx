@@ -12,8 +12,7 @@ const AnswerCorrectly = () => {
         <Ionicons name="star" size={30} color="#4CAF50" />
       </View>
       <View style={styles.textContainer}>
-        <Text style={styles.titleText}>Muy Bien!</Text>
-        <Text style={styles.subtitleText}>Felicitaciones</Text>
+        <Text style={styles.titleText}>Muy Bien</Text>
       </View>
     </View>
   );

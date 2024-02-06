@@ -31,14 +31,14 @@ const EstudiemosOptimizacion = () => {
           style={styles.situation}
           onPress={() => navigation.navigate('Situacion1Optimizacion')}
         >
-          <Text style={styles.situationText}>Situación 1 - Construyendo mi empresa</Text>
+          <Text style={styles.situationText}>Situación 1. Construyendo mi empresa</Text>
           <Ionicons name="build" size={24} color="#fab005" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.situation}
           onPress={() => navigation.navigate('Situacion2Optimizacion')}
         >
-          <Text style={styles.situationText}>Situación 2 - Aprovechando los materiales</Text>
+          <Text style={styles.situationText}>Situación 2. Aprovechando los materiales</Text>
           <Ionicons name="ios-reload-circle-sharp" size={24} color="#fab005" />
         </TouchableOpacity>
       </View>

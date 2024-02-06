@@ -10,6 +10,7 @@ const AnswerWrong = ({ tip, url }) => {
   return (
     <View style={styles.card}>
       <View style={styles.content}>
+      <Text style={styles.title}>Respuesta incorrecta</Text>
         <Text style={styles.message}>{tip}</Text>
       </View>
       <TouchableOpacity style={styles.button} onPress={openResource}>

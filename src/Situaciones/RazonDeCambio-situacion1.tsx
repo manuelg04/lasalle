@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable prettier/prettier */
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -493,75 +494,79 @@ const enviarRespuestas = async () => {
   
 
   return (
-<View style={styles.container}>
-{situacionCompletada && (
-        <Button
-          title="Ver Feedback Anterior"
-          onPress={mostrarFeedbackAnterior}
-        />
+    <View style={styles.container}>
+      {situacionCompletada && (
+        <Button title="Ver Feedback Anterior" onPress={mostrarFeedbackAnterior} />
       )}
-    {isLoading ? (
-      // Mostrar el loader cuando isLoading sea true
-      <ActivityIndicator size="large" color="#0000ff" />
-    ) : (
-      // El contenido de tu pantalla cuando isLoading sea false
-      <>
+      {isLoading ? (
+        // Mostrar el loader cuando isLoading sea true
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        // El contenido de tu pantalla cuando isLoading sea false
+        <>
+          <Modal
+            animationType="slide"
+            transparent
+            visible={feedbackModal.visible}
+            onRequestClose={closeFeedbackModal}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                {feedbackModal.type === 'correct' && <AnswerCorrectly />}
+                {feedbackModal.type === 'incorrect' && (
+                  <AnswerWrong tip={feedbackModal.tip} url={feedbackModal.url} />
+                )}
+                <TouchableOpacity style={styles.closeButton} onPress={closeFeedbackModal}>
+                  <Text>Cerrar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
 
-        <Modal
-          animationType="slide"
-          transparent
-          visible={feedbackModal.visible}
-          onRequestClose={closeFeedbackModal}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              {feedbackModal.type === 'correct' && <AnswerCorrectly />}
-              {feedbackModal.type === 'incorrect' && (
-                <AnswerWrong tip={feedbackModal.tip} url={feedbackModal.url} />
+          <TouchableOpacity
+            onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}
+            style={styles.tituloSituacionContainer}>
+            <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
+            <Ionicons
+              name={isEnunciadoVisible ? 'chevron-up' : 'chevron-down'}
+              size={20}
+              color="#000"
+              style={{ marginLeft: 10 }} // Asegura algo de espacio entre el texto y el ícono
+            />
+          </TouchableOpacity>
+
+          {isEnunciadoVisible && (
+            <View>
+              <Text style={styles.enunciado}>{situacion.enunciado}</Text>
+              <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
+            </View>
+          )}
+
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.preguntaContainer}>
+              <Text style={styles.subtitulo}>{getSubtitulo(currentQuestionIndex)}</Text>
+              <Text style={styles.preguntaEnunciado}>
+                {situacion.preguntas[currentQuestionIndex].enunciado}
+              </Text>
+              {renderRespuestas(
+                situacion.preguntas[currentQuestionIndex].respuestas,
+                situacion.preguntas[currentQuestionIndex]
               )}
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={closeFeedbackModal}
-              >
-                <Text>Cerrar</Text>
+              {/* Verifica si la pregunta actual es la cuarta pregunta (índice 3 ya que los índices comienzan en 0) */}
+              {currentQuestionIndex === 3 && renderImagenes()}
+            </View>
+
+            <View style={styles.navigationContainer}>
+              <TouchableOpacity onPress={previousQuestion} style={styles.navButton}>
+                <Text>Anterior</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={nextQuestion} style={styles.navButton}>
+                <Text>Siguiente</Text>
               </TouchableOpacity>
             </View>
-          </View>
-        </Modal>
-
-        <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
-          <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
-        </TouchableOpacity>
-
-        {isEnunciadoVisible && (
-          <View>
-            <Text style={styles.enunciado}>{situacion.enunciado}</Text>
-            <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
-          </View>
-        )}
-
-        <ScrollView style={styles.scrollView}>
-        <View style={styles.preguntaContainer}>
-  <Text style={styles.subtitulo}>{getSubtitulo(currentQuestionIndex)}</Text>
-  <Text style={styles.preguntaEnunciado}>{situacion.preguntas[currentQuestionIndex].enunciado}</Text>
-  {renderRespuestas(situacion.preguntas[currentQuestionIndex].respuestas, situacion.preguntas[currentQuestionIndex])}
-  {/* Verifica si la pregunta actual es la cuarta pregunta (índice 3 ya que los índices comienzan en 0) */}
-  {currentQuestionIndex === 3 && renderImagenes()}
-</View>
-
-
-          <View style={styles.navigationContainer}>
-            <TouchableOpacity onPress={previousQuestion} style={styles.navButton}>
-              <Text>Anterior</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={nextQuestion} style={styles.navButton}>
-              <Text>Siguiente</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </>
-    )}
-  </View>
+          </ScrollView>
+        </>
+      )}
+    </View>
   );
 };
 
@@ -711,6 +716,13 @@ imageOptionText: {
   marginBottom: 5,
   fontWeight: 'bold',
   // Añade estilos adicionales si es necesario
+},
+
+tituloSituacionContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  // Añade cualquier otro estilo como padding si es necesario
 },
 
 

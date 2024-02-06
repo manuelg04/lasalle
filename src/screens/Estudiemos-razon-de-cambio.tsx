@@ -49,7 +49,7 @@ const EstudiemosRazonDeCambio = () => {
       <Ionicons name="wifi" size={24} />
       <Text style={styles.menuText}>Menu</Text>
     </View> */}
-        <Text style={styles.reflection}> Estas haciendo las situaciones 1 y 2 de la tematica razon de cambio</Text>
+        <Text style={styles.reflection}> Estas haciendo las situaciones 1 y 2 de la temática razón de cambio</Text>
       </View>
 
       <View style={styles.card}>
@@ -64,7 +64,7 @@ const EstudiemosRazonDeCambio = () => {
           style={styles.situation}
           onPress={() => navigation.navigate('Situacion2RazonDeCambio')}
         >
-          <Text style={styles.situationText}>Situación 2 - Caminando a la U</Text>
+          <Text style={styles.situationText}>Situación 2. Caminando a la U</Text>
           <Ionicons name="md-walk-sharp" size={32} color="green" />
         </TouchableOpacity>
       </View>
