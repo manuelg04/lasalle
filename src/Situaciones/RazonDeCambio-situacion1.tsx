@@ -9,12 +9,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert, Image, Modal, ActivityIndicator, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 import { RootStackParamList } from '../navigation';
 import {recursos} from "../screens/Recordemos"
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
-
 
 
 
@@ -220,6 +220,8 @@ const [endTime, setEndTime] = useState<Date | null>(null);
 const navigation = useNavigation<OverviewScreenNavigationProps>();
 const router = useRoute<DetailsSreenRouteProp>();
 const [situacionCompletada, setSituacionCompletada] = useState(false);
+const [isViewerVisible, setIsViewerVisible] = useState(false);
+const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Verifica si la situación ya ha sido completada
   useEffect(() => {
@@ -470,25 +472,49 @@ const enviarRespuestas = async () => {
     
   // };
 
-  const renderImagenes = () => {
-    const opcionesDeRespuesta = [
-      { opcion: 'a', imagen: require('../../assets/aResponse.png') },
-      { opcion: 'b', imagen: require('../../assets/bResponse.png') },
-      { opcion: 'c', imagen: require('../../assets/cResponse.png') },
-      { opcion: 'd', imagen: require('../../assets/dResponse.png') },
-    ];
-  
-    return (
-      <View style={styles.imagesContainer}>
-        {opcionesDeRespuesta.map((item, index) => (
-          <View key={index} style={styles.imageOptionContainer}>
-            <Text style={styles.imageOptionText}>Opción {item.opcion.toUpperCase()}</Text>
-            <Image source={item.imagen} style={styles.imagen} />
-          </View>
-        ))}
-      </View>
-    );
-  };
+  const opcionesDeRespuesta = [
+    { opcion: 'a', imagen: require('../../assets/aResponse.png') },
+    { opcion: 'b', imagen: require('../../assets/bResponse.png') },
+    { opcion: 'c', imagen: require('../../assets/cResponse.png') },
+    { opcion: 'd', imagen: require('../../assets/dResponse.png') },
+  ];
+
+  // Convertir las imágenes para ser compatibles con ImageViewer
+const imagesForViewer = opcionesDeRespuesta.map(item => ({
+  // Asegúrate de que la propiedad 'url' apunte a tu imagen local o remota
+  url: '',
+  props: { source: item.imagen }
+}));
+
+const renderImagenes = () => {
+  return (
+    <View style={styles.imagesContainer}>
+      {opcionesDeRespuesta.map((item, index) => (
+        <TouchableOpacity
+          key={index}
+          style={styles.imageOptionContainer}
+          onPress={() => {
+            setCurrentImageIndex(index);
+            setIsViewerVisible(true);
+          }}>
+          <Text style={styles.imageOptionText}>Opción {item.opcion.toUpperCase()}</Text>
+          <Image source={item.imagen} style={styles.imagen} />
+        </TouchableOpacity>
+      ))}
+
+      <Modal visible={isViewerVisible} transparent>
+        <ImageViewer
+          imageUrls={imagesForViewer}
+          index={currentImageIndex}
+          onSwipeDown={() => setIsViewerVisible(false)}
+          enableSwipeDown
+          enableImageZoom
+          onCancel={() => setIsViewerVisible(false)}
+        />
+      </Modal>
+    </View>
+  );
+};
   
   
   

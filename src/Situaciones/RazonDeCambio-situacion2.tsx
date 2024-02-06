@@ -24,6 +24,7 @@ import { RootStackParamList } from '../navigation';
 import { recursos } from '../screens/Recordemos';
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
+import ImageViewer from 'react-native-image-zoom-viewer';
 /* eslint-disable prettier/prettier */
 const situacion2: any = [
   {
@@ -207,6 +208,8 @@ const Situacion2RazonDeCambio = () => {
   const navigation = useNavigation<OverviewScreenNavigationProps>();
   const router = useRoute<DetailsSreenRouteProp>();
   const [situacionCompletada, setSituacionCompletada] = useState(false);
+  const [isViewerVisible, setIsViewerVisible] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Verifica si la situación ya ha sido completada
   useEffect(() => {
@@ -428,33 +431,45 @@ const Situacion2RazonDeCambio = () => {
     // Agrega más si es necesario
   ];
 
+  // Convertir las imágenes para ser compatibles con ImageViewer
+  const imagesForViewer = opcionesDeRespuesta.map((item) => ({
+    url: '',
+    props: { source: item.uri },
+  }));
+
+  const handleImagePress = (index) => {
+    setCurrentImageIndex(index);
+    setIsViewerVisible(true);
+  };
+  
+
   const renderImagenes = () => {
-    const opcionesDeRespuesta = [
-      { opcion: 'a', uri: require('../../assets/Aopcion.png') },
-      { opcion: 'b', uri: require('../../assets/Bopcion.png') },
-      { opcion: 'c', uri: require('../../assets/Copcion.png') },
-      // Agrega más si es necesario
-    ];
-
-    const handleImagePress = (index) => {
-      console.log('Imagen presionada: ', index);
-      setSelectedImage([{ uri: Image.resolveAssetSource(opcionesDeRespuesta[index].uri).uri }]); // Asegúrate de que el URI corresponda a la estructura que espera ImageView
-      setIsVisible(true); // Asumiendo que tienes este estado para controlar la visibilidad
-    };
-
     return (
       <View style={styles.imagesContainer}>
         {opcionesDeRespuesta.map((item, index) => (
-          <TouchableOpacity key={index}>
-            <View style={styles.imageOptionContainer} onPress={() => handleImagePress(index)}>
-              <Text style={styles.imageOptionText}>Opción {item.opcion.toUpperCase()}</Text>
-              <Image source={item.uri} style={styles.imagen} />
-            </View>
+          <TouchableOpacity
+            key={index}
+            onPress={() => handleImagePress(index)}
+            style={styles.imageOptionContainer}>
+            <Text style={styles.imageOptionText}>Opción {item.opcion.toUpperCase()}</Text>
+            <Image source={item.uri} style={styles.imagen} />
           </TouchableOpacity>
         ))}
+
+        <Modal visible={isViewerVisible} transparent>
+          <ImageViewer
+            imageUrls={imagesForViewer}
+            index={currentImageIndex}
+            onSwipeDown={() => setIsViewerVisible(false)}
+            enableSwipeDown
+            enableImageZoom
+            onCancel={() => setIsViewerVisible(false)}
+          />
+        </Modal>
       </View>
     );
   };
+  
 
   return (
     <View style={styles.container}>

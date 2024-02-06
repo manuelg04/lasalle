@@ -13,6 +13,7 @@ import { RootStackParamList } from '../navigation';
 import {recursos} from "../screens/Recordemos"
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 const situacion2Opt = [
   {
@@ -231,6 +232,8 @@ const [endTime, setEndTime] = useState<Date | null>(null);
 const navigation = useNavigation<OverviewScreenNavigationProps>();
 const router = useRoute<DetailsSreenRouteProp>();
 const [situacionCompletada, setSituacionCompletada] = useState(true);
+const [isViewerVisible, setIsViewerVisible] = useState(false);
+const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Verifica si la situación ya ha sido completada
   useEffect(() => {
@@ -341,12 +344,6 @@ const renderImages = (opciones) => {
       ))}
     </View>
   );
-};
-
-
-  const renderImagen = (imagen:any) => {
-    if (!imagen) return null;
-    return <Image source={require('../../assets/situacion1_punto4.png')} style={styles.imagen} />;
 };
 
 const startCuestionario = () => {
@@ -466,24 +463,51 @@ const enviarRespuestas = async () => {
   
 };
 
-  const renderImagenes = () => {
-    const opcionesDeRespuesta = [
-      { opcion: 'a', imagen: require('../../assets/5a.png') },
-      { opcion: 'b', imagen: require('../../assets/5b.png') },
-      { opcion: 'c', imagen: require('../../assets/5c.png') },
-    ];
-  
-    return (
-      <View style={styles.imagesContainer}>
-        {opcionesDeRespuesta.map((item, index) => (
-          <View key={index} style={styles.imageOptionContainer}>
-            <Text style={styles.imageOptionText}>Opción {item.opcion.toUpperCase()}</Text>
-            <Image source={item.imagen} style={styles.imagen} />
-          </View>
-        ))}
-      </View>
-    );
-  };
+const opcionesDeRespuesta = [
+  { opcion: 'a', imagen: require('../../assets/5a.png') },
+  { opcion: 'b', imagen: require('../../assets/5b.png') },
+  { opcion: 'c', imagen: require('../../assets/5c.png') },
+  // Agrega más si es necesario
+];
+
+// Convertir las imágenes para ser compatibles con ImageViewer
+const imagesForViewer = opcionesDeRespuesta.map((item) => ({
+  url: '', // No se usa, pero se mantiene para cumplir con la estructura de datos esperada por ImageViewer
+  props: { source: item.imagen },
+}));
+
+const handleImagePress = (index) => {
+  setCurrentImageIndex(index);
+  setIsViewerVisible(true);
+};
+
+const renderImagenes = () => {
+  return (
+    <View style={styles.imagesContainer}>
+      {opcionesDeRespuesta.map((item, index) => (
+        <TouchableOpacity
+          key={index}
+          onPress={() => handleImagePress(index)}
+          style={styles.imageOptionContainer}>
+          <Text style={styles.imageOptionText}>Opción {item.opcion.toUpperCase()}</Text>
+          <Image source={item.imagen} style={styles.imagen} />
+        </TouchableOpacity>
+      ))}
+
+      <Modal visible={isViewerVisible} transparent>
+        <ImageViewer
+          imageUrls={imagesForViewer}
+          index={currentImageIndex}
+          onSwipeDown={() => setIsViewerVisible(false)}
+          enableSwipeDown
+          enableImageZoom
+          onCancel={() => setIsViewerVisible(false)}
+        />
+      </Modal>
+    </View>
+  );
+};
+
   
   
   
