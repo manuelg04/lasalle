@@ -5,9 +5,10 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, ActivityIndicator, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 import { RootStackParamList } from '../navigation';
+
 
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'ExpCustomMission'>;
 const Experimentemos = ({ route }) => {
@@ -67,16 +68,26 @@ const Experimentemos = ({ route }) => {
     };
     
   return (
-    <ScrollView style={styles.container}>
-    <View style={styles.contentContainer}>
-                <View style={styles.header}>
-                    <Ionicons name="md-cube-outline" size={36} color="#4B5563" />
-                    <Text style={styles.headerText}>Experimentemos</Text>
-                </View>
+    <KeyboardAvoidingView
+    style={{ flex: 1 }}
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0} // Ajusta este valor según sea necesario
+  >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-                <View style={styles.promptContainer}>
-                    <Text style={styles.promptText}>Voy a crear una misión especial para ti, para esto cuéntame ¿cuál es tu hobby y deporte favoritos?</Text>
-                </View>
+    <ScrollView style={styles.container}>
+      <View style={styles.contentContainer}>
+        <View style={styles.header}>
+          <Ionicons name="md-cube-outline" size={36} color="#4B5563" />
+          <Text style={styles.headerText}>Experimentemos</Text>
+        </View>
+
+        <View style={styles.promptContainer}>
+          <Text style={styles.promptText}>
+            Voy a crear una misión especial para ti, para esto cuéntame ¿cuál es tu hobby y deporte
+            favoritos?
+          </Text>
+        </View>
 
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Programa</Text>
@@ -108,21 +119,20 @@ const Experimentemos = ({ route }) => {
           />
         </View>
 
-  
-
         <TouchableOpacity style={styles.button} onPress={handleGenerateProblem}>
-                    <Text style={styles.buttonText}>Genera tu propia Misión</Text>
-                </TouchableOpacity>
+          <Text style={styles.buttonText}>Genera tu propia Misión</Text>
+        </TouchableOpacity>
 
-                {loading ? <ActivityIndicator size="large" color="#0000ff" /> : null}
-{generatedProblem ? (
-  <View style={styles.problemContainer}>
-    <Text style={styles.problemText}>{generatedProblem}</Text>
-  </View>
-) : null}
-               
+        {loading ? <ActivityIndicator size="large" color="#0000ff" /> : null}
+        {generatedProblem ? (
+          <View style={styles.problemContainer}>
+            <Text style={styles.problemText}>{generatedProblem}</Text>
+          </View>
+        ) : null}
       </View>
     </ScrollView>
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
