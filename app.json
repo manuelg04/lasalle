@@ -21,10 +21,10 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      }
       },
       "package": "com.manuelg.lasalleapp"
     },
@@ -41,4 +41,4 @@
       "url": "https://u.expo.dev/a2d0a8b2-c2c8-4e06-a013-ee3c5fd93fed"
     }
   }
-}
+
