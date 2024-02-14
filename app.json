@@ -25,20 +25,30 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
-      },
-      "package": "com.manuelg.lasalleapp"
     },
+    "package": "com.manuelg.lasalleapp",
     "extra": {
       "eas": {
         "projectId": "a2d0a8b2-c2c8-4e06-a013-ee3c5fd93fed"
       }
     },
-    "owner": "manuelg",
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
       "url": "https://u.expo.dev/a2d0a8b2-c2c8-4e06-a013-ee3c5fd93fed"
     }
+  },
+  "extra": {
+    "eas": {
+      "projectId": "a2d0a8b2-c2c8-4e06-a013-ee3c5fd93fed"
+    }
+  },
+  "owner": "manuelg",
+  "runtimeVersion": {
+    "policy": "appVersion"
+  },
+  "updates": {
+    "url": "https://u.expo.dev/a2d0a8b2-c2c8-4e06-a013-ee3c5fd93fed"
   }
-
+}
