@@ -18,7 +18,6 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageView from 'react-native-image-viewing';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import Katex from 'react-native-katex';
 import MathView, { MathText } from 'react-native-math-view';
 import * as Progress from 'react-native-progress';
 
@@ -82,8 +81,8 @@ const situacion2: any = [
         enunciado:
           '5. Para hallar la velocidad promedio de la partícula en un tiempo t1 y t2 específico se debe:',
         url: 'https://view.genial.ly/5d8387fa7d6fa60fcf658f94',
-        respuestas: ['https://i.imgur.com/7Uqc7AJ.png', 
-        'https://i.imgur.com/7Uqc7AJ.png'
+        respuestas: ['xt2-xt1t2-t1', 
+        't2-t1xt2-xt1'
       ],
         respuestaCorrecta: 0,
         tip: 'Es importante identificar los conceptos previos necesarios para resolver la situación - Ten presente estudiar la definición de derivada en recordemos',
@@ -167,19 +166,28 @@ const situacion2: any = [
   },
 ];
 
-const RadioButton = ({ label, isSelected, onPress, disabled }) => (
-  <TouchableOpacity
-    style={styles.radioButtonContainer}
-    onPress={onPress}
-    disabled={disabled} // Deshabilita el botón si disabled es true
-  >
-    <View style={[
-      styles.radioButton,
-      isSelected ? styles.radioButtonSelected : null
-    ]} />
+const RadioButton = ({ label, isSelected, onPress, disabled }) => {
+  // Verifica si label es un string o un componente
+  const content = typeof label === 'string' ? (
     <Text style={styles.radioButtonLabel}>{label}</Text>
-  </TouchableOpacity>
-);
+  ) : (
+    label // Si label es un componente (MathText), lo renderiza directamente
+  );
+
+  return (
+    <TouchableOpacity
+      style={styles.radioButtonContainer}
+      onPress={onPress}
+      disabled={disabled}
+    >
+      <View style={[
+        styles.radioButton,
+        isSelected ? styles.radioButtonSelected : null
+      ]} />
+      {content}
+    </TouchableOpacity>
+  );
+};
 
 
 const getSubtitulo = (questionIndex: any) => {
@@ -288,23 +296,28 @@ const Situacion2RazonDeCambio = () => {
   const renderRespuestas = (respuestas, pregunta) => {
     const isAnswerSelected = selectedAnswers[currentQuestionIndex] !== undefined;
   
+    // Función para determinar si la respuesta contiene una fórmula matemática y devolver el componente MathText correspondiente
+    const renderMathOrText = (respuesta) => {
+      if (respuesta === 'xt2-xt1t2-t1') {
+        return <MathText value={'\\(\\frac{x_{t2} - x_{t1}}{t2 - t1}\\)'} />;
+      } else if (respuesta === 't2-t1xt2-xt1') {
+        return <MathText value={'\\(\\frac{t2 - t1}{x_{t2} - x_{t1}}\\)'} />;
+      } else {
+        return respuesta; // Si no es una fórmula matemática, devuelve el string
+      }
+    };
+  
     return respuestas.map((respuesta, index) => (
       <RadioButton
         key={index}
-        label={respuesta}
+        label={renderMathOrText(respuesta)} // Pasamos el componente MathText o el string directamente
         isSelected={selectedAnswers[currentQuestionIndex] === index}
         onPress={() => handleAnswer(index)}
-        disabled={isAnswerSelected} // Deshabilita el botón si ya se seleccionó una respuesta
+        disabled={isAnswerSelected}
       />
     ));
   };
   
-
-  const renderImagen = (imagen: any) => {
-    if (!imagen) return null;
-    return <Image source={require('../../assets/situacion1_punto4.png')} style={styles.imagen} />;
-  };
-
   const startCuestionario = () => {
     // Guarda la hora de inicio
     setStartTime(new Date());
@@ -371,27 +384,6 @@ const Situacion2RazonDeCambio = () => {
         await marcarComoCompletada();
         await mostrarFeedbackAnterior();
       }
-
-      // if (response.status === 201) {
-      //   // Tras enviar las respuestas, procedemos a analizarlas
-      //   const analizarRespuestasUrl = 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas';
-      //   const responseAnalizar = await axios.post(analizarRespuestasUrl, {
-      //     idEstudiante,
-      //     idCuestionario,
-      //     tiempoTranscurridoMinutos
-      //   });
-
-      //   if (responseAnalizar.data.feedback) {
-      //     // Si recibimos feedback del análisis, lo mostramos
-      //     await marcarComoCompletada();
-      //     await AsyncStorage.setItem('feedback_situacion_2', JSON.stringify(responseAnalizar.data.feedback));
-      //     await AsyncStorage.setItem('situacion_2_completada', 'true');
-      //      navigation.navigate('FeedbackScreen', {
-      //       feedbackData: responseAnalizar.data.feedback,
-      //       situacionCompletada: true
-      //      });
-      //   }
-      // }
     } catch (error) {
       console.error('Error al enviar respuestas:', error);
       if (axios.isAxiosError(error) && error.response) {
