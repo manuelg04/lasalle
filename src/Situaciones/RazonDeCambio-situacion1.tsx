@@ -10,12 +10,13 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert, Image, Modal, ActivityIndicator, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import MathView, { MathText } from 'react-native-math-view';
+import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
 import {recursos} from "../screens/Recordemos"
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
-import * as Progress from 'react-native-progress';
 
 
 const situacion1 :any = [
@@ -90,10 +91,10 @@ const situacion1 :any = [
                 "enunciado": "6. Si a es la arista del cubo y V es el volumen del cubo, entonces una expresión para el volumen es:",
                 url: "https://h5p.org/h5p/embed/131374",
                 "respuestas": [
-                    "a. V = 3a",
-                    "b. V = 8a",
-                    "c. V = a^2",
-                    "d. V = a^3"
+                    "V=3a",
+                    "V=8a",
+                    "V=a^2",
+                    "V=a^3"
                 ],
                 "respuestaCorrecta": 3,
                 "tip": "Es importante identificar conceptos previos necesarios para resolver la situación - Ten presente estudiar  traducción de enunciados en recordemos"
@@ -115,10 +116,10 @@ const situacion1 :any = [
                 "enunciado": "8. Al derivar el volumen V=a3 con respecto a a, se obtiene",
                 url: "https://www.youtube.com/watch?v=gl9oK_LVPow",
                 "respuestas": [
-                    "a. dV/da=3a",
-                    "b. dV/da=3a^2",
-                    "c. da/dV=3a",
-                    "d. dV/da=a^2"
+                    "dV/da=3a",
+                    "dV/da=3a^2",
+                    "da/dV=3a",
+                    "dV/da=a^2"
                 ],
                 "respuestaCorrecta":1,
                 "tip": "Es importante aplicar correctamente los procedimientos, reglas o estrategias para resolver la situación. - Ten presente  estudiar reglas de derivación en recordemos."
@@ -127,10 +128,10 @@ const situacion1 :any = [
                 "enunciado": "9. Para encontrar la variación solicitada se debe: ",
                 url: "Derivadas",
                 "respuestas": [
-                    "a. Reemplazar el valor de  a=3  en la ecuación V=a^3 ",
-                    "b. Reemplazar el valor de a=3  en la ecuación  dV/da=3a^2 ",
-                    "c. Reemplazar el valor de V=3  en la ecuación  dV/da=3a^2  y despejar  a",
-                    "d. Reemplazar el valor de a=3  en la ecuación  dV/da=a^2 "
+                    "Reemplazar el valor de a=3 en la ecuación V=a^3",
+                    "Reemplazar el valor de a=3 en la ecuación dV/da=3a^2",
+                    "Reemplazar el valor de V=3 en la ecuación dV/da=3a^2 y despejar a",
+                    "Reemplazar el valor de a=3 en la ecuación dV/da=a^2"
                 ],
                 "respuestaCorrecta": 1,
                 "tip": "Es importante aplicar correctamente los procedimientos, reglas o estrategias para resolver la situación planteada. - Ten presente estudiar la razón de cambio en recordemos "
@@ -140,10 +141,10 @@ const situacion1 :any = [
                 "enunciado": "10. La tasa de cambio del volumen de la caja en forma de cubo con respecto a la longitud de la arista, cuando la arista mide 3 mm es de:",
                 url: "Derivadas",
                 "respuestas": [
-                    "a. 3 m^3/mm",
-                    "b. 6 m^3/mm",
-                    "c. 9 m^3/mm",
-                    "d. 27 m^3/mm"
+                    "3m^3/mm",
+                    "6m^3/mm",
+                    "9m^3/mm",
+                    "27m^3/mm"
                 ],
                 "respuestaCorrecta": 3,
                 "tip": "Es importante analizar otras formas de obtener y mostrar la solución - Ten presente estudiar la razón de cambio en recordemos "
@@ -301,14 +302,77 @@ const nextQuestion = () => {
 
   const renderRespuestas = (respuestas, pregunta) => {
     const isAnswerSelected = selectedAnswers[currentQuestionIndex] !== undefined;
-  
+    // Función para determinar si la respuesta contiene una fórmula matemática y devolver el componente MathText correspondiente
+    const renderMathOrText = (respuesta) => {
+      if (respuesta === 'V=a^2') {
+        return <MathText value={'\\(V = a^2\\)'} />;
+      } 
+      else if (respuesta === 'V=a^3') {
+        return <MathText value={'\\(V = a^3\\)'} />;
+      }
+      else if (respuesta === 'V=a^2') {
+        return <MathText value="V = a^2" />;
+      } else if (respuesta === 'V=a^3') {
+        return <MathText value="V = a^3" />;
+      } else if (respuesta === 'dV/da=3a') {
+        return <MathText value={'\\(\\frac{dV}{da} = 3a\\)'} />;
+      } else if (respuesta === 'dV/da=3a^2') {
+        return <MathText value={'\\(\\frac{dV}{da} = 3a^2\\)'} />;
+      } else if (respuesta === 'da/dV=3a') {
+        return <MathText value={'\\(\\frac{da}{dV} = 3a\\)'} />;
+      } else if (respuesta === 'dV/da=a^2') {
+        return <MathText value={'\\(\\frac{dV}{da} = a^2\\)'} />;
+      }
+      else if (respuesta === 'Reemplazar el valor de a=3 en la ecuación V=a^3') {
+        return (
+          <>
+            {"Reemplazar el valor de a=3 en la ecuación "}
+            <MathText value="V=a^3" />
+          </>
+        );
+      } else if (respuesta === 'Reemplazar el valor de a=3 en la ecuación dV/da=3a^2') {
+        return (
+          <>
+            {"Reemplazar el valor de a=3 en la ecuación "}
+            <MathText value={'\\(\\frac{dV}{da} = 3a^2\\)'} />
+          </>
+        );
+      } else if (respuesta.includes('Reemplazar el valor de V=3 en la ecuación dV/da=3a^2 y despejar a')) {
+        return (
+          <>
+            {"Reemplazar el valor de V=3 en la ecuación "}
+            <MathText value={'\\(\\frac{dV}{da} = 3a^2\\)'} />
+            {" y despejar a"}
+          </>
+        );
+      } else if (respuesta.includes('Reemplazar el valor de a=3 en la ecuación dV/da=a^2')) {
+        return (
+          <>
+            {"Reemplazar el valor de a=3 en la ecuación "}
+            <MathText value={'\\(\\frac{dV}{da} = a^2\\)'} />
+          </>
+        );
+      }
+      else if (respuesta === '3m^3/mm') {
+        return <MathText value={'\\(\\frac{3m^3}{mm}\\)'} />;
+      } else if (respuesta === '6m^3/mm') {
+        return <MathText value={'\\(\\frac{6m^3}{mm}\\)'} />;
+      } else if (respuesta === '9m^3/mm') {
+        return <MathText value={'\\(\\frac{9m^3}{mm}\\)'} />;
+      } else if (respuesta === '27m^3/mm') {
+        return <MathText value={'\\(\\frac{27m^3}{mm}\\)'} />;
+      }
+       else {
+        return respuesta; // Si no es una fórmula matemática, devuelve el string
+      }
+    };
     return respuestas.map((respuesta, index) => (
       <RadioButton
         key={index}
-        label={respuesta}
+        label={renderMathOrText(respuesta)} // Pasamos el componente MathText o el string directamente
         isSelected={selectedAnswers[currentQuestionIndex] === index}
         onPress={() => handleAnswer(index)}
-        disabled={isAnswerSelected} // Deshabilita el botón si ya se seleccionó una respuesta
+        disabled={isAnswerSelected}
       />
     ));
   };

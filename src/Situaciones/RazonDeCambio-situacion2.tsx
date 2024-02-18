@@ -92,10 +92,10 @@ const situacion2: any = [
           '6. Una forma de encontrar la velocidad del estudiante en un instante de tiempo t es resolviendo el siguiente límite:',
         url: 'https://view.genial.ly/5d8387fa7d6fa60fcf658f94',
         respuestas: [
-          'https://i.imgur.com/aad4lw1.png',
-          'https://i.imgur.com/coEhCpL.png',
-          'https://i.imgur.com/RCkccE3.png',
-          'https://i.imgur.com/lLg2J1y.png',
+          'xt2-xt1t2-t1',
+          'xt2-xt1t2-t1',
+          't2-t1xt2-xt1',
+          'vt2-vt1t2-t1',
         ],
         respuestaCorrecta: 1,
         tip: 'Es importante identificar los conceptos previos necesarios para resolver la situación - Ten presente estudiar la derivada como razón de cambio ',
@@ -119,10 +119,10 @@ const situacion2: any = [
           '8. El procedimiento correcto para encontrar la razón de cambio promedio entre los 4 y 4.5 segundos es:',
         url: 'Derivadas',
         respuestas: [
-          'x4 - x4.5 / 4.5-4 = 2-2.25 / 0.5',
-          'x4.5 - x4 / 4.5-4 = 2.25 - 2 / 0.5',
-          'x4.5 - x4 / 4.5-4= 2 - 0.25 / 0.5',
-          'x4 -x4.5 / 4.5 = 2 - 2.25 / 4.5',
+          'x4-x4.54.5-4=2-2.250.5',
+          'x4.5-x44.5-4=2.25-20.5',
+          'x4.5-x44.5-4=2-0.250.5',
+          'x4-x4.54.5=2-2.254.5',
         ],
         respuestaCorrecta: 1,
         tip: 'Recuerde realizar correctamente los procedimientos. Se sugiere estudiar la temática razón de cambio promedio en recordemos',
@@ -138,7 +138,7 @@ const situacion2: any = [
         enunciado:
           '10. Un proceso correcto para encontrar la razón de cambio en un instante de tiempo t es: ',
         url: 'https://view.genial.ly/5d6d7ca539c592100c2d71fd',
-        respuestas: ["vt=x'(t)=2t-8", "vt=x'(t)=2t-8t", "vt=x'(t)=2t2-8t", "vt=x'(t)=2t-18"],
+        respuestas: ["vt=x(t)=2t-8", "vt=x(t)=2t-8t", "vt=x(t)=2t2-8t", "vt=x(t)=2t-18"],
         respuestaCorrecta: 2,
         tip: 'Recuerde realizar correctamente los procedimientos Se sugiere estudiar la temática reglas de derivación en recordemos',
       },
@@ -302,7 +302,29 @@ const Situacion2RazonDeCambio = () => {
         return <MathText value={'\\(\\frac{x_{t2} - x_{t1}}{t2 - t1}\\)'} />;
       } else if (respuesta === 't2-t1xt2-xt1') {
         return <MathText value={'\\(\\frac{t2 - t1}{x_{t2} - x_{t1}}\\)'} />;
-      } else {
+      } else if (respuesta === 'vt2-vt1t2-t1') { // Agregamos la nueva condición aquí
+        return <MathText value={'\\(\\frac{v_{t2} - v_{t1}}{t2 - t1}\\)'} />;
+      } 
+      else if (respuesta === 'x4-x4.54.5-4=2-2.250.5') {
+        return <MathText value={'\\(\\frac{x_{4} - x_{4.5}}{4.5 - 4} = \\frac{2 - 2.25}{0.5}\\)'} />;
+      } else if (respuesta === 'x4.5-x44.5-4=2.25-20.5') {
+        return <MathText value={'\\(\\frac{x_{4.5} - x_{4}}{4.5 - 4} = \\frac{2.25 - 2}{0.5}\\)'} />;
+      }
+      else if (respuesta === 'x4.5-x44.5-4=2-0.250.5') {
+        return <MathText value={'\\(\\frac{x_{4.5} - x_{4}}{4.5 - 4} = \\frac{2 - 0.25}{0.5}\\)'} />;
+      } else if (respuesta === 'x4-x4.54.5=2-2.254.5') {
+        return <MathText value={'\\(\\frac{x_{4} - x_{4.5}}{4.5} = \\frac{2 - 2.25}{4.5}\\)'} />;
+      }
+      else if (respuesta === 'vt=x(t)=2t-8') {
+        return <MathText value={'\\(v(t) = x\'(t) = 2t - 8\\)'} />;
+      } else if (respuesta === 'vt=x(t)=2t-8t') {
+        return <MathText value={'\\(v(t) = x\'(t) = 2t - 8t\\)'} />;
+      } else if (respuesta === 'vt=x(t)=2t2-8t') {
+        return <MathText value={'\\(v(t) = x\'(t) = 2t^2 - 8t\\)'} />;
+      } else if (respuesta === 'vt=x(t)=2t-18') {
+        return <MathText value={'\\(v(t) = x\'(t) = 2t - 18\\)'} />;
+      }
+       else {
         return respuesta; // Si no es una fórmula matemática, devuelve el string
       }
     };

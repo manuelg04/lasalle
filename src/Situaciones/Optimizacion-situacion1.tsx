@@ -17,6 +17,7 @@ import {
   Button,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import MathView, { MathText } from 'react-native-math-view';
 import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
@@ -93,7 +94,7 @@ const situacion1Opt = [
         Subtitulo: '¿Cómo llevarías a cabo el plan?',
         url: 'https://view.genial.ly/5d6d7ca539c592100c2d71fd',
         enunciado: '6. Al derivar la expresión que me determina el ingreso total se obtiene:',
-        respuestas: ['a. -2(x-2000)', 'b. 1-2(x-2000)', 'c. 2x-2000', 'd. -2(x-2000)2'],
+        respuestas: ['-2(x-2000)', '1-2(x-2000)', '2x-2000', '-2(x-2000)^2'],
         respuestaCorrecta: 0,
         tip: 'Ten presente estudiar reglas de derivación',
       },
@@ -258,13 +259,29 @@ const Situacion1Optimizacion = () => {
   const renderRespuestas = (respuestas, pregunta) => {
     const isAnswerSelected = selectedAnswers[currentQuestionIndex] !== undefined;
   
+    // Función para determinar si la respuesta contiene una fórmula matemática y devolver el componente MathText correspondiente
+    const renderMathOrText = (respuesta) => {
+      if (respuesta === '-2(x-2000)') {
+        return <MathText value={'\\(-2(x-2000)\\)'} />;
+      } else if (respuesta === '1-2(x-2000)') {
+        return <MathText value={'\\(1-2(x-2000)\\)'} />;
+      } else if (respuesta === '2x-2000') {
+        return <MathText value={'\\(2x-2000\\)'} />;
+      } else if (respuesta === '-2(x-2000)^2') {
+        return <MathText value={'\\(-2(x-2000)^2\\)'} />;
+      }
+       else {
+        return respuesta; // Si no es una fórmula matemática, devuelve el string
+      }
+    };
+  
     return respuestas.map((respuesta, index) => (
       <RadioButton
         key={index}
-        label={respuesta}
+        label={renderMathOrText(respuesta)} // Pasamos el componente MathText o el string directamente
         isSelected={selectedAnswers[currentQuestionIndex] === index}
         onPress={() => handleAnswer(index)}
-        disabled={isAnswerSelected} // Deshabilita el botón si ya se seleccionó una respuesta
+        disabled={isAnswerSelected}
       />
     ));
   };

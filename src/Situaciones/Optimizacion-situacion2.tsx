@@ -8,13 +8,15 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert, Image, Modal, ActivityIndicator, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import MathView, { MathText } from 'react-native-math-view';
+import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
 import {recursos} from "../screens/Recordemos"
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
-import ImageViewer from 'react-native-image-zoom-viewer';
-import * as Progress from 'react-native-progress';
+
 
 
 const situacion2Opt = [
@@ -84,7 +86,7 @@ const situacion2Opt = [
         enunciado:
           '6. Si A es el largo de la base y h la altura de la caja de almacenaje, entonces una expresión para el volumen es:  ',
           url: "https://youtu.be/xOOMcb5OrWo",
-        respuestas: ['a. 2048=A^2+4Ah', 'b. 2048=A^2 (4h)', 'c. 2048=A^2 h^2', 'd. 2048=A^2 h'],
+        respuestas: ['2048=A^2+4Ah', '2048=A^2(4h)', '2048=A^2*h^2', '2048=A^2*h'],
         respuestaCorrecta: 3,
         tip: 'Es importante identificar conceptos previos de apoyo para resolver la situación. Ten presente estudiar operaciones algebraicas',
       },
@@ -92,7 +94,7 @@ const situacion2Opt = [
         enunciado:
           '7. Si A es el largo de la base y h la altura, entonces el área superficial de la caja para el almacenaje es:',
           url: "https://youtu.be/xOOMcb5OrWo" && "https://drive.google.com/file/d/10Xx_scheSiMvdZzWwVYWywBrNRADtoZ6/view?usp=sharing",
-        respuestas: ['a. 〖2A〗^2+4Ah ', 'b. A^2+4Ah', 'c. A^2+2Ah', 'd. 6Ah'],
+        respuestas: ['2A^2+4Ah', 'A^2+4Ah', 'A^2+2Ah', '6Ah'],
         respuestaCorrecta: 1,
         tip: 'Es importante identificar conceptos previos de apoyo para resolver la situación. Ten presente estudiar áreas, volúmenes y operaciones algebraicas.',
       },
@@ -112,7 +114,7 @@ const situacion2Opt = [
         enunciado:
           '9. La cantidad de material utilizado en función del ancho de la base A es se puede representar por la expresión:',
           url:"https://h5p.org/h5p/embed/1465798",
-        respuestas: ['a. A^2+2048/A', 'b. A^2+8192/A', 'c. A^2-8192/A', 'd. A^2+8192/A^2'],
+        respuestas: ['A^2+2048/A', 'A^2+8192/A', 'A^2-8192/A', 'A^2+8192/A^2'],
         respuestaCorrecta: 1,
         tip: 'Es importante identificar conceptos previos de apoyo para resolver la situación. Ten presente estudiar funciones',
       },
@@ -121,7 +123,7 @@ const situacion2Opt = [
         enunciado:
           '10, Al derivar la expresión que me determina la cantidad de material utilizado se obtiene:',
           url:"https://view.genial.ly/5d6d7ca539c592100c2d71fd",
-        respuestas: ['a. 2A-2048/A', 'b. 2A+8192/A', 'c. 2A-8192/A^2', 'd. 2A+8192/A^2 '],
+        respuestas: ['2A-2048/A', '2A+8192/A', '2A-8192/A^2', '2A+8192/A^2'],
         respuestaCorrecta: 2,
         tip: 'Es importante realizar correctamente los procedimientos. Ten presente estudiar  reglas de derivación',
       },
@@ -178,10 +180,10 @@ const situacion2Opt = [
           '15. Otra forma de comprobar que en A=16 hay un valor mínimo asociado al ancho de la base de la caja es: ',
           url:"https://drive.google.com/file/d/1sHFC150lWG3ZQ_5Kgiq1e_7H_ay_aYqX/view?usp=sharing",
         respuestas: [
-          'a. Derivando la expresión 2A-8192/A^2  , evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo. ',
-          'b. Derivando la expresión 2A-8192/A^2  , evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo.',
-          'c. Derivando la expresión A^2+8192/A , evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo',
-          'd. Derivando la expresión A^2+8192/A , evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo.',
+          'Derivando la expresión 2A-8192/A^2, evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo',
+          'Derivando la expresión 2A-8192/A^2, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo',
+          'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo',
+          'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo',
         ],
         respuestaCorrecta: 0,
         tip: 'Es importante analizar otras formas de obtener y mostrar la solución. Ten presente estudiar la prueba de la segunda derivada',
@@ -316,16 +318,94 @@ const nextQuestion = () => {
   const renderRespuestas = (respuestas, pregunta) => {
     const isAnswerSelected = selectedAnswers[currentQuestionIndex] !== undefined;
   
+    // Función para determinar si la respuesta contiene una fórmula matemática y devolver el componente MathText correspondiente
+    const renderMathOrText = (respuesta) => {
+      if (respuesta === '2048=A^2+4Ah') {
+        return <MathText value={'\\(2048 = A^2 + 4Ah\\)'} />;
+      } else if (respuesta === '2048=A^2(4h)') {
+        return <MathText value={'\\(2048 = A^2(4h)\\)'} />;
+      } else if (respuesta === '2048=A^2*h^2') {
+        return <MathText value={'\\(2048 = A^2h^2\\)'} />;
+      } else if (respuesta === '2048=A^2*h') {
+        return <MathText value={'\\(2048 = A^2h\\)'} />;
+      }
+      else if (respuesta === '2A^2+4Ah') {
+        return <MathText value={'\\(2A^2 + 4Ah\\)'} />;
+      } else if (respuesta === 'A^2+4Ah') {
+        return <MathText value={'\\(A^2 + 4Ah\\)'} />;
+      } else if (respuesta === 'A^2+2Ah') {
+        return <MathText value={'\\(A^2 + 2Ah\\)'} />;
+      } else if (respuesta === '6Ah') {
+        return <MathText value={'\\(6Ah\\)'} />;
+      }
+      else if (respuesta === 'A^2+2048/A') {
+        return <MathText value={'\\(A^2 + \\frac{2048}{A}\\)'} />;
+      } else if (respuesta === 'A^2+8192/A') {
+        return <MathText value={'\\(A^2 + \\frac{8192}{A}\\)'} />;
+      } else if (respuesta === 'A^2-8192/A') {
+        return <MathText value={'\\(A^2 - \\frac{8192}{A}\\)'} />;
+      } else if (respuesta === 'A^2+8192/A^2') {
+        return <MathText value={'\\(A^2 + \\frac{8192}{A^2}\\)'} />;
+      }
+      else if (respuesta === '2A-2048/A') {
+        return <MathText value={'\\(2A - \\frac{2048}{A}\\)'} />;
+      } else if (respuesta === '2A+8192/A') {
+        return <MathText value={'\\(2A + \\frac{8192}{A}\\)'} />;
+      } else if (respuesta === '2A-8192/A^2') {
+        return <MathText value={'\\(2A - \\frac{8192}{A^2}\\)'} />;
+      } else if (respuesta === '2A+8192/A^2') {
+        return <MathText value={'\\(2A + \\frac{8192}{A^2}\\)'} />;
+      }
+      else if (respuesta === 'Derivando la expresión 2A-8192/A^2, evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo') {
+        return (
+          <>
+            {"Derivando la expresión "}
+            <MathText value={'\\(2A - \\frac{8192}{A^2}\\)'} />
+            {", evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo"}
+          </>
+        );
+      } else if (respuesta === 'Derivando la expresión 2A-8192/A^2, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo') {
+        return (
+          <>
+            {"Derivando la expresión "}
+            <MathText value={'\\(2A - \\frac{8192}{A^2}\\)'} />
+            {", evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo"}
+          </>
+        );
+      } else if (respuesta === 'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo') {
+        return (
+          <>
+            {"Derivando la expresión "}
+            <MathText value={'\\(A^2 + \\frac{8192}{A}\\)'} />
+            {", evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo"}
+          </>
+        );
+      } else if (respuesta === 'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo') {
+        return (
+          <>
+            {"Derivando la expresión "}
+            <MathText value={'\\(A^2 + \\frac{8192}{A}\\)'} />
+            {", evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo"}
+          </>
+        );
+      }
+      
+       else {
+        return respuesta; // Si no es una fórmula matemática, devuelve el string
+      }
+    };
+  
     return respuestas.map((respuesta, index) => (
       <RadioButton
         key={index}
-        label={respuesta}
+        label={renderMathOrText(respuesta)} // Pasamos el componente MathText o el string directamente
         isSelected={selectedAnswers[currentQuestionIndex] === index}
         onPress={() => handleAnswer(index)}
-        disabled={isAnswerSelected} // Deshabilita el botón si ya se seleccionó una respuesta
+        disabled={isAnswerSelected}
       />
     ));
   };
+  
   
 
 const renderImages = (opciones) => {
