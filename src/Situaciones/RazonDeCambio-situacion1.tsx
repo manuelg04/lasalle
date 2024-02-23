@@ -314,7 +314,14 @@ const nextQuestion = () => {
         return <MathText value="V = a^2" />;
       } else if (respuesta === 'V=a^3') {
         return <MathText value="V = a^3" />;
-      } else if (respuesta === 'dV/da=3a') {
+      } else if (respuesta === 'V=3a') {
+        return <MathText value="V=3a" />;
+      }
+      else if (respuesta === 'V=8a') {
+        return <MathText value="V=8a" />;
+      }
+
+       else if (respuesta === 'dV/da=3a') {
         return <MathText value={'\\(\\frac{dV}{da} = 3a\\)'} />;
       } else if (respuesta === 'dV/da=3a^2') {
         return <MathText value={'\\(\\frac{dV}{da} = 3a^2\\)'} />;
@@ -327,7 +334,7 @@ const nextQuestion = () => {
         return (
           <>
             {"Reemplazar el valor de a=3 en la ecuación "}
-            <MathText value="V=a^3" />
+            <MathText value={'\\(V = a^3\\)'} />
           </>
         );
       } else if (respuesta === 'Reemplazar el valor de a=3 en la ecuación dV/da=3a^2') {

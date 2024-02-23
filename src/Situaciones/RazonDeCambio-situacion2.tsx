@@ -30,7 +30,8 @@ const situacion2: any = [
   {
     tituloSituacion: 'Situación 2. Caminando a la U',
     enunciado:
-      'La posición (en metros) de un estudiante que se dirige a la universidad caminando está determinado por la función  x(t)=t^2-8t+18,  donde t se mide en segundos. El estudiante desea encontrar algunas velocidades promedias en cierto intervalo de tiempo y la velocidad en un instante específico. ',
+      'La posición (en metros) de un estudiante que se dirige a la universidad caminando está determinado por la función ',
+    textoDespues: ', donde t se mide en segundos. El estudiante desea encontrar algunas velocidades promedias en cierto intervalo de tiempo y la velocidad en un instante específico.',
     postEnunciado: 'Con respecto a la situación planteada anteriormente responda:',
     Subtitulo: '¿Qué comprendes de la situación?',
     postSubtitulo: 'El objetivo de la situacion planteada es',
@@ -519,7 +520,7 @@ const Situacion2RazonDeCambio = () => {
 
           {isEnunciadoVisible && (
             <View>
-              <Text style={styles.enunciado}>{situacion.enunciado}</Text>
+              <MathText value={`La posición (en metros) de un estudiante que se dirige a la universidad caminando está determinado por la función \\(x(t) = t^2 - 8t + 18\\) , donde t se mide en segundos. El estudiante desea encontrar algunas velocidades promedias en cierto intervalo de tiempo y la velocidad en un instante específico. `} style={styles.enunciado} />
               <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
             </View>
           )}
@@ -721,6 +722,7 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'stretch',
   },
+
 });
 
 export default Situacion2RazonDeCambio;
