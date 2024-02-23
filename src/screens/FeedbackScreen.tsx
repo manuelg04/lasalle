@@ -128,7 +128,7 @@ const FeedbackScreen = ({ route }) => {
         {renderFeedbackInfo(feedbackData)}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('EstudiemosRazonDeCambio')}>
+          onPress={() => navigation.navigate('Temas')}>
           <Text style={styles.buttonText}>Continuar Estudiando</Text>
         </TouchableOpacity>
       </View>

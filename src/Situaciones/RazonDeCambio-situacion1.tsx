@@ -764,7 +764,7 @@ radioButton: {
     borderRadius: 10,
     borderWidth: 2,
     borderColor: 'black',
-    marginRight: 10,
+    marginRight: 5,
 },
 radioButtonSelected: {
     height: 10,
@@ -773,8 +773,11 @@ radioButtonSelected: {
     backgroundColor: 'black',
 },
 radioButtonLabel: {
-    color: 'black', // Texto en blanco
-    fontSize: 16,
+  color: 'black', // Texto en blanco
+  fontSize: 16,
+  flex: 1,
+  flexShrink: 1,
+  marginLeft: 10,
 },
 subtitulo: {
     fontSize: 18,
