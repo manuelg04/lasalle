@@ -77,14 +77,40 @@ const FeedbackScreen = ({ route }) => {
   ];
 
   const renderMathOrTextForFeedback = (respuesta) => {
-    // Defina aquí las condiciones basadas en las respuestas específicas
-    // y retorne el componente MathText para las respuestas matemáticas.
-    if (respuesta.includes('^') || respuesta.includes('/') || respuesta.includes(`=`)) {
-      return <MathText value={`\\(${respuesta}\\)`} />;
+    // Función auxiliar para formatear ecuaciones matemáticas para LaTeX
+    const formatEquationForLaTeX = (equation) => {
+      // Reemplaza los símbolos de ecuación con su equivalente en LaTeX
+      return equation.replace(/([a-zA-Z0-9]+)([\^\/=])([a-zA-Z0-9]+)/g, (match, p1, p2, p3) => {
+        let formattedEquation = `${p1} ${p2} ${p3}`;
+        return `\\(${formattedEquation}\\)`;
+      });
+    };
+  
+    // Verificar si la respuesta contiene texto seguido de ecuación
+    const hasTextAndEquation = respuesta.match(/(.*)(ecuación)(.*)/);
+    
+    if (hasTextAndEquation) {
+      // Extraer el texto y la ecuación por separado
+      const textPart = hasTextAndEquation[1].trim(); // El texto antes de 'ecuación'
+      const equationPart = hasTextAndEquation[3].trim(); // La ecuación después de 'ecuación'
+      const formattedEquationPart = formatEquationForLaTeX(equationPart);
+  
+      // Retornar un fragmento con Text y MathText para texto y ecuación respectivamente
+      return (
+        <>
+          <Text>{`${textPart} ecuación `}</Text>
+          <MathText value={formattedEquationPart} />
+        </>
+      );
+    } else if (respuesta.includes('^') || respuesta.includes('/') || respuesta.includes('=')) {
+      // Si es puramente una ecuación matemática, formatear toda la respuesta
+      return <MathText value={`\\(${formatEquationForLaTeX(respuesta)}\\)`} />;
     } else {
+      // Si no es una ecuación, renderizar como texto normal
       return <Text>{respuesta}</Text>;
     }
   };
+  
   
   const renderFeedbackInfo = (feedback) => {
     if (!feedback || !feedback.respuestasPorFase) {
