@@ -444,7 +444,7 @@ const Situacion1Optimizacion = () => {
 
           {isEnunciadoVisible && (
             <View>
-              <Text style={styles.enunciado}>{situacion.enunciado}</Text>
+            <MathText value={`Un grupo de estudiantes de último semestre universitario, deciden montar una empresa que vende un material amigable con el ambiente y usado en la construcción de viviendas. Este grupo descubre que el ingreso total (en dólares) en la empresa está descrito por la relación \\(I = 400000 - (x - 2000)^2\\) donde \\(I\\) es el ingreso total y \\(x\\) el número de unidades vendidas del material. La empresa requiere conocer el mayor ingreso total.`} style={styles.enunciado} />
               <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
             </View>
           )}

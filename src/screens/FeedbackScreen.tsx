@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import MathView, { MathText } from 'react-native-math-view';
 
 import { RootStackParamList } from '../navigation';
 import db from '../utils/firebase'; // Asegúrate de importar db correctamente
@@ -74,6 +75,17 @@ const FeedbackScreen = ({ route }) => {
     '¿Cómo llevarías a cabo el plan?',
     '¿Qué resultados obtienes?',
   ];
+
+  const renderMathOrTextForFeedback = (respuesta) => {
+    // Defina aquí las condiciones basadas en las respuestas específicas
+    // y retorne el componente MathText para las respuestas matemáticas.
+    if (respuesta.includes('^') || respuesta.includes('/') || respuesta.includes(`=`)) {
+      return <MathText value={`\\(${respuesta}\\)`} />;
+    } else {
+      return <Text>{respuesta}</Text>;
+    }
+  };
+  
   const renderFeedbackInfo = (feedback) => {
     if (!feedback || !feedback.respuestasPorFase) {
       return null;
@@ -94,7 +106,7 @@ const FeedbackScreen = ({ route }) => {
               <Text style={styles.feedbackText}>Respuestas Posibles:</Text>
               {pregunta.respuestasPosibles.map((respuesta, respuestaIdx) => (
                 <Text key={`respuesta_${respuestaIdx}`} style={styles.answerText}>
-                  {respuestaIdx + 1}: {respuesta}
+                  {respuestaIdx + 1}: {renderMathOrTextForFeedback(respuesta)}
                 </Text>
               ))}
               <View style={styles.selectedAnswerContainer}>
