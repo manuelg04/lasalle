@@ -28,7 +28,7 @@ const SignUpTeacher = () => {
 
     try {
       const response = await axios.post(
-        'https://lasalleapp-dev-sjta.1.us-1.fl0.io/teacher/register',
+        'https://lasalleapp.onrender.com/teacher/register',
         {
           email,
           fullName,

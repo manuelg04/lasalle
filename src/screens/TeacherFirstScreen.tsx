@@ -59,7 +59,7 @@ const TeacherFirstScreen = ({ navigation }) => {
 
   const downloadReport = async (studentId) => {
     try {
-      const url = `https://lasalleapp-dev-sjta.1.us-1.fl0.io/excel/generate-report?studentId=${studentId}`;
+      const url = `https://lasalleapp.onrender.com/excel/generate-report?studentId=${studentId}`;
       
       // Descargar el archivo con axios
       const response = await axios({

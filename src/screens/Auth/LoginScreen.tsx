@@ -35,7 +35,7 @@ export default function LoginScreen() {
     }
    
     try {
-      const response = await axios.post('https://lasalleapp-dev-sjta.1.us-1.fl0.io/login/login', {
+      const response = await axios.post('https://lasalleapp.onrender.com/login/login', {
         email,
         password,
         userType, // Asegúrate de que este valor esté siendo recogido o manejado correctamente

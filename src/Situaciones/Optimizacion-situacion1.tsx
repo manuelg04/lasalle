@@ -39,7 +39,7 @@ const situacion1Opt = [
         url: 'https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/',
         respuestas: ['a. Maximizar una funcion', 'b. Minimizar una funcion'],
         respuestaCorrecta: 0,
-        tip: 'Ten presente revisar la comprensión de una situación en Pasos para resolver un problema ',
+        tip: 'Ten presente revisar la comprensión de una situación en Pasos para resolver un problema',
       },
       {
         enunciado: '2. ¿En este problema se debe?',
@@ -340,7 +340,7 @@ const Situacion1Optimizacion = () => {
       }));
 
       const response = await axios.post(
-        'https://lasalleapp-dev-sjta.1.us-1.fl0.io/save-answer/guardar-respuesta',
+        'https://lasalleapp.onrender.com/save-answer/guardar-respuesta',
         {
           idEstudiante,
           idCuestionario,

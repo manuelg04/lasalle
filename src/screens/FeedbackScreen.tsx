@@ -41,6 +41,7 @@ const FeedbackScreen = ({ route }) => {
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
           const latestAttemptData = querySnapshot.docs[0].data();
+          console.log("🚀 ~ latestAttemptData:", latestAttemptData)
           setFeedbackData(latestAttemptData); // Aquí estableces la data de Firestore en el estado
           setIsLoading(false); // Data ha sido cargada
         } else {
@@ -50,7 +51,7 @@ const FeedbackScreen = ({ route }) => {
           setIsLoading(false);
         }
       } catch (error) {
-        console.error('Error completo:', error);
+        console.error('Error completo:', error.message);
         if (error) {
           console.error('Detalles del error de Firestore:', error.code, error.message);
         }
@@ -77,6 +78,7 @@ const FeedbackScreen = ({ route }) => {
   ];
 
   const renderMathOrTextForFeedback = (respuesta) => {
+    respuesta = respuesta.replace(/^[a-d]\.\s*|\s*:/g, ''); // Elimina las opciones de respuesta (a., b., c., d.) y los dos puntos
     // Función auxiliar para formatear ecuaciones matemáticas para LaTeX
     const formatEquationForLaTeX = (equation) => {
       // Reemplaza los símbolos de ecuación con su equivalente en LaTeX
@@ -112,6 +114,7 @@ const FeedbackScreen = ({ route }) => {
   };
   
   
+  
   const renderFeedbackInfo = (feedback) => {
     if (!feedback || !feedback.respuestasPorFase) {
       return null;
@@ -131,9 +134,13 @@ const FeedbackScreen = ({ route }) => {
               <Text style={styles.feedbackText}>{pregunta.enunciado}</Text>
               <Text style={styles.feedbackText}>Respuestas Posibles:</Text>
               {pregunta.respuestasPosibles.map((respuesta, respuestaIdx) => (
-                <Text key={`respuesta_${respuestaIdx}`} style={styles.answerText}>
-                  {respuestaIdx + 1}: {renderMathOrTextForFeedback(respuesta)}
-                </Text>
+       <Text key={`respuesta_${respuestaIdx}`} 
+       style={styles.answerText}
+       numberOfLines={3}
+       ellipsizeMode='tail'
+       >
+       {respuestaIdx + 1} {renderMathOrTextForFeedback(respuesta)}
+     </Text>
               ))}
               <View style={styles.selectedAnswerContainer}>
                 <Text style={styles.selectedAnswerText}>
@@ -283,7 +290,7 @@ const styles = StyleSheet.create({
   answerText: {
     fontSize: 14,
     color: '#333', // Color oscuro para texto normal
-    marginVertical: 2, // Espaciado vertical para las respuestas
+    marginVertical: 8, // Espaciado vertical para las respuestas
   },
   selectedAnswerText: {
     fontWeight: 'bold', // Hacer la respuesta seleccionada más prominente

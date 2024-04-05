@@ -31,6 +31,7 @@ const FeedbackExperimentemos = ({ route }) => {
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
           const missionAttemptData = querySnapshot.docs[0].data();
+          console.log("🚀 ~ missionAttemptData:", missionAttemptData)
           setFeedbackData(missionAttemptData);
           setIsLoading(false);
         } else {
@@ -72,14 +73,23 @@ const FeedbackExperimentemos = ({ route }) => {
             {optionIdx + 1}: {option}
           </Text>
         ))}
-        <Text style={styles.feedbackText}>
-          Respuesta Seleccionada: {question.options[question.selectedOption]}
-        </Text>
         {question.isCorrect ? (
-          <Text style={styles.correctText}>La respuesta seleccionada es correcta.</Text>
-        ) : (
-          <Text style={styles.incorrectText}>La respuesta seleccionada es incorrecta.</Text>
-        )}
+        <Text style={styles.correctText}>
+          La respuesta seleccionada es correcta.
+        </Text>
+      ) : (
+        <>
+          <Text style={styles.incorrectText}>
+            La respuesta seleccionada es incorrecta.
+          </Text>
+          <Text style={styles.incorrectText}>
+            La respuesta seleccionada fue: {question.options[question.selectedOption]}
+          </Text>
+          <Text style={styles.correctText}>
+            La respuesta correcta era: {question.options[question.correctOption]}
+          </Text>
+        </>
+      )}
       </View>
     ));
   };

@@ -151,7 +151,7 @@ const SignUpStudent = () => {
         });
       const uploadResponse = await axios({
         method: 'post',
-        url: 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/profileImage/upload',
+        url: 'https://lasalleapp.onrender.com/profileImage/upload',
         data: formData,
         headers: { 'Content-Type': 'multipart/form-data' },
       });
@@ -161,7 +161,7 @@ const SignUpStudent = () => {
       }
  
       const response = await axios.post(
-        'https://lasalleapp-dev-sjta.1.us-1.fl0.io/student/register',
+        'https://lasalleapp.onrender.com/student/register',
         {
           email,
           fullName,

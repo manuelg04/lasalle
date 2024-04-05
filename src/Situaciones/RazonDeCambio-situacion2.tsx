@@ -82,8 +82,8 @@ const situacion2: any = [
         enunciado:
           '5. Para hallar la velocidad promedio de la partícula en un tiempo t1 y t2 específico se debe:',
         url: 'https://view.genial.ly/5d8387fa7d6fa60fcf658f94',
-        respuestas: ['xt2-xt1t2-t1', 
-        't2-t1xt2-xt1'
+        respuestas: ['Usar el cociente xt2-xt1t2-t1 entre las diferencias de las posiciones sobre las diferencias de los tiempos', 
+        'Usar el cociente t2-t1xt2-xt1 entre las diferencias de las posiciones sobre las diferencias de los tiempos'
       ],
         respuestaCorrecta: 0,
         tip: 'Es importante identificar los conceptos previos necesarios para resolver la situación - Ten presente estudiar la definición de derivada en recordemos',
@@ -96,7 +96,7 @@ const situacion2: any = [
           'xt2-xt1t2-t1',
           'xt2-xt1t2-t1',
           't2-t1xt2-xt1',
-          'vt2-vt1t2-t1',
+          'vt2-vt1t2-t1 donde v es la velocidad de la partícula',
         ],
         respuestaCorrecta: 1,
         tip: 'Es importante identificar los conceptos previos necesarios para resolver la situación - Ten presente estudiar la derivada como razón de cambio ',
@@ -299,24 +299,45 @@ const Situacion2RazonDeCambio = () => {
   
     // Función para determinar si la respuesta contiene una fórmula matemática y devolver el componente MathText correspondiente
     const renderMathOrText = (respuesta) => {
-      if (respuesta === 'xt2-xt1t2-t1') {
-        return <MathText value={'\\(\\frac{x_{t2} - x_{t1}}{t2 - t1}\\)'} />;
-      } else if (respuesta === 't2-t1xt2-xt1') {
-        return <MathText value={'\\(\\frac{t2 - t1}{x_{t2} - x_{t1}}\\)'} />;
-      } else if (respuesta === 'vt2-vt1t2-t1') { // Agregamos la nueva condición aquí
-        return <MathText value={'\\(\\frac{v_{t2} - v_{t1}}{t2 - t1}\\)'} />;
-      } 
-      else if (respuesta === 'x4-x4.54.5-4=2-2.250.5') {
+      if (respuesta === `${'Usar el cociente'} xt2-xt1t2-t1 ${'entre las diferencias de las posiciones sobre las diferencias de los tiempos'}`) {
+        return(
+            <MathText value={`Usar el cociente \\(\\frac{x_{t_2} - x_{t_1}}{t_2 - t_1}\\) entre las diferencias de las posiciones sobre las diferencias de los tiempos`} />
+        );
+  
+      }
+
+      else if (respuesta === 'xt2-xt1t2-t1') {
+        return <MathText value={'\\(\\frac{x_{t_2} - x_{t_1}}{t_2 - t_1}\\)'} />;
+      }
+
+      else if (respuesta === 't2-t1xt2-xt1'){
+        return <MathText value={'\\(\\frac{t_2 - t_1}{x_{t_2} - x_{t_1}}\\)'} />;
+      }
+      
+      else if (respuesta === `${'Usar el cociente'} t2-t1xt2-xt1 ${'entre las diferencias de las posiciones sobre las diferencias de los tiempos'}`) {
+        return (
+          <>
+            
+            <MathText value={`Usar el cociente \\(\\frac{t_2 - t_1}{x_{t_2} - x_{t_1}}\\) entre las diferencias de las posiciones de los tiempos`} />
+            
+          </>
+        );
+      } else if (respuesta === `vt2-vt1t2-t1 ${'donde v es la velocidad de la partícula'}`) {
+        return (
+          <>
+            <MathText value={'\\(\\frac{v_{t2} - v_{t1}}{t2 - t1}\\)'} />
+            <Text>donde v es la velocidad de la partícula</Text>
+          </>
+        );
+      } else if (respuesta === 'x4-x4.54.5-4=2-2.250.5') {
         return <MathText value={'\\(\\frac{x_{4} - x_{4.5}}{4.5 - 4} = \\frac{2 - 2.25}{0.5}\\)'} />;
       } else if (respuesta === 'x4.5-x44.5-4=2.25-20.5') {
         return <MathText value={'\\(\\frac{x_{4.5} - x_{4}}{4.5 - 4} = \\frac{2.25 - 2}{0.5}\\)'} />;
-      }
-      else if (respuesta === 'x4.5-x44.5-4=2-0.250.5') {
+      } else if (respuesta === 'x4.5-x44.5-4=2-0.250.5') {
         return <MathText value={'\\(\\frac{x_{4.5} - x_{4}}{4.5 - 4} = \\frac{2 - 0.25}{0.5}\\)'} />;
       } else if (respuesta === 'x4-x4.54.5=2-2.254.5') {
         return <MathText value={'\\(\\frac{x_{4} - x_{4.5}}{4.5} = \\frac{2 - 2.25}{4.5}\\)'} />;
-      }
-      else if (respuesta === 'vt=x(t)=2t-8') {
+      } else if (respuesta === 'vt=x(t)=2t-8') {
         return <MathText value={'\\(v(t) = x\'(t) = 2t - 8\\)'} />;
       } else if (respuesta === 'vt=x(t)=2t-8t') {
         return <MathText value={'\\(v(t) = x\'(t) = 2t - 8t\\)'} />;
@@ -324,9 +345,8 @@ const Situacion2RazonDeCambio = () => {
         return <MathText value={'\\(v(t) = x\'(t) = 2t^2 - 8t\\)'} />;
       } else if (respuesta === 'vt=x(t)=2t-18') {
         return <MathText value={'\\(v(t) = x\'(t) = 2t - 18\\)'} />;
-      }
-       else {
-        return respuesta; // Si no es una fórmula matemática, devuelve el string
+      } else {
+        return respuesta;
       }
     };
   
@@ -394,7 +414,7 @@ const Situacion2RazonDeCambio = () => {
       }));
 
       const response = await axios.post(
-        'https://lasalleapp-dev-sjta.1.us-1.fl0.io/save-answer/guardar-respuesta',
+        'https://lasalleapp.onrender.com/save-answer/guardar-respuesta',
         {
           idEstudiante,
           idCuestionario,
@@ -591,13 +611,14 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     padding: 16,
+    paddingTop: 4,
   },
   postEnunciado: {
     color: '#facc15',
     fontSize: 16,
     fontWeight: 'bold',
     padding: 16,
-    paddingTop: 0,
+    paddingTop: 5,
   },
   preguntaContainer: {
     padding: 16,
@@ -613,7 +634,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingLeft: 20,
     marginBottom: 2,
+    
   },
+
   selectedAnswer: {
     backgroundColor: '#e2e8f0',
   },
@@ -651,6 +674,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'black',
     marginRight: 10,
+    
   },
   radioButtonSelected: {
     height: 10,

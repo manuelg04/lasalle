@@ -307,6 +307,12 @@ const nextQuestion = () => {
       if (respuesta === 'V=a^2') {
         return <MathText value={'\\(V = a^2\\)'} />;
       } 
+      else if (respuesta === 'V=3a') {
+        return <MathText value={'\\(V = 3a\\)'} />;
+      }
+      else if (respuesta === 'V=8a') {
+        return <MathText value={'\\(V = 8a\\)'} />;
+      }
       else if (respuesta === 'V=a^3') {
         return <MathText value={'\\(V = a^3\\)'} />;
       }
@@ -344,12 +350,12 @@ const nextQuestion = () => {
             <MathText value={'\\(\\frac{dV}{da} = 3a^2\\)'} />
           </>
         );
-      } else if (respuesta.includes('Reemplazar el valor de V=3 en la ecuación dV/da=3a^2 y despejar a')) {
+      } else if (respuesta.includes(`Reemplazar el valor de V=3 en la ecuación dV/da=3a^2 y despejar a`)) {
         return (
           <>
-            {"Reemplazar el valor de V=3 en la ecuación "}
-            <MathText value={'\\(\\frac{dV}{da} = 3a^2\\)'} />
-            {" y despejar a"}
+             <Text>Reemplazar el valor de V=3 en la ecuación </Text>
+            <MathText value={'\\(\\frac{dV}{da} = 3a^2\\)'}/>
+            <Text>y despejar a</Text>
           </>
         );
       } else if (respuesta.includes('Reemplazar el valor de a=3 en la ecuación dV/da=a^2')) {
@@ -474,7 +480,7 @@ const enviarRespuestas = async () => {
       esRespuestaCorrecta: selectedAnswers[indice] === pregunta.respuestaCorrecta
     }));
 
-    const response = await axios.post('https://lasalleapp-dev-sjta.1.us-1.fl0.io/save-answer/guardar-respuesta', {
+    const response = await axios.post('https://lasalleapp.onrender.com/save-answer/guardar-respuesta', {
       idEstudiante,
       idCuestionario,
       respuestasEstudiante,
@@ -720,7 +726,6 @@ const styles = StyleSheet.create({
     preguntaContainer: {
         padding: 16,
         paddingTop: 0,
-      
     },
     preguntaEnunciado: {
         color: '#facc15',

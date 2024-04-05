@@ -23,11 +23,11 @@ const Experimentemos = ({ route }) => {
 
     const fetchStudentCareer = async (userId:any) => {
         try {
-          const response = await axios.get(`https://lasalleapp-dev-sjta.1.us-1.fl0.io/getStudents/student/${userId}`);
+          const response = await axios.get(`https://lasalleapp.onrender.com/getStudents/student/${userId}`);
           const { career } = response.data;
           setStudentCareer(career);
         } catch (error) {
-          console.error('Error al obtener la carrera:', error);
+          console.error('Error al obtener la carrera:', error.response.data);
           // Aquí puedes manejar el error, por ejemplo, mostrar un mensaje al usuario
         }
       };
@@ -46,7 +46,7 @@ const Experimentemos = ({ route }) => {
       const handleGenerateProblem = async () => {
         setLoading(true);
         try {
-            const response = await axios.post('https://lasalleapp-dev-sjta.1.us-1.fl0.io/api/experiment/generate-custom-problem', {
+            const response = await axios.post('https://lasalleapp.onrender.com/api/experiment/generate-custom-problem', {
                 input1: studentCareer,
                 input2: favoriteSport,
                 input3: favoriteHobby,
@@ -56,6 +56,7 @@ const Experimentemos = ({ route }) => {
             if (response.status === 201) {
                 // Acceder a la propiedad content del objeto problem
                 const problemText = response.data.problem.content;
+                console.log("🚀 ~ problemText:", problemText)
                 setGeneratedProblem(problemText);
                 // Navegar a la pantalla de ExpCustomMission
                 navigation.navigate('ExpCustomMission', { problemText });

@@ -51,8 +51,8 @@ const situacion2Opt = [
           '3. La cantidad o dato que se proporciona en el problema es (información dada): ',
           url: 'https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/',
         respuestas: [
-          'a. volumen',
-          'b. Area superficial',
+          'a. Volumen',
+          'b. Área superficial',
           'c. Altura de la caja',
           'd. Ancho de la base',
         ],
@@ -64,7 +64,7 @@ const situacion2Opt = [
         url: 'https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/',
         respuestas: [
           'a. Volumen',
-          'b. Area superficial',
+          'b. Área superficial',
           'c. Altura de la caja',
           'd. Ancho de la base',
         ],
@@ -491,7 +491,7 @@ const enviarRespuestas = async () => {
       esRespuestaCorrecta: selectedAnswers[indice] === pregunta.respuestaCorrecta
     }));
 
-    const response = await axios.post('https://lasalleapp-dev-sjta.1.us-1.fl0.io/save-answer/guardar-respuesta', {
+    const response = await axios.post('https://lasalleapp.onrender.com/save-answer/guardar-respuesta', {
       idEstudiante,
       idCuestionario,
       respuestasEstudiante,

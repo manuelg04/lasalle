@@ -5807,6 +5807,11 @@ hosted-git-info@^3.0.2:
   dependencies:
     lru-cache "^6.0.0"
 
+html-entities@^2.4.0:
+  version "2.5.2"
+  resolved "https://registry.npmjs.org/html-entities/-/html-entities-2.5.2.tgz#201a3cf95d3a15be7099521620d19dfb4f65359f"
+  integrity sha512-K//PSRMQk4FZ78Kyau+mZurHn3FH0Vwr+H36eE0rPbeYkRRi9YxceYPhuN60UwWorxyKHhqoAJl2OFKa4BVtaA==
+
 http-errors@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/http-errors/-/http-errors-2.0.0.tgz"
@@ -7278,7 +7283,7 @@ metro@0.76.8:
     ws "^7.5.1"
     yargs "^17.6.2"
 
-mhchemparser@^4.1.0:
+mhchemparser@^4.1.0, mhchemparser@^4.2.1:
   version "4.2.1"
   resolved "https://registry.npmjs.org/mhchemparser/-/mhchemparser-4.2.1.tgz"
   integrity sha512-kYmyrCirqJf3zZ9t/0wGgRZ4/ZJw//VwaRVGA75C4nhE60vtnIzhl9J9ndkX/h6hxSN7pjg/cE0VxbnNM+bnDQ==
@@ -8364,6 +8369,14 @@ react-native-math-view@^3.9.5:
     lodash "^4.17.21"
     mathjax-full "^3.1.4"
     transformation-matrix "^2.8.0"
+
+react-native-mathjax-html-to-svg@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/react-native-mathjax-html-to-svg/-/react-native-mathjax-html-to-svg-1.1.0.tgz#0016881c8977e7c4032dc78c4f10a928affd525a"
+  integrity sha512-xqP/DS2Ya05yJUKw4w8liTgKl7R9j94aA/HonAZ4QMuFyj/aqrGgoSmYB1xnqtc1bw/YoqiZ+lz13hmRrjFoQg==
+  dependencies:
+    html-entities "^2.4.0"
+    mhchemparser "^4.2.1"
 
 react-native-progress@^5.0.1:
   version "5.0.1"
