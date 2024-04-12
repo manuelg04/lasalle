@@ -79,7 +79,9 @@ export default function LoginScreen() {
       <View style={styles.card}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           {/* Icono de flecha hacia atrás, puedes usar una imagen o crear tu propio componente */}
-          <Text style={styles.backButtonText}>←</Text>
+          <Text style={styles.backButtonText}
+          onPress={() => navigation.navigate('FirstScreen')}
+          >←</Text>
         </TouchableOpacity>
         <Text style={styles.title}>Ingresa a tu cuenta</Text>
         <Ionicons name="person-circle-outline" size={40} color="#4a4a4a" style={styles.loginIcon} />

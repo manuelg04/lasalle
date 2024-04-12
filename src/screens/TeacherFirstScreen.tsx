@@ -125,42 +125,36 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#F5F5F5', // Un fondo más neutro
+    backgroundColor: '#F3F4F6', // Fondo más neutral
   },
   studentItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'white', // Fondo blanco para cada ítem
-    borderRadius: 10, // Bordes redondeados
-    paddingVertical: 15,
-    paddingHorizontal: 20, // Espaciado interno para cada ítem
-    marginVertical: 8, // Espacio entre ítems
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 15,
+    marginVertical: 10,
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 3.84,
+    shadowRadius: 3,
     elevation: 5,
   },
   studentName: {
     fontSize: 18,
-    fontWeight: '400', // No tan bold
     color: '#333',
   },
   button: {
-    backgroundColor: '#007bff', // Mantiene tu color de botón
+    backgroundColor: '#F59E0B', // Usar el color vibrante para botones
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 5,
-    elevation: 2,
   },
   buttonText: {
-    color: '#fff',
+    color: 'white', // Texto blanco para contraste
     fontSize: 16,
-    fontWeight: '500', // Un poco más bold para el texto del botón
+    fontWeight: '500',
   },
   welcomeText: {
     fontSize: 22,
@@ -168,27 +162,27 @@ const styles = StyleSheet.create({
     color: '#333',
     padding: 20,
     textAlign: 'center',
-    marginTop: 40, // Añade espacio en la parte superior
+    marginTop: 20,
   },
   logoutButton: {
     position: 'absolute',
-    top: 48, // Ajusta para que no esté demasiado cerca del borde
-    right: 16, // Ajusta para mantener la consistencia
-    flexDirection: 'row', // Icono y texto en fila
+    top: 20,
+    left: 20,
+    flexDirection: 'row',
     alignItems: 'center',
     paddingRight: 10,
     backgroundColor: 'transparent',
   },
   logoutText: {
     fontSize: 18,
-    color: '#007bff', // Usa el mismo color que el botón de descarga
-    marginLeft: 8, // Añade espacio entre el icono y el texto
+    color: '#F59E0B', // Mantener el color de acento
+    marginLeft: 8,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
     color: '#333',
-    marginBottom: 16, // Añade un poco más de espacio antes de la lista
+    marginBottom: 20,
   },
 });
 

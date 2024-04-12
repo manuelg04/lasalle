@@ -69,6 +69,8 @@ const SignUpStudent = () => {
   const [programa, setPrograma] = useState('');
   const [image, setImage] = useState<string | null>(null);
   const [cameraPermission, requestCameraPermission] = ImagePicker.useCameraPermissions();
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
 
 
   const programas = facultad ? facultadesConProgramas[facultad] : [];
@@ -142,19 +144,32 @@ const SignUpStudent = () => {
       alert('El correo debe ser del dominio @unisalle.edu.co');
       return;
     }
- 
+    let timer = null;
     try {
+      setIsUploading(true);
+      setUploadProgress(0);
         const formData = new FormData();
         formData.append('file', {
           uri: image,
           name: 'profile.jpg',
         });
+        timer = setInterval(() => {
+          setUploadProgress((prevProgress) => {
+            if (prevProgress >= 100) {
+              clearInterval(timer);
+              return 100;
+            }
+            return prevProgress + 10;
+          });
+        }, 500);
       const uploadResponse = await axios({
         method: 'post',
         url: 'https://lasalleapp.onrender.com/profileImage/upload',
         data: formData,
         headers: { 'Content-Type': 'multipart/form-data' },
       });
+      clearInterval(timer);
+      setUploadProgress(100);
       if (uploadResponse.status === 200) {
         // Manejar la respuesta exitosa aquí, como guardar el token JWT
         console.log('Upload success');
@@ -188,6 +203,10 @@ const SignUpStudent = () => {
         navigation.navigate('TermsAndConditions');
       }
     } catch (error) {
+      if (timer !== null) {
+        clearInterval(timer); // Verificar si timer no es null antes de llamar a clearInterval
+      }
+      setIsUploading(false);
       if (error.response && error.response.status === 400) {
         console.log(error.response.data);
       } else {
@@ -213,6 +232,15 @@ const SignUpStudent = () => {
           <Text style={styles.text}>Sube tu foto</Text>
         )}
       </TouchableOpacity>
+
+      {isUploading && (
+  <View style={styles.progressContainer}>
+    <Text style={styles.progressText}>Cargando imagen... {uploadProgress}%</Text>
+    <View style={styles.progressBar}>
+      <View style={[styles.progressFill, { width: `${uploadProgress}%` }]} />
+    </View>
+  </View>
+)}
       
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Nombre completo</Text>
@@ -372,6 +400,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 8,
     
+  },
+  progressContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  progressText: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  progressBar: {
+    width: '80%',
+    height: 10,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 5,
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: '#007AFF',
+    borderRadius: 5,
   },
 });
 

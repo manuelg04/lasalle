@@ -359,33 +359,33 @@ const nextQuestion = () => {
       else if (respuesta === 'Derivando la expresión 2A-8192/A^2, evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo') {
         return (
           <>
-            {"Derivando la expresión "}
+           <Text>Derivando la expresión </Text>
             <MathText value={'\\(2A - \\frac{8192}{A^2}\\)'} />
-            {", evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo"}
+            <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo</Text>
           </>
         );
       } else if (respuesta === 'Derivando la expresión 2A-8192/A^2, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo') {
         return (
           <>
-            {"Derivando la expresión "}
+            <Text>Derivando la expresión </Text>
             <MathText value={'\\(2A - \\frac{8192}{A^2}\\)'} />
-            {", evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo"}
+            <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo</Text>
           </>
         );
       } else if (respuesta === 'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo') {
         return (
           <>
-            {"Derivando la expresión "}
+            <Text>Derivando la expresión </Text>
             <MathText value={'\\(A^2 + \\frac{8192}{A}\\)'} />
-            {", evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo"}
+            <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo</Text>
           </>
         );
       } else if (respuesta === 'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo') {
         return (
           <>
-            {"Derivando la expresión "}
+            <Text>Derivando la expresión </Text>
             <MathText value={'\\(A^2 + \\frac{8192}{A}\\)'} />
-            {", evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo"}
+            <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo</Text>
           </>
         );
       }
@@ -497,6 +497,7 @@ const enviarRespuestas = async () => {
       respuestasEstudiante,
       tiempoTranscurrido: tiempoTranscurridoMinutos
     });
+    console.log("🚀 ~ response:", response)
 
     if(response.status === 201){
       
@@ -545,7 +546,7 @@ const enviarRespuestas = async () => {
     if (idEstudiante && idCuestionarioNormalizado) {
     navigation.navigate('FeedbackScreen', { 
       idEstudiante,
-      idCuestionarioNormalizado,
+      idCuestionarioNormalizado: idCuestionarioNormalizado.toString(), // Convierte a cadena de texto
       situacionCompletada: true
     });
   } else {

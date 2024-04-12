@@ -4,135 +4,194 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
+import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, ActivityIndicator, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
+  Alert,
+} from 'react-native';
 
 import { RootStackParamList } from '../navigation';
-
+import db from '../utils/firebase'; // Asegúrate de importar db correctamente
 
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'ExpCustomMission'>;
 const Experimentemos = ({ route }) => {
   const navigation = useNavigation<OverviewScreenNavigationProps>();
-    const [studentCareer, setStudentCareer] = useState('');
-    const [favoriteSport, setFavoriteSport] = useState('');
-    const [favoriteHobby, setFavoriteHobby] = useState('');
-    const [generatedProblem, setGeneratedProblem] = useState('');
-    const [loading, setLoading] = useState(false);
-    const { theme } = route.params;
-    console.log("🚀 ~ theme:", theme)
+  const [studentCareer, setStudentCareer] = useState('');
+  const [favoriteSport, setFavoriteSport] = useState('');
+  const [favoriteHobby, setFavoriteHobby] = useState('');
+  const [generatedProblem, setGeneratedProblem] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { theme } = route.params;
+  console.log('🚀 ~ theme:', theme);
 
-    const fetchStudentCareer = async (userId:any) => {
-        try {
-          const response = await axios.get(`https://lasalleapp.onrender.com/getStudents/student/${userId}`);
-          const { career } = response.data;
-          setStudentCareer(career);
-        } catch (error) {
-          console.error('Error al obtener la carrera:', error.response.data);
-          // Aquí puedes manejar el error, por ejemplo, mostrar un mensaje al usuario
-        }
-      };
-    
-      useEffect(() => {
-        const getUserIdAndFetchCareer = async () => {
-          const storedUserId = await AsyncStorage.getItem('userId');
-          if (storedUserId) {
-            fetchStudentCareer(storedUserId);
-          }
-        };
-    
-        getUserIdAndFetchCareer();
-      }, []);
+  const fetchStudentCareer = async (userId: any) => {
+    try {
+      const response = await axios.get(
+        `https://lasalleapp.onrender.com/getStudents/student/${userId}`
+      );
+      const { career } = response.data;
+      setStudentCareer(career);
+    } catch (error) {
+      console.error('Error al obtener la carrera:', error.response.data);
+      // Aquí puedes manejar el error, por ejemplo, mostrar un mensaje al usuario
+    }
+  };
 
-      const handleGenerateProblem = async () => {
-        setLoading(true);
-        try {
-            const response = await axios.post('https://lasalleapp.onrender.com/api/experiment/generate-custom-problem', {
-                input1: studentCareer,
-                input2: favoriteSport,
-                input3: favoriteHobby,
-                theme,
-            });
-
-            if (response.status === 201) {
-                // Acceder a la propiedad content del objeto problem
-                const problemText = response.data.problem.content;
-                console.log("🚀 ~ problemText:", problemText)
-                setGeneratedProblem(problemText);
-                // Navegar a la pantalla de ExpCustomMission
-                navigation.navigate('ExpCustomMission', { problemText });
-            }
-        } catch (error) {
-            console.error('Error al generar el problema:', error);
-            // Manejar el error adecuadamente
-        }
-        setLoading(false);
+  useEffect(() => {
+    const getUserIdAndFetchCareer = async () => {
+      const storedUserId = await AsyncStorage.getItem('userId');
+      if (storedUserId) {
+        fetchStudentCareer(storedUserId);
+      }
     };
-    
+
+    getUserIdAndFetchCareer();
+  }, []);
+
+  const handleGenerateProblem = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        'https://lasalleapp.onrender.com/api/experiment/generate-custom-problem',
+        {
+          input1: studentCareer,
+          input2: favoriteSport,
+          input3: favoriteHobby,
+          theme,
+        }
+      );
+
+      if (response.status === 201) {
+        const problemText = response.data.problem.content;
+        setGeneratedProblem(problemText);
+
+        // Extrae el nombre de la misión del problemText
+        const missionNameMatch = problemText.match(/Nombre de la misión: "(.+)"/);
+        if (missionNameMatch) {
+          const missionName = missionNameMatch[1];
+          // Guarda el nombre de la misión actual como la misión anterior
+          await AsyncStorage.setItem('currentMissionName', missionName);
+        }
+
+        navigation.navigate('ExpCustomMission', { problemText });
+      }
+    } catch (error) {
+      console.error('Error al generar el problema:', error);
+      // Manejar el error adecuadamente
+    }
+    setLoading(false);
+  };
+
+  const handleViewPreviousFeedback = async () => {
+    try {
+      const storedUserId = await AsyncStorage.getItem('userId');
+      if (storedUserId) {
+        const q = query(
+          collection(db, 'respuestas_experimentemos'),
+          where('studentId', '==', storedUserId),
+          orderBy('sentDate', 'desc'),
+          limit(1)
+        );
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          const previousMissionData = querySnapshot.docs[0].data();
+          navigation.navigate('FeedbackExperimentemos', {
+            studentId: storedUserId,
+            missionName: previousMissionData.missionName,
+            missionStatement: previousMissionData.context,
+            feedbackData: previousMissionData,
+          });
+        } else {
+          console.log('No se encontró feedback de una misión anterior');
+          Alert.alert('No hay misión anterior', 'No se encontró feedback de una misión anterior.');
+        }
+      }
+    } catch (error) {
+      console.error('Error al obtener el feedback de la misión anterior:', error);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
-    style={{ flex: 1 }}
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
-    keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0} // Ajusta este valor según sea necesario
-  >
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0} // Ajusta este valor según sea necesario
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView style={styles.container}>
+          <View style={styles.contentContainer}>
+            <View style={styles.header}>
+              <Ionicons name="md-cube-outline" size={36} color="#4B5563" />
+              <Text style={styles.headerText}>Experimentemos</Text>
+            </View>
 
-    <ScrollView style={styles.container}>
-      <View style={styles.contentContainer}>
-        <View style={styles.header}>
-          <Ionicons name="md-cube-outline" size={36} color="#4B5563" />
-          <Text style={styles.headerText}>Experimentemos</Text>
-        </View>
+            <View style={styles.promptContainer}>
+              <Text style={styles.promptText}>
+                Voy a crear una misión especial para ti, para esto cuéntame ¿cuál es tu hobby y
+                deporte favoritos?
+              </Text>
+            </View>
 
-        <View style={styles.promptContainer}>
-          <Text style={styles.promptText}>
-            Voy a crear una misión especial para ti, para esto cuéntame ¿cuál es tu hobby y deporte
-            favoritos?
-          </Text>
-        </View>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Programa</Text>
+              <TextInput
+                value={studentCareer}
+                placeholder="Programas"
+                style={styles.input}
+                placeholderTextColor="#B45309"
+              />
+            </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Programa</Text>
-          <TextInput
-            value={studentCareer}
-            placeholder="Programas"
-            style={styles.input}
-            placeholderTextColor="#B45309"
-          />
-        </View>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Hobby</Text>
+              <TextInput
+                placeholder="escribe un hobby favorito"
+                style={styles.input}
+                placeholderTextColor="#B45309"
+                onChangeText={setFavoriteHobby}
+              />
+            </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Hobby</Text>
-          <TextInput
-            placeholder="escribe un hobby favorito"
-            style={styles.input}
-            placeholderTextColor="#B45309"
-            onChangeText={setFavoriteHobby}
-          />
-        </View>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Deporte</Text>
+              <TextInput
+                placeholder="escribe un deporte favorito"
+                style={styles.input}
+                placeholderTextColor="#B45309"
+                onChangeText={setFavoriteSport}
+              />
+            </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Deporte</Text>
-          <TextInput
-            placeholder="escribe un deporte favorito"
-            style={styles.input}
-            placeholderTextColor="#B45309"
-            onChangeText={setFavoriteSport}
-          />
-        </View>
+            <TouchableOpacity style={styles.button} onPress={handleGenerateProblem}>
+              <Text style={styles.buttonText}>Genera tu propia Misión</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={handleGenerateProblem}>
-          <Text style={styles.buttonText}>Genera tu propia Misión</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.feedbackButton} onPress={handleViewPreviousFeedback}>
+              <Text style={styles.feedbackButtonText}>Ver feedback de la misión anterior</Text>
+            </TouchableOpacity>
 
-        {loading ? <ActivityIndicator size="large" color="#0000ff" /> : null}
-        {generatedProblem ? (
-          <View style={styles.problemContainer}>
-            <Text style={styles.problemText}>{generatedProblem}</Text>
+            {loading ? (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0000ff" />
+                <Text style={styles.loadingText}>
+                  Estamos creando tu misión matemática, este proceso puede tardar unos segundos.
+                </Text>
+              </View>
+            ) : null}
           </View>
-        ) : null}
-      </View>
-    </ScrollView>
-    </TouchableWithoutFeedback>
+        </ScrollView>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };
@@ -221,11 +280,35 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#F0F4F8',
     borderRadius: 10,
-},
-problemText: {
+  },
+  problemText: {
     fontSize: 16,
     color: '#333',
-},
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  loadingText: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: '#4B5563',
+  },
+  feedbackButton: {
+    backgroundColor: '#6B7280',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    marginTop: 16,
+  },
+  feedbackButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
 
 export default Experimentemos;

@@ -81,7 +81,7 @@ const situacion2: any = [
       {
         enunciado:
           '5. Para hallar la velocidad promedio de la partícula en un tiempo t1 y t2 específico se debe:',
-        url: 'https://view.genial.ly/5d8387fa7d6fa60fcf658f94',
+        url: 'https://www.youtube.com/watch?v=1K9RAKPQD1Y',
         respuestas: ['Usar el cociente xt2-xt1t2-t1 entre las diferencias de las posiciones sobre las diferencias de los tiempos', 
         'Usar el cociente t2-t1xt2-xt1 entre las diferencias de las posiciones sobre las diferencias de los tiempos'
       ],
@@ -91,7 +91,7 @@ const situacion2: any = [
       {
         enunciado:
           '6. Una forma de encontrar la velocidad del estudiante en un instante de tiempo t es resolviendo el siguiente límite:',
-        url: 'https://view.genial.ly/5d8387fa7d6fa60fcf658f94',
+        url: 'https://www.youtube.com/watch?v=1K9RAKPQD1Y',
         respuestas: [
           'xt2-xt1t2-t1',
           'xt2-xt1t2-t1',
@@ -104,7 +104,7 @@ const situacion2: any = [
       {
         enunciado:
           '7. Una forma de encontrar la velocidad instantánea de la posición del estudiante a los 4 segundos es',
-        url: 'https://view.genial.ly/5d8387fa7d6fa60fcf658f94',
+        url: 'https://www.youtube.com/watch?v=1K9RAKPQD1Y',
         respuestas: [
           'Derivar la función aceleración y evaluarla en t=4',
           'Derivar la función velocidad y evaluarla en t=4',

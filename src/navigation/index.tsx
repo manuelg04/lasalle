@@ -91,7 +91,11 @@ export default function RootStack() {
           component={Situacion1RazonDeCambio}
           options={{ title: 'Razon de cambio' }}
         />
-        <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
+        <Stack.Screen
+          name="TermsAndConditions"
+          component={TermsAndConditions}
+          options={{ title: 'Terminos y condiciones' }}
+        />
         <Stack.Screen
           name="Experimentemos"
           component={Experimentemos}
@@ -140,9 +144,11 @@ export default function RootStack() {
           options={({ navigation }) => ({
             title: 'Iniciar sesión',
             headerLeft: () => (
-              <View className={styles.backButton}>
+              <View style={styles.backButton}>
                 <Feather name="chevron-left" size={16} color="#007AFF" />
-                <Text className={styles.backButtonText} onPress={navigation.goBack}>
+                <Text
+                  style={styles.backButtonText}
+                  onPress={() => navigation.navigate('FirstScreen')}>
                   Atras
                 </Text>
               </View>

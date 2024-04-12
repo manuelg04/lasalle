@@ -113,7 +113,7 @@ const situacion1 :any = [
             },
             {
                 "Subtitulo": "¿Cómo llevarías a cabo el plan?",
-                "enunciado": "8. Al derivar el volumen V=a3 con respecto a a, se obtiene",
+                "enunciado": "8. Al derivar el volumen V=a^3 con respecto a a, se obtiene",
                 url: "https://www.youtube.com/watch?v=gl9oK_LVPow",
                 "respuestas": [
                     "dV/da=3a",

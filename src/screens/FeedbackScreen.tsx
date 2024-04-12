@@ -41,7 +41,7 @@ const FeedbackScreen = ({ route }) => {
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
           const latestAttemptData = querySnapshot.docs[0].data();
-          console.log("🚀 ~ latestAttemptData:", latestAttemptData)
+          console.log("🚀 ~ latestAttemptData:", JSON.stringify(latestAttemptData))
           setFeedbackData(latestAttemptData); // Aquí estableces la data de Firestore en el estado
           setIsLoading(false); // Data ha sido cargada
         } else {
@@ -77,17 +77,111 @@ const FeedbackScreen = ({ route }) => {
     '¿Qué resultados obtienes?',
   ];
 
-  const renderMathOrTextForFeedback = (respuesta) => {
+  const renderMathOrTextForFeedback = (respuesta, index) => {
+    if (!respuesta) return null;
     respuesta = respuesta.replace(/^[a-d]\.\s*|\s*:/g, ''); // Elimina las opciones de respuesta (a., b., c., d.) y los dos puntos
     // Función auxiliar para formatear ecuaciones matemáticas para LaTeX
     const formatEquationForLaTeX = (equation) => {
       // Reemplaza los símbolos de ecuación con su equivalente en LaTeX
-      return equation.replace(/([a-zA-Z0-9]+)([\^\/=])([a-zA-Z0-9]+)/g, (match, p1, p2, p3) => {
-        let formattedEquation = `${p1} ${p2} ${p3}`;
-        return `\\(${formattedEquation}\\)`;
+      const formattedEquation = equation.replace(/([a-zA-Z0-9]+)([\^\/=])([a-zA-Z0-9]+)/g, (match, p1, p2, p3) => {
+        if (p2 === '^') {
+          return `${p1}^{${p3}}`;
+        } else {
+          return `${p1}${p2}${p3}`;
+        }
       });
+      // Envuelve la ecuación formateada en los símbolos de LaTeX
+      return `\\(${formattedEquation}\\)`;
     };
-  
+    if (respuesta === 'xt2-xt1t2-t1') {
+      return <MathText value={'\\(\\frac{x_{t_2} - x_{t_1}}{t_2 - t_1}\\)'} />;
+    }
+    else if (respuesta === 't2-t1xt2-xt1'){
+      return <MathText value={'\\(\\frac{t_2 - t_1}{x_{t_2} - x_{t_1}}\\)'} />;
+    }
+    else if (respuesta === `vt2-vt1t2-t1 ${'donde v es la velocidad de la partícula'}`) {
+      return (
+        <>
+          <MathText value={'\\(\\frac{v_{t2} - v_{t1}}{t2 - t1}\\)'} />
+          <Text>donde v es la velocidad de la partícula</Text>
+        </>
+      );
+    }
+    if (respuesta === `${'Usar el cociente'} xt2-xt1t2-t1 ${'entre las diferencias de las posiciones sobre las diferencias de los tiempos'}`) {
+      return(
+          <MathText value={`Usar el cociente \\(\\frac{x_{t_2} - x_{t_1}}{t_2 - t_1}\\) entre las diferencias de las posiciones sobre las diferencias de los tiempos`} />
+      );
+
+    }
+    else if (respuesta === `${'Usar el cociente'} t2-t1xt2-xt1 ${'entre las diferencias de las posiciones sobre las diferencias de los tiempos'}`) {
+      return (
+        <>
+          
+          <MathText value={`Usar el cociente \\(\\frac{t_2 - t_1}{x_{t_2} - x_{t_1}}\\) entre las diferencias de las posiciones de los tiempos`} />
+          
+        </>
+      );
+    }
+    else if (respuesta === 'x4-x4.54.5-4=2-2.250.5') {
+      return <MathText value={'\\(\\frac{x_{4} - x_{4.5}}{4.5 - 4} = \\frac{2 - 2.25}{0.5}\\)'} />;
+    } else if (respuesta === 'x4.5-x44.5-4=2.25-20.5') {
+      return <MathText value={'\\(\\frac{x_{4.5} - x_{4}}{4.5 - 4} = \\frac{2.25 - 2}{0.5}\\)'} />;
+    } else if (respuesta === 'x4.5-x44.5-4=2-0.250.5') {
+      return <MathText value={'\\(\\frac{x_{4.5} - x_{4}}{4.5 - 4} = \\frac{2 - 0.25}{0.5}\\)'} />;
+    } else if (respuesta === 'x4-x4.54.5=2-2.254.5') {
+      return <MathText value={'\\(\\frac{x_{4} - x_{4.5}}{4.5} = \\frac{2 - 2.25}{4.5}\\)'} />;
+    }
+    if(respuesta.includes('Derivar la función aceleración y evaluarla en t=4')){
+      return <Text>Derivar la función aceleración y evaluarla en t=4</Text>
+    }
+    if(respuesta.includes('Derivar la función velocidad y evaluarla en t=4')){
+      return <Text>Derivar la función velocidad y evaluarla en t=4</Text>
+    }
+    if(respuesta.includes('Derivar la función posición y evaluarla en t=4')){
+      return <Text>Derivar la función posición y evaluarla en t=4</Text>
+    }
+    if(respuesta.includes('Derivar la función tiempo y evaluarla en t=4')){
+      return <Text>Derivar la función tiempo y evaluarla en t=4</Text>
+    }
+    if(respuesta.includes('Obteniendo el valor de x del vértice de la parábola de la siguiente manera -4000/2')){
+      return <Text>Obteniendo el valor de x del vertice de la parabola de la siguiente manera -4000/2</Text>
+    }
+    else if (respuesta === 'Derivando la expresión 2A-8192/A^2, evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo.') {
+      return (
+        <>
+         <Text>Derivando la expresión </Text>
+          <MathText value={'\\(2A - \\frac{8192}{A^2}\\)'} />
+          <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo</Text>
+        </>
+      );
+    } else if (respuesta === 'Derivando la expresión 2A-8192/A^2, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo.') {
+      return (
+        <>
+          <Text>Derivando la expresión </Text>
+          <MathText value={'\\(2A - \\frac{8192}{A^2}\\)'} />
+          <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo</Text>
+        </>
+      );
+    } else if (respuesta === 'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo') {
+      return (
+        <>
+          <Text>Derivando la expresión </Text>
+          <MathText value={'\\(A^2 + \\frac{8192}{A}\\)'} />
+          <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo</Text>
+        </>
+      );
+    } else if (respuesta === 'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo.') {
+      return (
+        <>
+          <Text>Derivando la expresión </Text>
+          <MathText value={'\\(A^2 + \\frac{8192}{A}\\)'} />
+          <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo</Text>
+        </>
+      );
+    }
+
+
+    
     // Verificar si la respuesta contiene texto seguido de ecuación
     const hasTextAndEquation = respuesta.match(/(.*)(ecuación)(.*)/);
     
@@ -100,13 +194,13 @@ const FeedbackScreen = ({ route }) => {
       // Retornar un fragmento con Text y MathText para texto y ecuación respectivamente
       return (
         <>
-          <Text>{`${textPart} ecuación `}</Text>
-          <MathText value={formattedEquationPart} />
+          <Text style={styles.questionText2}>{`${textPart} ecuación `}</Text>
+          <MathText value={formattedEquationPart} style={styles.questionEquation}/>
         </>
       );
     } else if (respuesta.includes('^') || respuesta.includes('/') || respuesta.includes('=')) {
       // Si es puramente una ecuación matemática, formatear toda la respuesta
-      return <MathText value={`\\(${formatEquationForLaTeX(respuesta)}\\)`} />;
+      return <MathText value={`\\(${formatEquationForLaTeX(respuesta)}\\)`} style={styles.questionEquation} />;
     } else {
       // Si no es una ecuación, renderizar como texto normal
       return <Text>{respuesta}</Text>;
@@ -120,7 +214,8 @@ const FeedbackScreen = ({ route }) => {
       return null;
     }
 
-    // Usamos el arreglo fasesOrdenadas para asegurarnos de que las fases se muestren en el orden correcto
+    try {
+          // Usamos el arreglo fasesOrdenadas para asegurarnos de que las fases se muestren en el orden correcto
     return fasesOrdenadas.map((faseOrdenada, index) => {
       const preguntas = feedback.respuestasPorFase[faseOrdenada];
       if (!preguntas) return null; // Si no hay preguntas para la fase, no renderizar nada
@@ -136,18 +231,21 @@ const FeedbackScreen = ({ route }) => {
               {pregunta.respuestasPosibles.map((respuesta, respuestaIdx) => (
        <Text key={`respuesta_${respuestaIdx}`} 
        style={styles.answerText}
-       numberOfLines={3}
+       numberOfLines={7}
        ellipsizeMode='tail'
        >
-       {respuestaIdx + 1} {renderMathOrTextForFeedback(respuesta)}
+      {renderMathOrTextForFeedback(respuesta, respuestaIdx)}
      </Text>
               ))}
+              {pregunta.respuestaSeleccionada !== undefined && (
               <View style={styles.selectedAnswerContainer}>
                 <Text style={styles.selectedAnswerText}>
                   Respuesta Seleccionada:{' '}
                   {pregunta.respuestasPosibles[pregunta.respuestaSeleccionada]}
                 </Text>
               </View>
+            )}
+            {pregunta.esCorrecta !== undefined && (
               <View
                 style={[
                   styles.correctIncorrectText,
@@ -158,11 +256,18 @@ const FeedbackScreen = ({ route }) => {
                   {pregunta.esCorrecta ? 'correcta' : 'incorrecta'}.
                 </Text>
               </View>
+            )}
             </View>
           ))}
         </View>
       );
     });
+      
+    } catch (error) {
+      console.error('Error al renderizar la retroalimentación:', error);
+      
+    }
+
   };
 
   return (
@@ -197,6 +302,11 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
     paddingRight: 10,
+  },
+  questionContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
   },
   headerText: {
     fontSize: 22,
@@ -288,7 +398,7 @@ const styles = StyleSheet.create({
     marginBottom: 15, // Espaciado entre pregunta
   },
   answerText: {
-    fontSize: 14,
+    fontSize: 18,
     color: '#333', // Color oscuro para texto normal
     marginVertical: 8, // Espaciado vertical para las respuestas
   },
@@ -315,6 +425,16 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 4,
   },
+    questionEquation: {
+    fontSize: 18,
+    color: '#333',
+    
+  },
+  questionText2: {
+    fontSize: 18,
+    marginBottom: 5, // Espacio entre la pregunta y la respuesta
+    color: '#173753',
+  }
 });
 
 export default FeedbackScreen;

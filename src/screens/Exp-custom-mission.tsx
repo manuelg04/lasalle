@@ -1,13 +1,13 @@
 /* eslint-disable prettier/prettier */
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { RootStackParamList } from '../navigation';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'ExpCustomMission'>;
 
@@ -63,12 +63,16 @@ const ExpCustomMission = () => {
         };
       });
       console.log('🚀 ~ answeredQuestions:', answeredQuestions);
+        // Obtener la fecha y hora actual en formato ISO 8601
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString();
 
       const postData = {
         studentId,
         missionName: missionData.name,
         context: missionData.context,
         questions: answeredQuestions,
+        sentDate: formattedDate,
       };
 
       // Realizar la petición POST con axios
@@ -76,13 +80,22 @@ const ExpCustomMission = () => {
         'https://lasalleapp.onrender.com/save/saveMissionResponse',
         postData
       );
-
       // Verificar si la respuesta es exitosa
       if (response.status === 201) {
         console.log('Respuesta guardada con éxito:', response.data);
+        const currentMissionName = await AsyncStorage.getItem('currentMissionName');
+        // Guardar el nombre de la misión actual como la misión anterior en AsyncStorage
+        await AsyncStorage.setItem('previousMissionName', currentMissionName || '');
+        // Extraer los datos de retroalimentación de la respuesta
+        const feedbackData = response.data.data;
         // Aquí podrías realizar acciones como navegar a otra pantalla o mostrar un mensaje de éxito
         Alert.alert('Éxito', 'Misión finalizada con éxito');
-        navigation.navigate('FeedbackExperimentemos', { studentId, missionName: missionData.name });
+        navigation.navigate('FeedbackExperimentemos', {
+          studentId,
+          missionName: missionData.name,
+          missionStatement: currentMissionName,
+          feedbackData,
+        });
       } else {
         // Manejar las respuestas que no son código 201
         console.log('Respuesta recibida, pero con un código de estado diferente:', response.status);
@@ -99,7 +112,7 @@ const ExpCustomMission = () => {
       .split('\n')
       .map((line) => line.trim())
       .filter((line) => line);
-
+  
     let missionName = '';
     let missionContext = '';
     const questions = [];
@@ -107,14 +120,19 @@ const ExpCustomMission = () => {
     let currentPhase = '';
     let currentQuestion = null;
     let questionIndex = 0;
-
+    let isContextContinuation = false;
+  
     lines.forEach((line) => {
       if (line.startsWith('Nombre de la misión:')) {
         missionName = line.substring('Nombre de la misión:'.length).trim();
       } else if (line.startsWith('Contexto:')) {
         missionContext = line.substring('Contexto:'.length).trim();
+        isContextContinuation = true;
+      } else if (isContextContinuation && !line.startsWith('FASE.')) {
+        missionContext += ' ' + line.trim();
       } else if (line.startsWith('FASE.')) {
         currentPhase = line.substring('FASE.'.length).trim();
+        isContextContinuation = false;
       } else if (line.startsWith('Pregunta') && line.includes(':')) {
         if (currentQuestion) {
           questions.push(currentQuestion);
@@ -126,7 +144,7 @@ const ExpCustomMission = () => {
             phase: currentPhase,
             text: questionParts[0].trim() + ': ' + questionParts[1].trim(),
             options: [],
-            correctOption: null, // Inicializar correctOption como null
+            correctOption: null,
           };
         }
       } else if (line.match(/^[a-d]\)/)) {
@@ -135,26 +153,24 @@ const ExpCustomMission = () => {
         const answerMatch = line.match(/Pregunta (\d+)\. es la ([A-D])/);
         if (answerMatch && answerMatch.length > 2) {
           const questionNumber = answerMatch[1];
-          const correctAnswer = answerMatch[2].charCodeAt(0) - 65; // Obtener el índice de la respuesta correcta
+          const correctAnswer = answerMatch[2].charCodeAt(0) - 65;
           correctAnswers[`Pregunta ${questionNumber}`] = correctAnswer;
         }
       }
     });
-
+  
     if (currentQuestion) {
       questions.push(currentQuestion);
     }
-    // Asignar las respuestas correctas a las preguntas correspondientes
+  
     questions.forEach((question) => {
       const questionNumber = question.text.match(/Pregunta (\d+):/)[1];
       if (correctAnswers.hasOwnProperty(`Pregunta ${questionNumber}`)) {
         question.correctOption = correctAnswers[`Pregunta ${questionNumber}`];
       }
     });
-
-    console.log('rta ', correctAnswers);
-
-    return { name: missionName, context: missionContext, questions, correctAnswers };
+  
+    return { name: missionName, context: missionContext.trim(), questions, correctAnswers };
   };
 
   const missionData = parseProblemText(problemText);
@@ -163,7 +179,9 @@ const ExpCustomMission = () => {
     <ScrollView style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.missionName}>{missionData.name}</Text>
+        <View style={styles.missionContextContainer}>
         <Text style={styles.missionContext}>{missionData.context}</Text>
+        </View>
         {missionData.questions.map((question, questionIndex) => (
           <View key={questionIndex} style={styles.questionContainer}>
             <Text style={styles.questionText}>{question.text}</Text>
@@ -205,6 +223,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#555',
     marginBottom: 16,
+    flexWrap: 'wrap',
   },
   questionContainer: {
     marginBottom: 20,
@@ -272,6 +291,9 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 5,
     backgroundColor: '#000',
+  },
+  missionContextContainer: {
+    width: '100%',
   },
 });
 

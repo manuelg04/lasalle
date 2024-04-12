@@ -15,41 +15,28 @@ import db from '../utils/firebase'; // Asegúrate de importar db correctamente
 
 const FeedbackExperimentemos = ({ route }) => {
   const navigation = useNavigation();
-  const [feedbackData, setFeedbackData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { studentId, missionName } = route.params; // Asumiendo que estos datos se pasan a través del route
+  const { studentId, missionName, missionStatement, feedbackData} = route.params; // Asumiendo que estos datos se pasan a través del route
 
   useEffect(() => {
-    const fetchMissionAttempt = async () => {
+    const fetchFeedbackData = async () => {
       const q = query(
         collection(db, 'respuestas_experimentemos'),
         where('studentId', '==', studentId),
         where('missionName', '==', missionName)
       );
 
-      try {
-        const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-          const missionAttemptData = querySnapshot.docs[0].data();
-          console.log("🚀 ~ missionAttemptData:", missionAttemptData)
-          setFeedbackData(missionAttemptData);
-          setIsLoading(false);
-        } else {
-          console.log(
-            `No se encontraron intentos para la misión: ${missionName} y estudiante: ${studentId}`
-          );
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error('Error completo:', error);
-        if (error) {
-          console.error('Detalles del error de Firestore:', error.code, error.message);
-        }
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        console.log('Feedback data:', data);
         setIsLoading(false);
-      }
+      });
     };
 
-    fetchMissionAttempt();
+    fetchFeedbackData();
+
+  
   }, [studentId, missionName]);
 
   if (isLoading) {
@@ -98,6 +85,7 @@ const FeedbackExperimentemos = ({ route }) => {
     <ScrollView style={styles.container}>
       <View style={styles.feedbackContainer}>
         <Text style={styles.headerText}>Retroalimentación de la Misión</Text>
+        <Text style={styles.missionStatementText}>{feedbackData.context}</Text>
         {renderFeedbackInfo(feedbackData)}
         <TouchableOpacity
           style={styles.button}
@@ -228,6 +216,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ECEFF1', // Fondo gris claro
+  },
+  missionStatementText: {
+    fontSize: 14,
+    marginBottom: 20,
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'justify', // Justifica el texto para una lectura más natural
   },
 });
 

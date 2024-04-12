@@ -68,10 +68,11 @@ const EstudiemosRazonDeCambio = () => {
           <Ionicons name="md-walk-sharp" size={32} color="green" />
         </TouchableOpacity>
       </View>
-
       <Text style={styles.reflection}>
         ¡Completa las situaciones para acceder a la reflexión!
-        Y continua perfeccionando tus conocimientos
+        Y continua perfeccionando tus conocimientos.
+        Ten presente que las respuestas que selecciones no se pueden desmarcar, pero puedes 
+        realizar las situaciones las veces que desees.
       </Text>
 
       {/* <View style={styles.footer}>
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#fff',
-    height: '60%',
+    height: '55%',
     marginTop: 32,
     width: '100%',
     borderRadius: 8,
@@ -154,7 +155,8 @@ const styles = StyleSheet.create({
   reflection: {
     textAlign: 'center',
     fontSize: 14,
-    marginTop: 10,
+    paddingHorizontal: 20,
+    marginBottom: 20,
   },
   footer: {
     flexDirection: 'row',
