@@ -77,7 +77,7 @@ export const recursos = {
         Derivadas: [
             {
                 subtematica: "Definición de la derivada - La derivada como razón de cambio",
-                url: "https://www.youtube.com/watch?v=1K9RAKPQD1Y"
+                url: "https://view.genial.ly/5d8387fa7d6fa60fcf658f94/interactive-content-derivada-de-una-funcion"
             },
             {
                 subtematica: "Ejemplo de razón de cambio",
