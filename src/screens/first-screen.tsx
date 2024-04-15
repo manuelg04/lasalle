@@ -58,7 +58,7 @@ export default function FirstScreen() {
     </SafeAreaView>
   );
 }
-const logoWidth = scaledSize(250); // Tamaño base para el logo
+const logoWidth = scaledSize(250);
 const logoHeight = logoWidth * (200 / 300); // Mantener la relación de aspecto del logo
 const styles = StyleSheet.create({
   container: {
