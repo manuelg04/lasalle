@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Platform, Alert, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Platform, Alert, ScrollView, ActivityIndicator } from 'react-native';
 
 import { RootStackParamList } from '../../navigation';
 import TermsAndConditions from '../TermsAndConditions';
@@ -71,6 +71,7 @@ const SignUpStudent = () => {
   const [cameraPermission, requestCameraPermission] = ImagePicker.useCameraPermissions();
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
 
 
   const programas = facultad ? facultadesConProgramas[facultad] : [];
@@ -139,20 +140,25 @@ const SignUpStudent = () => {
       alert('Todos los campos son requeridos');
       return;
     }
-
-    if(!email.endsWith('@unisalle.edu.co')){
+    
+    if (!email.endsWith('@unisalle.edu.co')) {
       alert('El correo debe ser del dominio @unisalle.edu.co');
       return;
     }
+    
     let timer = null;
+    
     try {
+      setIsRegistering(true);
       setIsUploading(true);
       setUploadProgress(0);
+      
+      let uploadResponse = { data: { url: '' } };
+      
+      if (image) {
         const formData = new FormData();
-        formData.append('file', {
-          uri: image,
-          name: 'profile.jpg',
-        });
+        formData.append('file', { uri: image, name: 'profile.jpg' });
+        
         timer = setInterval(() => {
           setUploadProgress((prevProgress) => {
             if (prevProgress >= 100) {
@@ -162,19 +168,22 @@ const SignUpStudent = () => {
             return prevProgress + 10;
           });
         }, 500);
-      const uploadResponse = await axios({
-        method: 'post',
-        url: 'https://lasalleapp.onrender.com/profileImage/upload',
-        data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      clearInterval(timer);
-      setUploadProgress(100);
-      if (uploadResponse.status === 200) {
-        // Manejar la respuesta exitosa aquí, como guardar el token JWT
-        console.log('Upload success');
+        
+        uploadResponse = await axios({
+          method: 'post',
+          url: 'https://lasalleapp.onrender.com/profileImage/upload',
+          data: formData,
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        
+        clearInterval(timer);
+        setUploadProgress(100);
+        
+        if (uploadResponse.status === 200) {
+          console.log('Upload success');
+        }
       }
- 
+      
       const response = await axios.post(
         'https://lasalleapp.onrender.com/student/register',
         {
@@ -186,31 +195,35 @@ const SignUpStudent = () => {
           imageUrl: uploadResponse.data.url,
         }
       );
-
+      
       if (response.status === 201) {
-        // Manejar la respuesta exitosa aquí, como guardar el token JWT
         const token = response.data.token;
         const imageUrl = response.data.imageUrl;
         const fullName = response.data.fullName;
         const career = response.data.career;
         const faculty = response.data.faculty;
+        
         await AsyncStorage.setItem('career', career);
         await AsyncStorage.setItem('faculty', faculty);
         await AsyncStorage.setItem('fullName', fullName);
         await AsyncStorage.setItem('userToken', token);
         await AsyncStorage.setItem('userImageUrl', imageUrl);
+        setIsRegistering(false);
         alert('Registro completado');
         navigation.navigate('TermsAndConditions');
       }
     } catch (error) {
       if (timer !== null) {
-        clearInterval(timer); // Verificar si timer no es null antes de llamar a clearInterval
+        clearInterval(timer);
       }
+      setIsRegistering(false);
       setIsUploading(false);
+      
       if (error.response && error.response.status === 400) {
         console.log(error.response.data);
+        alert('Error en el registro: ' + error.response.data.message);
       } else {
-        error.response && console.log(error.response.data);
+        console.log(error);
         alert('Algo salió mal');
       }
     }
@@ -300,9 +313,13 @@ const SignUpStudent = () => {
             ))}
           </Picker>
         </View>
-        <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Registrarme</Text>
-        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={isRegistering}>
+  {isRegistering ? (
+    <ActivityIndicator size="small" color="#fff" />
+  ) : (
+    <Text style={styles.buttonText}>Registrarme</Text>
+  )}
+</TouchableOpacity>
       </View>
     </View>
     </ScrollView>

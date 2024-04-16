@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "lasalle",
-    "slug": "lasalleapp",
+    "name": "MISION-MATEMATICA",
+    "slug": "mision-matematica",
     "version": "1.0.0",
     "web": {
       "favicon": "./assets/favicon.png"
@@ -26,29 +26,29 @@
         "backgroundColor": "#ffffff"
       }
     },
-    "package": "com.manuelg.lasalleapp",
+    "package": "com.mision-matematica-lasalle.lasalleapp",
     "extra": {
       "eas": {
-        "projectId": "a2d0a8b2-c2c8-4e06-a013-ee3c5fd93fed"
+        "projectId": "db9c1dc2-4071-4b71-80d1-c041a370eb7c"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/a2d0a8b2-c2c8-4e06-a013-ee3c5fd93fed"
+      "url": "https://u.expo.dev/db9c1dc2-4071-4b71-80d1-c041a370eb7c"
     }
   },
   "extra": {
     "eas": {
-      "projectId": "a2d0a8b2-c2c8-4e06-a013-ee3c5fd93fed"
+      "projectId": "db9c1dc2-4071-4b71-80d1-c041a370eb7c"
     }
   },
-  "owner": "manuelg",
+  "owner": "mision-matematica-lasalle",
   "runtimeVersion": {
     "policy": "appVersion"
   },
   "updates": {
-    "url": "https://u.expo.dev/a2d0a8b2-c2c8-4e06-a013-ee3c5fd93fed"
+    "url": "https://u.expo.dev/db9c1dc2-4071-4b71-80d1-c041a370eb7c"
   }
 }
