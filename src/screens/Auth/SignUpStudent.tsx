@@ -158,7 +158,7 @@ const SignUpStudent = () => {
       if (image) {
         const formData = new FormData();
         formData.append('file', { uri: image, name: 'profile.jpg' });
-        
+      
         timer = setInterval(() => {
           setUploadProgress((prevProgress) => {
             if (prevProgress >= 100) {
@@ -168,17 +168,21 @@ const SignUpStudent = () => {
             return prevProgress + 10;
           });
         }, 500);
-        
+      
+        setIsUploading(true);
+        setUploadProgress(0);
+      
         uploadResponse = await axios({
           method: 'post',
           url: 'https://lasalleapp.onrender.com/profileImage/upload',
           data: formData,
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-        
+      
         clearInterval(timer);
         setUploadProgress(100);
-        
+        setIsUploading(false);
+      
         if (uploadResponse.status === 200) {
           console.log('Upload success');
         }
@@ -217,7 +221,9 @@ const SignUpStudent = () => {
         clearInterval(timer);
       }
       setIsRegistering(false);
-      setIsUploading(false);
+      if (isUploading) {
+        setIsUploading(false);
+      }
       
       if (error.response && error.response.status === 400) {
         console.log(error.response.data);
@@ -246,7 +252,7 @@ const SignUpStudent = () => {
         )}
       </TouchableOpacity>
 
-      {isUploading && (
+      {image && isUploading && (
   <View style={styles.progressContainer}>
     <Text style={styles.progressText}>Cargando imagen... {uploadProgress}%</Text>
     <View style={styles.progressBar}>

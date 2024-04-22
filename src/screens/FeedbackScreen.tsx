@@ -10,10 +10,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  Image,
 } from 'react-native';
-import MathView, { MathText } from 'react-native-math-view';
 
 import { RootStackParamList } from '../navigation';
+import EquationRenderer from '../utils/MathSvg';
 import db from '../utils/firebase'; // Asegúrate de importar db correctamente
 
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FeedbackScreen'>;
@@ -81,55 +82,103 @@ const FeedbackScreen = ({ route }) => {
     if (!respuesta) return null;
     respuesta = respuesta.replace(/^[a-d]\.\s*|\s*:/g, ''); // Elimina las opciones de respuesta (a., b., c., d.) y los dos puntos
     // Función auxiliar para formatear ecuaciones matemáticas para LaTeX
-    const formatEquationForLaTeX = (equation) => {
-      // Reemplaza los símbolos de ecuación con su equivalente en LaTeX
+    const formatEquation = (equation) => {
+      // Reemplaza los símbolos de ecuación con su equivalente
       const formattedEquation = equation.replace(/([a-zA-Z0-9]+)([\^\/=])([a-zA-Z0-9]+)/g, (match, p1, p2, p3) => {
         if (p2 === '^') {
-          return `${p1}^{${p3}}`;
+          return `${p1}${p2}${p3}`;
         } else {
           return `${p1}${p2}${p3}`;
         }
       });
-      // Envuelve la ecuación formateada en los símbolos de LaTeX
-      return `\\(${formattedEquation}\\)`;
+      return formattedEquation;
     };
     if (respuesta === 'xt2-xt1t2-t1') {
-      return <MathText value={'\\(\\frac{x_{t_2} - x_{t_1}}{t_2 - t_1}\\)'} />;
+      return (
+        <View style={styles.container}>
+        <EquationRenderer equation="xt₂- xt₁t₂ -t₁" />
+      </View>
+      )
+    }
+    else if (respuesta === 'V=a^3') {
+      return <Text>V=a³</Text>;
+    
+    }
+    else if (respuesta === 'dV/da=3a^2') {
+      return <Text>dV/da=3a²</Text>;
+    }
+    else if (respuesta === 'dV/da=a^2') {
+      return <Text>dV/da=a²</Text>;
+    }
+    else if (respuesta === 'Reemplazar el valor de a=3 en la ecuación v=a^3') {
+      return <Text>Reemplazar el valor de a=3 en la ecuación v=a³</Text>;
+    }
+    else if (respuesta === 'Reemplazar el valor de a=3 en la ecuación dV/da=3a^2') {
+      return <Text>Reemplazar el valor de a=3 en la ecuación dV/da=3a²</Text>;
+    }
+    else if (respuesta === 'Reemplazar el valor de v=3 en la ecuación dV/da=3a^2 y despejar a') {
+      return <Text>Reemplazar el valor de a=3 en la ecuación dV/da=3a² y despejar a</Text>;
+    }
+    else if (respuesta === 'Reemplazar el valor de a=3 en la ecuación dV/da=a^2') {
+      return <Text>Reemplazar el valor de a=3 en la ecuación dV/da=a²</Text>;
+    }
+    else if (respuesta === '3 m^3/mm') {
+      return (
+        <Text>3m³/ mm</Text>
+      )
+    } else if (respuesta === '6 m^3/mm') {
+      return (
+        <Text>6m³/ mm</Text>
+      )
+    } else if (respuesta === '9 m^3/mm') {
+      return (
+        <Text>9m³/ mm</Text>
+      )
+    } else if (respuesta === '27 m^3/mm') {
+      return (
+        <Text>27m³/ mm</Text>
+      )
     }
     else if (respuesta === 't2-t1xt2-xt1'){
-      return <MathText value={'\\(\\frac{t_2 - t_1}{x_{t_2} - x_{t_1}}\\)'} />;
-    }
-    else if (respuesta === `vt2-vt1t2-t1 ${'donde v es la velocidad de la partícula'}`) {
-      return (
-        <>
-          <MathText value={'\\(\\frac{v_{t2} - v_{t1}}{t2 - t1}\\)'} />
-          <Text>donde v es la velocidad de la partícula</Text>
-        </>
-      );
-    }
-    if (respuesta === `${'Usar el cociente'} xt2-xt1t2-t1 ${'entre las diferencias de las posiciones sobre las diferencias de los tiempos'}`) {
       return(
-          <MathText value={`Usar el cociente \\(\\frac{x_{t_2} - x_{t_1}}{t_2 - t_1}\\) entre las diferencias de las posiciones sobre las diferencias de los tiempos`} />
-      );
-
+        <View style={styles.container}>
+        <EquationRenderer equation="t₂ - t₁xt₂ - xt₁" />
+        </View>
+      )
     }
-    else if (respuesta === `${'Usar el cociente'} t2-t1xt2-xt1 ${'entre las diferencias de las posiciones sobre las diferencias de los tiempos'}`) {
-      return (
-        <>
-          
-          <MathText value={`Usar el cociente \\(\\frac{t_2 - t_1}{x_{t_2} - x_{t_1}}\\) entre las diferencias de las posiciones de los tiempos`} />
-          
-        </>
-      );
+    else if (respuesta === 'vt2-vt1t2-t1 donde v es la velocidad de la partícula') {
+      return <Text>vt₂ - vt₁t₂ - t₁ donde v es la velocidad de la partícula</Text>;
+    }
+    if (respuesta === 'Usar el cociente xt2-xt1t2-t1 entre las diferencias de las posiciones sobre las diferencias de los tiempos') {
+      return <Text>Usar el cociente xt₂- xt₁t₂ -t₁ entre las diferencias de las posiciones sobre las diferencias de los tiempos</Text>;
+    }
+    else if (respuesta === 'Usar el cociente t2-t1xt2-xt1 entre las diferencias de las posiciones sobre las diferencias de los tiempos') {
+      return <Text>Usar el cociente t₂ - t₁xt₂ - xt₁ entre las diferencias de las posiciones sobre las diferencias de los tiempos</Text>;
     }
     else if (respuesta === 'x4-x4.54.5-4=2-2.250.5') {
-      return <MathText value={'\\(\\frac{x_{4} - x_{4.5}}{4.5 - 4} = \\frac{2 - 2.25}{0.5}\\)'} />;
+      return (
+        <View style={styles.container}>
+        <Image source={require('../../assets/situacion2punto8b.png')} style={styles.image} />
+     </View>
+      )
     } else if (respuesta === 'x4.5-x44.5-4=2.25-20.5') {
-      return <MathText value={'\\(\\frac{x_{4.5} - x_{4}}{4.5 - 4} = \\frac{2.25 - 2}{0.5}\\)'} />;
+      return (
+        <View style={styles.container}>
+        <Image source={require('../../assets/situacion2punto8c.png')} style={styles.image} />
+     </View>
+      )
     } else if (respuesta === 'x4.5-x44.5-4=2-0.250.5') {
-      return <MathText value={'\\(\\frac{x_{4.5} - x_{4}}{4.5 - 4} = \\frac{2 - 0.25}{0.5}\\)'} />;
+      return (
+        <View style={styles.container}>
+        <Image source={require('../../assets/testing.png')} style={styles.image} />
+     </View>
+      )
     } else if (respuesta === 'x4-x4.54.5=2-2.254.5') {
-      return <MathText value={'\\(\\frac{x_{4} - x_{4.5}}{4.5} = \\frac{2 - 2.25}{4.5}\\)'} />;
+      return (
+        <View style={styles.container}>
+        <Image source={require('../../assets/situacion2punto8d.png')} style={styles.image} />
+      </View>
+      )
     }
     if(respuesta.includes('Derivar la función aceleración y evaluarla en t=4')){
       return <Text>Derivar la función aceleración y evaluarla en t=4</Text>
@@ -149,33 +198,25 @@ const FeedbackScreen = ({ route }) => {
     else if (respuesta === 'Derivando la expresión 2A-8192/A^2, evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo.') {
       return (
         <>
-         <Text>Derivando la expresión </Text>
-          <MathText value={'\\(2A - \\frac{8192}{A^2}\\)'} />
-          <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo</Text>
+         <Text>Derivando la expresión 2A-8182/A² , evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo </Text>
         </>
       );
     } else if (respuesta === 'Derivando la expresión 2A-8192/A^2, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo.') {
       return (
         <>
-          <Text>Derivando la expresión </Text>
-          <MathText value={'\\(2A - \\frac{8192}{A^2}\\)'} />
-          <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo</Text>
+          <Text>Derivando la expresión 2A-8192/A², evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo.</Text>
         </>
       );
     } else if (respuesta === 'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo') {
       return (
         <>
-          <Text>Derivando la expresión </Text>
-          <MathText value={'\\(A^2 + \\frac{8192}{A}\\)'} />
-          <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo</Text>
+          <Text>Derivando la expresión A²+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo</Text>
         </>
       );
     } else if (respuesta === 'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo.') {
       return (
         <>
-          <Text>Derivando la expresión </Text>
-          <MathText value={'\\(A^2 + \\frac{8192}{A}\\)'} />
-          <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo</Text>
+          <Text>Derivando la expresión A²+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo.</Text>
         </>
       );
     }
@@ -189,18 +230,17 @@ const FeedbackScreen = ({ route }) => {
       // Extraer el texto y la ecuación por separado
       const textPart = hasTextAndEquation[1].trim(); // El texto antes de 'ecuación'
       const equationPart = hasTextAndEquation[3].trim(); // La ecuación después de 'ecuación'
-      const formattedEquationPart = formatEquationForLaTeX(equationPart);
+      const formattedEquationPart = formatEquation(equationPart);
   
-      // Retornar un fragmento con Text y MathText para texto y ecuación respectivamente
       return (
         <>
           <Text style={styles.questionText2}>{`${textPart} ecuación `}</Text>
-          <MathText value={formattedEquationPart} style={styles.questionEquation}/>
+          <Text style={styles.questionEquation}>{formattedEquationPart}</Text>
         </>
       );
     } else if (respuesta.includes('^') || respuesta.includes('/') || respuesta.includes('=')) {
       // Si es puramente una ecuación matemática, formatear toda la respuesta
-      return <MathText value={`\\(${formatEquationForLaTeX(respuesta)}\\)`} style={styles.questionEquation} />;
+      return <Text style={styles.questionEquation}>{formatEquation(respuesta)}</Text>;
     } else {
       // Si no es una ecuación, renderizar como texto normal
       return <Text>{respuesta}</Text>;
@@ -434,7 +474,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 5, // Espacio entre la pregunta y la respuesta
     color: '#173753',
-  }
+  },
+  image: {
+    marginHorizontal: 5,
+  },
 });
 
 export default FeedbackScreen;

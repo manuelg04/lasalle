@@ -9,13 +9,15 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert, Image, Modal, ActivityIndicator, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import MathView, { MathText } from 'react-native-math-view';
 import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
 import {recursos} from "../screens/Recordemos"
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
+import MathRenderer from '../utils/MathRenderer';
+import MathWithTextRenderer from '../utils/MathWithText';
+import FractionRenderer from '../utils/MathWithText';
 
 
 
@@ -321,72 +323,56 @@ const nextQuestion = () => {
     // Función para determinar si la respuesta contiene una fórmula matemática y devolver el componente MathText correspondiente
     const renderMathOrText = (respuesta) => {
       if (respuesta === '2048=A^2+4Ah') {
-        return <MathText value={'\\(2048 = A^2 + 4Ah\\)'} />;
+        return <Text>2048 = A² + 4Ah</Text>
       } else if (respuesta === '2048=A^2(4h)') {
-        return <MathText value={'\\(2048 = A^2(4h)\\)'} />;
+        return <Text>2048 = A²(4h)</Text>
       } else if (respuesta === '2048=A^2*h^2') {
-        return <MathText value={'\\(2048 = A^2h^2\\)'} />;
+        return <Text>2048 = A²h²</Text>
       } else if (respuesta === '2048=A^2*h') {
-        return <MathText value={'\\(2048 = A^2h\\)'} />;
+        return <Text>2048 = A²h</Text>
       }
       else if (respuesta === '2A^2+4Ah') {
-        return <MathText value={'\\(2A^2 + 4Ah\\)'} />;
+        return <Text>2A² + 4Ah</Text>
       } else if (respuesta === 'A^2+4Ah') {
-        return <MathText value={'\\(A^2 + 4Ah\\)'} />;
+        return <Text>A² + 4Ah</Text>
       } else if (respuesta === 'A^2+2Ah') {
-        return <MathText value={'\\(A^2 + 2Ah\\)'} />;
+        return <Text>A² + 2Ah</Text>
       } else if (respuesta === '6Ah') {
-        return <MathText value={'\\(6Ah\\)'} />;
+        return <Text>6Ah</Text>
       }
       else if (respuesta === 'A^2+2048/A') {
-        return <MathText value={'\\(A^2 + \\frac{2048}{A}\\)'} />;
+        return <MathRenderer equation={respuesta} />;
       } else if (respuesta === 'A^2+8192/A') {
-        return <MathText value={'\\(A^2 + \\frac{8192}{A}\\)'} />;
+        return <MathRenderer equation={respuesta} />;
       } else if (respuesta === 'A^2-8192/A') {
-        return <MathText value={'\\(A^2 - \\frac{8192}{A}\\)'} />;
+        return <MathRenderer equation={respuesta} />;
       } else if (respuesta === 'A^2+8192/A^2') {
-        return <MathText value={'\\(A^2 + \\frac{8192}{A^2}\\)'} />;
+        return <MathRenderer equation={respuesta} />;
       }
       else if (respuesta === '2A-2048/A') {
-        return <MathText value={'\\(2A - \\frac{2048}{A}\\)'} />;
+        return <MathRenderer equation={respuesta} />;
       } else if (respuesta === '2A+8192/A') {
-        return <MathText value={'\\(2A + \\frac{8192}{A}\\)'} />;
+        return <MathRenderer equation={respuesta} />;
       } else if (respuesta === '2A-8192/A^2') {
-        return <MathText value={'\\(2A - \\frac{8192}{A^2}\\)'} />;
+        return <MathRenderer equation={respuesta} />;
       } else if (respuesta === '2A+8192/A^2') {
-        return <MathText value={'\\(2A + \\frac{8192}{A^2}\\)'} />;
+        return <MathRenderer equation={respuesta} />;
       }
       else if (respuesta === 'Derivando la expresión 2A-8192/A^2, evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo') {
         return (
-          <>
-           <Text>Derivando la expresión </Text>
-            <MathText value={'\\(2A - \\frac{8192}{A^2}\\)'} />
-            <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo</Text>
-          </>
+         <Text>Derivando la expresión 2A-8192 / A² , evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo  </Text>
         );
       } else if (respuesta === 'Derivando la expresión 2A-8192/A^2, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo') {
         return (
-          <>
-            <Text>Derivando la expresión </Text>
-            <MathText value={'\\(2A - \\frac{8192}{A^2}\\)'} />
-            <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo</Text>
-          </>
+          <Text>Derivando la expresión 2A-8192 / A² , evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo  </Text>
         );
       } else if (respuesta === 'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo') {
         return (
-          <>
-            <Text>Derivando la expresión </Text>
-            <MathText value={'\\(A^2 + \\frac{8192}{A}\\)'} />
-            <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo</Text>
-          </>
+          <Text>Derivando la expresión A² + 8192 / A , evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo  </Text>
         );
       } else if (respuesta === 'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo') {
         return (
-          <>
-            <Text>Derivando la expresión </Text>
-            <MathText value={'\\(A^2 + \\frac{8192}{A}\\)'} />
-            <Text>, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo</Text>
-          </>
+          <Text>Derivando la expresión A² + 8192 / A , evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo  </Text>
         );
       }
       

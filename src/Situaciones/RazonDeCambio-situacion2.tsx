@@ -18,13 +18,14 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageView from 'react-native-image-viewing';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import MathView, { MathText } from 'react-native-math-view';
 import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
 import { recursos } from '../screens/Recordemos';
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
+import EquationRenderer from '../utils/MathSvg';
+import MixedContentRenderer from '../utils/MixedContentRenderer';
 /* eslint-disable prettier/prettier */
 const situacion2: any = [
   {
@@ -168,25 +169,31 @@ const situacion2: any = [
 ];
 
 const RadioButton = ({ label, isSelected, onPress, disabled }) => {
+  
   // Verifica si label es un string o un componente
   const content = typeof label === 'string' ? (
-    <Text style={styles.radioButtonLabel}>{label}</Text>
+  <Text style={styles.radioButtonLabel}>{label}</Text>
   ) : (
-    label // Si label es un componente (MathText), lo renderiza directamente
+  label // Si label es un componente (MathText), lo renderiza directamente
   );
 
+  const handlePress = () => {
+  console.log('Radio button touched'); // Add console.log to see when the radio button is touched
+  onPress();
+  };
+
   return (
-    <TouchableOpacity
-      style={styles.radioButtonContainer}
-      onPress={onPress}
-      disabled={disabled}
-    >
-      <View style={[
-        styles.radioButton,
-        isSelected ? styles.radioButtonSelected : null
-      ]} />
-      {content}
-    </TouchableOpacity>
+  <TouchableOpacity
+    style={styles.radioButtonContainer}
+    onPress={handlePress}
+    disabled={disabled}
+  >
+    <View style={[
+    styles.radioButton,
+    isSelected ? styles.radioButtonSelected : null
+    ]} />
+    {content}
+  </TouchableOpacity>
   );
 };
 
@@ -299,52 +306,77 @@ const Situacion2RazonDeCambio = () => {
   
     // Función para determinar si la respuesta contiene una fórmula matemática y devolver el componente MathText correspondiente
     const renderMathOrText = (respuesta) => {
-      if (respuesta === `${'Usar el cociente'} xt2-xt1t2-t1 ${'entre las diferencias de las posiciones sobre las diferencias de los tiempos'}`) {
+      if (respuesta === 'Usar el cociente xt2-xt1t2-t1 entre las diferencias de las posiciones sobre las diferencias de los tiempos') {
         return(
-            <MathText value={`Usar el cociente \\(\\frac{x_{t_2} - x_{t_1}}{t_2 - t_1}\\) entre las diferencias de las posiciones sobre las diferencias de los tiempos`} />
+          <View style={styles.container}>
+          <EquationRenderer equation="Usar el cociente xt₂ - xt₁t₂ - t₁ entre las diferencias de las posiciones sobre las diferencias de los tiempos" />
+        </View>
+        
         );
-  
       }
 
-      else if (respuesta === 'xt2-xt1t2-t1') {
-        return <MathText value={'\\(\\frac{x_{t_2} - x_{t_1}}{t_2 - t_1}\\)'} />;
-      }
-
-      else if (respuesta === 't2-t1xt2-xt1'){
-        return <MathText value={'\\(\\frac{t_2 - t_1}{x_{t_2} - x_{t_1}}\\)'} />;
+      else if (respuesta === 'Usar el cociente t2-t1xt2-xt1 entre las diferencias de las posiciones sobre las diferencias de los tiempos') {
+        return (
+          <View style={styles.container}>
+          <EquationRenderer equation="Usar el cociente t₂- t₁xt₂- xt₁ entre las diferencias de las posiciones sobre las diferencias de los tiempos" />
+        </View>
+        )
       }
       
-      else if (respuesta === `${'Usar el cociente'} t2-t1xt2-xt1 ${'entre las diferencias de las posiciones sobre las diferencias de los tiempos'}`) {
+    else if (respuesta === 'vt2-vt1t2-t1 donde v es la velocidad de la partícula') {
         return (
-          <>
-            
-            <MathText value={`Usar el cociente \\(\\frac{t_2 - t_1}{x_{t_2} - x_{t_1}}\\) entre las diferencias de las posiciones de los tiempos`} />
-            
-          </>
+          <View style={styles.container}>
+          <EquationRenderer equation="vt₂-vt₁ / t₂-t₁" />
+        </View>
         );
-      } else if (respuesta === `vt2-vt1t2-t1 ${'donde v es la velocidad de la partícula'}`) {
+      } else if (respuesta === 'xt2-xt1t2-t1') {
         return (
-          <>
-            <MathText value={'\\(\\frac{v_{t2} - v_{t1}}{t2 - t1}\\)'} />
-            <Text>donde v es la velocidad de la partícula</Text>
-          </>
+          <View style={styles.container}>
+          <EquationRenderer equation="xt₂- xt₁t₂ -t₁" />
+        </View>
         );
-      } else if (respuesta === 'x4-x4.54.5-4=2-2.250.5') {
-        return <MathText value={'\\(\\frac{x_{4} - x_{4.5}}{4.5 - 4} = \\frac{2 - 2.25}{0.5}\\)'} />;
+      }
+      else if (respuesta === 't2-t1xt2-xt1') {
+        return (
+          <View style={styles.container}>
+          <EquationRenderer equation="t₂-t₁xt₂-xt₁" />
+        </View>
+        );
+      }
+       else if (respuesta === 'x4-x4.54.5-4=2-2.250.5') {
+        return (
+          <View style={styles.container}>
+             <Image source={require('../../assets/situacion2punto8b.png')} style={styles.image} />
+          </View>
+
+        )
       } else if (respuesta === 'x4.5-x44.5-4=2.25-20.5') {
-        return <MathText value={'\\(\\frac{x_{4.5} - x_{4}}{4.5 - 4} = \\frac{2.25 - 2}{0.5}\\)'} />;
+        return (
+          <View style={styles.container}>
+             <Image source={require('../../assets/situacion2punto8c.png')} style={styles.image} />
+          </View>
+        );
       } else if (respuesta === 'x4.5-x44.5-4=2-0.250.5') {
-        return <MathText value={'\\(\\frac{x_{4.5} - x_{4}}{4.5 - 4} = \\frac{2 - 0.25}{0.5}\\)'} />;
+        return (
+          <View style={styles.container}>
+          <Image source={require('../../assets/testing.png')} style={styles.image} />
+       </View>
+
+        )
       } else if (respuesta === 'x4-x4.54.5=2-2.254.5') {
-        return <MathText value={'\\(\\frac{x_{4} - x_{4.5}}{4.5} = \\frac{2 - 2.25}{4.5}\\)'} />;
+        return (
+          <View style={styles.container}>
+          <Image source={require('../../assets/situacion2punto8d.png')} style={styles.image} />
+        </View>
+        )
       } else if (respuesta === 'vt=x(t)=2t-8') {
-        return <MathText value={'\\(v(t) = x\'(t) = 2t - 8\\)'} />;
+        return <Text> v(t) = x'(t) = 2t - 8 </Text>
       } else if (respuesta === 'vt=x(t)=2t-8t') {
-        return <MathText value={'\\(v(t) = x\'(t) = 2t - 8t\\)'} />;
+        return <Text> v(t) = x'(t) = 2t - 8t </Text>
       } else if (respuesta === 'vt=x(t)=2t2-8t') {
-        return <MathText value={'\\(v(t) = x\'(t) = 2t^2 - 8t\\)'} />;
+        return <Text> v(t) = x'(t) = 2t² - 8t </Text>
       } else if (respuesta === 'vt=x(t)=2t-18') {
-        return <MathText value={'\\(v(t) = x\'(t) = 2t - 18\\)'} />;
+        return <Text> v(t) = x'(t) = 2t - 18 </Text>
       } else {
         return respuesta;
       }
@@ -526,7 +558,7 @@ const Situacion2RazonDeCambio = () => {
                   <AnswerWrong tip={feedbackModal.tip} url={feedbackModal.url} />
                 )}
                 <TouchableOpacity style={styles.closeButton} onPress={closeFeedbackModal}>
-                  <Text>Cerrar</Text>
+                  <Text onPress={closeFeedbackModal}>Cerrar</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -540,7 +572,7 @@ const Situacion2RazonDeCambio = () => {
 
           {isEnunciadoVisible && (
             <View>
-              <MathText value={`La posición (en metros) de un estudiante que se dirige a la universidad caminando está determinado por la función \\(x(t) = t^2 - 8t + 18\\) , donde t se mide en segundos. El estudiante desea encontrar algunas velocidades promedias en cierto intervalo de tiempo y la velocidad en un instante específico. `} style={styles.enunciado} />
+              <Text style={styles.enunciado}>La posición (en metros) de un estudiante que se dirige a la universidad caminando está determinado por la función  x(t) = t² - 8t + 18,  donde t se mide en segundos. El estudiante desea encontrar algunas velocidades promedias en cierto intervalo de tiempo y la velocidad en un instante específico.</Text>
               <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
             </View>
           )}
@@ -567,11 +599,11 @@ const Situacion2RazonDeCambio = () => {
             />
 
             <View style={styles.navigationContainer}>
-              <TouchableOpacity onPress={previousQuestion} style={styles.navButton}>
-                <Text>Anterior</Text>
+              <TouchableOpacity style={styles.navButton}>
+                <Text onPress={previousQuestion}>Anterior</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={nextQuestion} style={styles.navButton}>
-                <Text>Siguiente</Text>
+              <TouchableOpacity style={styles.navButton}>
+                <Text onPress={nextQuestion}>Siguiente</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
@@ -745,6 +777,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 10,
     alignItems: 'stretch',
+  },
+  image: {
+    marginHorizontal: 5,
+  },
+  imageContainer: {
+    flexDirection: 'row',
+
+  },
+  text: {
+    fontSize: 12,
+    flexShrink: 1,
+  },
+  containerAnswers: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
 });

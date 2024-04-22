@@ -1,10 +1,14 @@
 /* eslint-disable prettier/prettier */
-
+// @ts-ignore
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// @ts-ignore
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+// @ts-ignore
 import { StackNavigationProp } from '@react-navigation/stack';
+// @ts-ignore
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+// @ts-ignore
 import {
   View,
   Text,
@@ -16,8 +20,10 @@ import {
   ActivityIndicator,
   Button,
 } from 'react-native';
+// @ts-ignore
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import MathView, { MathText } from 'react-native-math-view';
+// @ts-ignore
+// @ts-ignore
 import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
@@ -259,16 +265,17 @@ const Situacion1Optimizacion = () => {
   const renderRespuestas = (respuestas, pregunta) => {
     const isAnswerSelected = selectedAnswers[currentQuestionIndex] !== undefined;
   
-    // Función para determinar si la respuesta contiene una fórmula matemática y devolver el componente MathText correspondiente
     const renderMathOrText = (respuesta) => {
       if (respuesta === '-2(x-2000)') {
-        return <MathText value={'\\(-2(x-2000)\\)'} />;
+        return (
+          <Text>-2(x-2000)</Text>
+        )
       } else if (respuesta === '1-2(x-2000)') {
-        return <MathText value={'\\(1-2(x-2000)\\)'} />;
+        return <Text>1-2(x-2000)</Text>;
       } else if (respuesta === '2x-2000') {
-        return <MathText value={'\\(2x-2000\\)'} />;
+        return <Text>2x-2000</Text>;
       } else if (respuesta === '-2(x-2000)^2') {
-        return <MathText value={'\\(-2(x-2000)^2\\)'} />;
+        return <Text>-2(x-2000)²</Text>; 
       }
        else {
         return respuesta; // Si no es una fórmula matemática, devuelve el string
@@ -278,7 +285,7 @@ const Situacion1Optimizacion = () => {
     return respuestas.map((respuesta, index) => (
       <RadioButton
         key={index}
-        label={renderMathOrText(respuesta)} // Pasamos el componente MathText o el string directamente
+        label={renderMathOrText(respuesta)}
         isSelected={selectedAnswers[currentQuestionIndex] === index}
         onPress={() => handleAnswer(index)}
         disabled={isAnswerSelected}
@@ -430,7 +437,7 @@ const Situacion1Optimizacion = () => {
                   <AnswerWrong tip={feedbackModal.tip} url={feedbackModal.url} />
                 )}
                 <TouchableOpacity style={styles.closeButton} onPress={closeFeedbackModal}>
-                  <Text>Cerrar</Text>
+                  <Text style={styles.closeButton}>Cerrar</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -444,7 +451,9 @@ const Situacion1Optimizacion = () => {
 
           {isEnunciadoVisible && (
             <View>
-            <MathText value={`Un grupo de estudiantes de último semestre universitario, deciden montar una empresa que vende un material amigable con el ambiente y usado en la construcción de viviendas. Este grupo descubre que el ingreso total (en dólares) en la empresa está descrito por la relación \\(I = 400000 - (x - 2000)^2\\) donde \\(I\\) es el ingreso total y \\(x\\) el número de unidades vendidas del material. La empresa requiere conocer el mayor ingreso total.`} style={styles.enunciado} />
+            <Text style={styles.enunciado}> 
+            Un grupo de estudiantes de último semestre universitario, deciden montar una empresa que vende un material amigable con el ambiente y usado en la construcción de viviendas. Este grupo descubre que el ingreso total (en dólares) en la empresa esta descrito por la relación I=400000-(x-2000)² En donde I es el ingreso total y x el número de unidades vendidas del material. La empresa requiere conocer el mayor ingreso total. Con respecto a la situación planteada anteriormente responda: 
+            </Text>
               <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
             </View>
           )}
@@ -481,7 +490,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-    width: '100%',
+   
   },
   situacion: {
     marginBottom: 20,
@@ -596,10 +605,12 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    margin: 20,
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
+    maxWidth: '90%',
+    width: '100%',
   },
   closeButton: {
     backgroundColor: '#2196F3',
@@ -607,6 +618,8 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     marginTop: 15,
+    minWidth: 100,
+    alignItems: 'center',
   },
   imagesContainer: {
     flexDirection: 'row',

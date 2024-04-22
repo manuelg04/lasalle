@@ -58,3 +58,11 @@ const styles = StyleSheet.create({
 });
 
 export default NavBar;
+
+// <View style={styles.container}>
+// <View style={styles.imageContainer}>
+//   <Text style={styles.text}>
+//     Usa el coeficiente <Image source={require('../../assets/testing.png')} style={styles.image} /> para dividir
+//   </Text>
+// </View>
+// </View>

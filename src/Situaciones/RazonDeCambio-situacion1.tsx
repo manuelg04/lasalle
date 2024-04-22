@@ -1,22 +1,44 @@
+/* eslint-disable import/order */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable prettier/prettier */
+// @ts-ignore
 import { Ionicons } from '@expo/vector-icons';
+// @ts-ignore
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// @ts-ignore
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+// @ts-ignore
 import { StackNavigationProp } from '@react-navigation/stack';
+// @ts-ignore
 import axios from 'axios';
+// @ts-ignore
 import React, { useEffect, useState } from 'react';
+// @ts-ignore
 import { View, Text, StyleSheet, ScrollView, Alert, Image, Modal, ActivityIndicator, Button } from 'react-native';
+// @ts-ignore
 import { TouchableOpacity } from 'react-native-gesture-handler';
+// @ts-ignore
 import ImageViewer from 'react-native-image-zoom-viewer';
-import MathView, { MathText } from 'react-native-math-view';
+// @ts-ignore
+import MathComponent from '../utils/MathSvg';
+// @ts-ignore
+import { MathJax } from 'react-native-mathjax';
+// @ts-ignore
+import { Svg, SvgUri } from 'react-native-svg';
+// @ts-ignore
+import { MathJaxSvg } from 'react-native-mathjax-text-svg';
+// @ts-ignore
 import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
 import {recursos} from "../screens/Recordemos"
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
+import MathSvg from '../utils/MathSvg';
+import MathWebView from '../utils/MathSvg';
+import MathImage from '../utils/MathSvg';
+import EquationRenderer from '../utils/MathSvg';
 
 
 const situacion1 :any = [
@@ -177,19 +199,26 @@ const situacion1 :any = [
     },
 ]
 
-const RadioButton = ({ label, isSelected, onPress, disabled }) => (
-  <TouchableOpacity
-    style={styles.radioButtonContainer}
-    onPress={onPress}
-    disabled={disabled} // Deshabilita el botón si disabled es true
-  >
-    <View style={[
-      styles.radioButton,
-      isSelected ? styles.radioButtonSelected : null
-    ]} />
-    <Text style={styles.radioButtonLabel}>{label}</Text>
-  </TouchableOpacity>
-);
+const RadioButton = ({ label, isSelected, onPress, disabled }) => {
+  const handlePress = () => {
+    console.log('Radio button touched'); // Add console.log statement here
+    onPress();
+  };
+
+  return (
+    <TouchableOpacity
+      style={styles.radioButtonContainer}
+      onPress={handlePress} // Call handlePress instead of onPress directly
+      disabled={disabled}
+    >
+      <View style={[
+        styles.radioButton,
+        isSelected ? styles.radioButtonSelected : null
+      ]} />
+      <Text style={styles.radioButtonLabel}>{label}</Text>
+    </TouchableOpacity>
+  );
+};
 
 
 const getSubtitulo = (questionIndex: any) => {
@@ -246,6 +275,7 @@ const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const situacion = situacion1[0]; // Asumiendo que solo trabajas con la situación 1
 
   const handleAnswer = (respuestaIndex) => {
+    console.log('handleAnswer called with', respuestaIndex); // Agregamos un log aquí
     const question = situacion.preguntas[currentQuestionIndex];
     if(selectedAnswers[currentQuestionIndex] === undefined) {
       setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: respuestaIndex });
@@ -277,6 +307,7 @@ const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
 
 const closeFeedbackModal = () => {
+  console.log('Cerrando modal de feedback');
     setFeedbackModal({ visible: false, type: null });
 };
 
@@ -305,89 +336,116 @@ const nextQuestion = () => {
     // Función para determinar si la respuesta contiene una fórmula matemática y devolver el componente MathText correspondiente
     const renderMathOrText = (respuesta) => {
       if (respuesta === 'V=a^2') {
-        return <MathText value={'\\(V = a^2\\)'} />;
+        return (
+         <Text>V=a²</Text>
+        );
+      
       } 
       else if (respuesta === 'V=3a') {
-        return <MathText value={'\\(V = 3a\\)'} />;
+        return <Text> V=3a </Text>
       }
       else if (respuesta === 'V=8a') {
-        return <MathText value={'\\(V = 8a\\)'} />;
+        return <Text> V=8a </Text>
       }
       else if (respuesta === 'V=a^3') {
-        return <MathText value={'\\(V = a^3\\)'} />;
+        return <Text> V=a³</Text>
       }
       else if (respuesta === 'V=a^2') {
-        return <MathText value="V = a^2" />;
+        return <Text> V=a²</Text>
       } else if (respuesta === 'V=a^3') {
-        return <MathText value="V = a^3" />;
+        return <Text> V=a³</Text>
       } else if (respuesta === 'V=3a') {
-        return <MathText value="V=3a" />;
+        return <Text> V=3a</Text>
       }
       else if (respuesta === 'V=8a') {
-        return <MathText value="V=8a" />;
+        return <Text> V=8a</Text>
       }
-
-       else if (respuesta === 'dV/da=3a') {
-        return <MathText value={'\\(\\frac{dV}{da} = 3a\\)'} />;
+      else if (respuesta === 'dV/da=3a') {
+       return <View style={styles.container}>
+       <EquationRenderer equation="dV/da=3a" />
+     </View>
+     
       } else if (respuesta === 'dV/da=3a^2') {
-        return <MathText value={'\\(\\frac{dV}{da} = 3a^2\\)'} />;
+        return <View style={styles.container}>
+         <Text> dV/da = 3a²  </Text>
+        </View>
       } else if (respuesta === 'da/dV=3a') {
-        return <MathText value={'\\(\\frac{da}{dV} = 3a\\)'} />;
+        return <View style={styles.container}>
+        <EquationRenderer equation="da/dv=3a" />
+      </View>
       } else if (respuesta === 'dV/da=a^2') {
-        return <MathText value={'\\(\\frac{dV}{da} = a^2\\)'} />;
+        return <View style={styles.container}>
+        <Text> dV/da = a² </Text>
+      </View>
       }
       else if (respuesta === 'Reemplazar el valor de a=3 en la ecuación V=a^3') {
         return (
           <>
             {"Reemplazar el valor de a=3 en la ecuación "}
-            <MathText value={'\\(V = a^3\\)'} />
+           <Text> V=a³ </Text>
           </>
         );
       } else if (respuesta === 'Reemplazar el valor de a=3 en la ecuación dV/da=3a^2') {
         return (
           <>
-            {"Reemplazar el valor de a=3 en la ecuación "}
-            <MathText value={'\\(\\frac{dV}{da} = 3a^2\\)'} />
+     <View style={styles.container}>
+        <Text>Reemplazar el valor de a=3 en la ecuación</Text>
+        <View style={styles.imageContainer}>
+          <Image source={require('../../assets/situacion1punto9bc.png')} style={styles.image} />
+          </View>
+      </View>
           </>
         );
       } else if (respuesta.includes(`Reemplazar el valor de V=3 en la ecuación dV/da=3a^2 y despejar a`)) {
         return (
           <>
-             <Text>Reemplazar el valor de V=3 en la ecuación </Text>
-            <MathText value={'\\(\\frac{dV}{da} = 3a^2\\)'}/>
-            <Text>y despejar a</Text>
+        <Text>Reemplazar el valor de en la ecuación dV/da = 3a²</Text>
           </>
         );
       } else if (respuesta.includes('Reemplazar el valor de a=3 en la ecuación dV/da=a^2')) {
         return (
           <>
             {"Reemplazar el valor de a=3 en la ecuación "}
-            <MathText value={'\\(\\frac{dV}{da} = a^2\\)'} />
+            <Text> dV/da = a² </Text>
           </>
         );
       }
       else if (respuesta === '3m^3/mm') {
-        return <MathText value={'\\(\\frac{3m^3}{mm}\\)'} />;
+        return (
+          <Text>3m³/mm</Text>
+        )
       } else if (respuesta === '6m^3/mm') {
-        return <MathText value={'\\(\\frac{6m^3}{mm}\\)'} />;
+        return (
+          <Text>6m³/mm</Text>
+        )
       } else if (respuesta === '9m^3/mm') {
-        return <MathText value={'\\(\\frac{9m^3}{mm}\\)'} />;
+        return (
+          <Text>9m³/mm</Text>
+        )
       } else if (respuesta === '27m^3/mm') {
-        return <MathText value={'\\(\\frac{27m^3}{mm}\\)'} />;
+        return (
+          <Text>27m³/mm</Text>
+        )
       }
        else {
         return respuesta; // Si no es una fórmula matemática, devuelve el string
       }
     };
-    return respuestas.map((respuesta, index) => (
-      <RadioButton
-        key={index}
-        label={renderMathOrText(respuesta)} // Pasamos el componente MathText o el string directamente
-        isSelected={selectedAnswers[currentQuestionIndex] === index}
-        onPress={() => handleAnswer(index)}
-        disabled={isAnswerSelected}
-      />
-    ));
+    return respuestas.map((respuesta, index) => {
+      console.log('Rendering RadioButton', index); // Agregamos un log aquí
+      return (
+        <RadioButton
+          key={index}
+          label={renderMathOrText(respuesta)}
+          isSelected={selectedAnswers[currentQuestionIndex] === index}
+          onPress={() => {
+            console.log('RadioButton onPress called', index); // Agregamos un log aquí
+            handleAnswer(index);
+          }}
+          disabled={isAnswerSelected}
+        />
+      );
+    });
   };
   
 
@@ -628,8 +686,9 @@ const renderImagenes = () => {
                 {feedbackModal.type === 'incorrect' && (
                   <AnswerWrong tip={feedbackModal.tip} url={feedbackModal.url} />
                 )}
+                
                 <TouchableOpacity style={styles.closeButton} onPress={closeFeedbackModal}>
-                  <Text>Cerrar</Text>
+                  <Text onPress={closeFeedbackModal}>Cerrar</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -671,11 +730,11 @@ const renderImagenes = () => {
             </View>
 
             <View style={styles.navigationContainer}>
-              <TouchableOpacity onPress={previousQuestion} style={styles.navButton}>
-                <Text>Anterior</Text>
+              <TouchableOpacity style={styles.navButton}>
+                <Text onPress={previousQuestion}>Anterior</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={nextQuestion} style={styles.navButton}>
-                <Text>Siguiente</Text>
+              <TouchableOpacity style={styles.navButton}>
+                <Text onPress={nextQuestion}>Siguiente</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
@@ -689,7 +748,8 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         flex: 1,
-        
+        height: 'auto',
+        width: 'auto'
     },
     situacion: {
       marginBottom: 20,
@@ -726,12 +786,14 @@ const styles = StyleSheet.create({
     preguntaContainer: {
         padding: 16,
         paddingTop: 0,
+        
     },
     preguntaEnunciado: {
         color: '#facc15',
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 10,
+        
     },
     respuesta: {
       fontSize: 16,
@@ -785,7 +847,7 @@ radioButtonSelected: {
     backgroundColor: 'black',
 },
 radioButtonLabel: {
-  color: 'black', // Texto en blanco
+  color: 'black',
   fontSize: 16,
   flex: 1,
   flexShrink: 1,
@@ -846,7 +908,32 @@ progressContainer: {
   padding: 10,
   alignItems: 'stretch',
 },
-
+containerAnswers: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+image: {
+  width: 80,
+  height: 80,
+  resizeMode: 'contain',
+},
+imageContainer: {
+  paddingVertical: 10, // Ajusta el padding vertical según sea necesario
+},
+rowContainer: {
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+},
+text: {
+  fontSize: 11,
+},
+inlineImage: {
+  width: 100, // Aumenta el ancho de la imagen
+  height: 100, // Aumenta la altura de la imagen
+  resizeMode: 'contain',
+},
 
   });
 export default Situacion1RazonDeCambio;

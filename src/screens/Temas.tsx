@@ -277,9 +277,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 8, // Espacio entre el icono y el texto
     flexDirection: 'row', // Asegura que el texto y el ícono estén en la misma fila
-  alignItems: 'center', // Alinea verticalmente el ícono con el texto
-  justifyContent: 'center', // Centra horizontalmente el contenido
-  fontweight: 'bold',
+    alignItems: 'center', // Alinea verticalmente el ícono con el texto
+    justifyContent: 'center', // Centra horizontalmente el contenido
   },
   yellowText: {
     color: '#FBBF24',
