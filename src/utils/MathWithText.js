@@ -2,6 +2,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 
 function FractionRenderer({ numerator, denominator, numeratorExponent, denominatorExponent }) {
+
   return (
     <View style={styles.container}>
       <View style={styles.numerator}>

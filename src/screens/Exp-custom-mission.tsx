@@ -26,10 +26,10 @@ const ExpCustomMission = () => {
   console.log('🚀 ~ problemText:', problemText);
   // Parsea el texto del problema tan pronto como se recibe
 
-  const handleSelectOption = (questionId, optionId) => {
+  const handleSelectOption = (questionId, optionIndex) => {
     setSelectedOptions((prevSelectedOptions) => ({
       ...prevSelectedOptions,
-      [questionId]: optionId,
+      [questionId]: optionIndex,
     }));
   };
 
@@ -48,20 +48,20 @@ const ExpCustomMission = () => {
       // Suponiendo que tienes una manera de obtener el studentId, posiblemente de los props, el estado global o almacenamiento local
       const studentId = await AsyncStorage.getItem('userId');
 
-      // Recopilar datos de las preguntas con las respuestas seleccionadas
-      const answeredQuestions = missionData.questions.map((question, index) => {
-        const questionNumber = index + 1; // Asumiendo que questionNumber empieza en 1
-        const selectedOptionIndex = selectedOptions[questionNumber]; // Obtén el índice de la opción seleccionada
-        const selectedOptionLetter = indexToLetter(selectedOptionIndex); // Convierte el índice a letra
-        const isCorrect =
-          missionData.correctAnswers[`Pregunta ${questionNumber}`] === selectedOptionLetter; // Verifica si es correcto
-
-        return {
-          ...question,
-          selectedOption: selectedOptionIndex,
-          isCorrect,
-        };
-      });
+         // Recopilar datos de las preguntas con las respuestas seleccionadas
+         const answeredQuestions = missionData.questions.map((question, index) => {
+          const questionNumber = index + 1;
+          const selectedOptionIndex = selectedOptions[questionNumber];
+          const isCorrect =
+            selectedOptionIndex !== undefined &&
+            selectedOptionIndex === question.correctOption;
+  
+          return {
+            ...question,
+            selectedOption: selectedOptionIndex,
+            isCorrect,
+          };
+        });
       console.log('🚀 ~ answeredQuestions:', answeredQuestions);
         // Obtener la fecha y hora actual en formato ISO 8601
     const currentDate = new Date();
@@ -180,7 +180,7 @@ const ExpCustomMission = () => {
       <View style={styles.content}>
         <Text style={styles.missionName}>{missionData.name}</Text>
         <View style={styles.missionContextContainer}>
-        <Text style={styles.missionContext}>{missionData.context}</Text>
+          <Text style={styles.missionContext}>{missionData.context}</Text>
         </View>
         {missionData.questions.map((question, questionIndex) => (
           <View key={questionIndex} style={styles.questionContainer}>
@@ -189,8 +189,8 @@ const ExpCustomMission = () => {
               <TouchableOpacity
                 key={optionIndex}
                 style={styles.optionContainer}
-                onPress={() => handleSelectOption(questionIndex, optionIndex)}>
-                <RadioButton isSelected={selectedOptions[questionIndex] === optionIndex} />
+                onPress={() => handleSelectOption(questionIndex + 1, optionIndex)}>
+                <RadioButton isSelected={selectedOptions[questionIndex + 1] === optionIndex} />
                 <Text style={styles.optionText}>{option}</Text>
               </TouchableOpacity>
             ))}

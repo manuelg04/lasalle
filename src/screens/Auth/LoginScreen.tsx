@@ -8,7 +8,6 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, Image } fro
 import { RootStackParamList } from '../../navigation';
 import { Ionicons } from '@expo/vector-icons';
 
-
 type DetailsSreenRouteProp = RouteProp<RootStackParamList, 'LoginScreen'>;
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FirstScreen'>;
 
@@ -28,13 +27,13 @@ export default function LoginScreen() {
   }, [navigation]);
 
   const handleLogin = async () => {
-    console.log('iniciaando sesion')
+    console.log('iniciaando sesion');
     // Asegúrate de validar las entradas según sea necesario
     if (!email || !password) {
       Alert.alert('Error', 'Por favor, ingresa tu correo electrónico y contraseña.');
       return;
     }
-   
+
     try {
       const response = await axios.post('https://lasalleapp.onrender.com/login/login', {
         email,
@@ -43,46 +42,46 @@ export default function LoginScreen() {
       });
 
       if (response.status === 200) {
-        const { token, userId, fullName, userType, career, faculty, imageUrl} = response.data;
+        const { token, userId, fullName, userType, career, faculty, imageUrl } = response.data;
         await AsyncStorage.setItem('userToken', token);
         await AsyncStorage.setItem('userId', userId);
         if (career !== undefined && faculty !== undefined && imageUrl !== undefined) {
           await AsyncStorage.setItem('career', career);
           await AsyncStorage.setItem('faculty', faculty);
           await AsyncStorage.setItem('userImageUrl', imageUrl);
-        }        
+        }
         await AsyncStorage.setItem('fullName', fullName);
         await AsyncStorage.setItem('userType', userType);
-         // Guarda la imageUrl en AsyncStorage
-        
-       // Verificar si el usuario es un estudiante o un profesor y navegar a la pantalla correspondiente
-       if (userType === 'student') {
-        navigation.navigate('Temas');
-      } else if (userType === 'professor') {
-        navigation.navigate('TeacherFirstScreen'); // Asegúrate de que esta pantalla esté definida en tu Stack Navigator
-      } else {
-        // Manejar otros casos o erroresj
-        console.error('Tipo de usuario no reconocido:', userType);
-      }
-    }
-        
+        // Guarda la imageUrl en AsyncStorage
 
+        // Verificar si el usuario es un estudiante o un profesor y navegar a la pantalla correspondiente
+        if (userType === 'student') {
+          navigation.navigate('Temas');
+        } else if (userType === 'professor') {
+          navigation.navigate('TeacherFirstScreen'); // Asegúrate de que esta pantalla esté definida en tu Stack Navigator
+        } else {
+          // Manejar otros casos o erroresj
+          console.error('Tipo de usuario no reconocido:', userType);
+        }
+      }
     } catch (error) {
-    console.log("🚀 ~ error:", error.message)
-      alert(error);
- 
+      console.log('🚀 ~ error:', error.message);
+      if (error.response && error.response.status === 401) {
+        Alert.alert('Error', 'Credenciales incorrectas');
+      } else {
+        Alert.alert('Error', 'Ocurrió un error al iniciar sesión');
+      }
     }
   };
 
   return (
     <View style={styles.container}>
-    
       <View style={styles.card}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           {/* Icono de flecha hacia atrás, puedes usar una imagen o crear tu propio componente */}
-          <Text style={styles.backButtonText}
-          onPress={() => navigation.navigate('FirstScreen')}
-          >←</Text>
+          <Text style={styles.backButtonText} onPress={() => navigation.navigate('FirstScreen')}>
+            ←
+          </Text>
         </TouchableOpacity>
         <Text style={styles.title}>Ingresa a tu cuenta</Text>
         <Ionicons name="person-circle-outline" size={40} color="#4a4a4a" style={styles.loginIcon} />
@@ -90,16 +89,19 @@ export default function LoginScreen() {
           <TouchableOpacity
             style={[styles.selectorButton, userType === 'student' && styles.selected]}
             onPress={() => setUserType('student')}>
-            <Text style={[styles.selectorText, userType === 'student' && styles.selectedText]}>Estudiante</Text>
+            <Text style={[styles.selectorText, userType === 'student' && styles.selectedText]}>
+              Estudiante
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.selectorButton, userType === 'professor' && styles.selected]}
             onPress={() => setUserType('professor')}>
-            <Text style={[styles.selectorText, userType === 'professor' && styles.selectedText]}>Profesor</Text>
+            <Text style={[styles.selectorText, userType === 'professor' && styles.selectedText]}>
+              Profesor
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.inputContainer}>
-    
           <Text style={styles.label}>Correo</Text>
           <TextInput
             style={styles.input}

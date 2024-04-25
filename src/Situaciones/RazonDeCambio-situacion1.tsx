@@ -342,41 +342,33 @@ const nextQuestion = () => {
       
       } 
       else if (respuesta === 'V=3a') {
-        return <Text> V=3a </Text>
+        return <Text>V=3(a)</Text>
       }
       else if (respuesta === 'V=8a') {
-        return <Text> V=8a </Text>
+        return <Text>V=8(a)</Text>
       }
       else if (respuesta === 'V=a^3') {
-        return <Text> V=a³</Text>
+        return <Text>V=a³</Text>
       }
       else if (respuesta === 'V=a^2') {
-        return <Text> V=a²</Text>
+        return <Text>V=a²</Text>
       } else if (respuesta === 'V=a^3') {
-        return <Text> V=a³</Text>
+        return <Text>V=a³</Text>
       } else if (respuesta === 'V=3a') {
-        return <Text> V=3a</Text>
+        return <Text>V=3a</Text>
       }
       else if (respuesta === 'V=8a') {
         return <Text> V=8a</Text>
       }
       else if (respuesta === 'dV/da=3a') {
-       return <View style={styles.container}>
-       <EquationRenderer equation="dV/da=3a" />
-     </View>
+       return <Text> dV/da = 3a </Text>
      
       } else if (respuesta === 'dV/da=3a^2') {
-        return <View style={styles.container}>
-         <Text> dV/da = 3a²  </Text>
-        </View>
+        return <Text> dV/da = 3a²  </Text>
       } else if (respuesta === 'da/dV=3a') {
-        return <View style={styles.container}>
-        <EquationRenderer equation="da/dv=3a" />
-      </View>
+        return <Text> da/dV = 3a </Text>
       } else if (respuesta === 'dV/da=a^2') {
-        return <View style={styles.container}>
-        <Text> dV/da = a² </Text>
-      </View>
+        return <Text> dV/ da = a² </Text>
       }
       else if (respuesta === 'Reemplazar el valor de a=3 en la ecuación V=a^3') {
         return (
