@@ -785,10 +785,11 @@ centeredView: {
     marginTop: 22,
 },
 modalView: {
-    margin: 20,
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
+  margin: 20,
+  borderRadius: 20,
+  padding: 35,
+  alignItems: 'center',
+  justifyContent: 'center',
 },
 closeButton: {
     backgroundColor: '#2196F3',

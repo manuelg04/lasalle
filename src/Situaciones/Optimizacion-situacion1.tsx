@@ -155,14 +155,10 @@ const RadioButton = ({ label, isSelected, onPress, disabled }) => (
     onPress={onPress}
     disabled={disabled} // Deshabilita el botón si disabled es true
   >
-    <View style={[
-      styles.radioButton,
-      isSelected ? styles.radioButtonSelected : null
-    ]} />
+    <View style={[styles.radioButton, isSelected ? styles.radioButtonSelected : null]} />
     <Text style={styles.radioButtonLabel}>{label}</Text>
   </TouchableOpacity>
 );
-
 
 const getSubtitulo = (questionIndex: any) => {
   if (questionIndex >= 0 && questionIndex <= 2) {
@@ -214,10 +210,10 @@ const Situacion1Optimizacion = () => {
 
   const handleAnswer = (respuestaIndex) => {
     const question = situacion.preguntas[currentQuestionIndex];
-    if (selectedAnswers[currentQuestionIndex] === undefined){
+    if (selectedAnswers[currentQuestionIndex] === undefined) {
       setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: respuestaIndex });
     }
-    
+
     let resourceUrl;
 
     if (question.url.startsWith('http')) {
@@ -264,24 +260,21 @@ const Situacion1Optimizacion = () => {
 
   const renderRespuestas = (respuestas, pregunta) => {
     const isAnswerSelected = selectedAnswers[currentQuestionIndex] !== undefined;
-  
+
     const renderMathOrText = (respuesta) => {
       if (respuesta === '-2(x-2000)') {
-        return (
-          <Text>-2(x-2000)</Text>
-        )
+        return <Text>-2(x-2000)</Text>;
       } else if (respuesta === '1-2(x-2000)') {
         return <Text>1-2(x-2000)</Text>;
       } else if (respuesta === '2x-2000') {
         return <Text>2x-2000</Text>;
       } else if (respuesta === '-2(x-2000)^2') {
-        return <Text>-2(x-2000)²</Text>; 
-      }
-       else {
+        return <Text>-2(x-2000)²</Text>;
+      } else {
         return respuesta; // Si no es una fórmula matemática, devuelve el string
       }
     };
-  
+
     return respuestas.map((respuesta, index) => (
       <RadioButton
         key={index}
@@ -292,7 +285,6 @@ const Situacion1Optimizacion = () => {
       />
     ));
   };
-  
 
   const startCuestionario = () => {
     // Guarda la hora de inicio
@@ -436,24 +428,31 @@ const Situacion1Optimizacion = () => {
                 {feedbackModal.type === 'incorrect' && (
                   <AnswerWrong tip={feedbackModal.tip} url={feedbackModal.url} />
                 )}
-                <TouchableOpacity style={styles.closeButton} onPress={closeFeedbackModal}>
-                  <Text onPress={closeFeedbackModal} style={styles.closeButton}>Cerrar</Text>
+                <TouchableOpacity style={styles.closeButton}>
+                  <Text onPress={closeFeedbackModal}>
+                    Cerrar
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
           </Modal>
           <View style={styles.progressContainer}>
-        <Progress.Bar progress={progress} width={null} />
-      </View>      
+            <Progress.Bar progress={progress} width={null} />
+          </View>
           <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
             <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
           </TouchableOpacity>
 
           {isEnunciadoVisible && (
             <View>
-            <Text style={styles.enunciado}> 
-            Un grupo de estudiantes de último semestre universitario, deciden montar una empresa que vende un material amigable con el ambiente y usado en la construcción de viviendas. Este grupo descubre que el ingreso total (en dólares) en la empresa esta descrito por la relación I=400000-(x-2000)² En donde I es el ingreso total y x el número de unidades vendidas del material. La empresa requiere conocer el mayor ingreso total. Con respecto a la situación planteada anteriormente responda: 
-            </Text>
+              <Text style={styles.enunciado}>
+                Un grupo de estudiantes de último semestre universitario, deciden montar una empresa
+                que vende un material amigable con el ambiente y usado en la construcción de
+                viviendas. Este grupo descubre que el ingreso total (en dólares) en la empresa esta
+                descrito por la relación I=400000-(x-2000)² En donde I es el ingreso total y x el
+                número de unidades vendidas del material. La empresa requiere conocer el mayor
+                ingreso total. Con respecto a la situación planteada anteriormente responda:
+              </Text>
               <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
             </View>
           )}
@@ -472,7 +471,7 @@ const Situacion1Optimizacion = () => {
             </View>
 
             <View style={styles.navigationContainer}>
-              <TouchableOpacity  style={styles.navButton}>
+              <TouchableOpacity style={styles.navButton}>
                 <Text onPress={previousQuestion}>Anterior</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.navButton}>
@@ -490,7 +489,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-   
   },
   situacion: {
     marginBottom: 20,
@@ -605,12 +603,11 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    backgroundColor: 'white',
+    margin: 20,
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-    maxWidth: '90%',
-    width: '100%',
+    justifyContent: 'center',
   },
   closeButton: {
     backgroundColor: '#2196F3',
@@ -618,8 +615,6 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     marginTop: 15,
-    minWidth: 100,
-    alignItems: 'center',
   },
   imagesContainer: {
     flexDirection: 'row',
