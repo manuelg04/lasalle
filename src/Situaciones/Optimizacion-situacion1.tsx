@@ -437,7 +437,7 @@ const Situacion1Optimizacion = () => {
                   <AnswerWrong tip={feedbackModal.tip} url={feedbackModal.url} />
                 )}
                 <TouchableOpacity style={styles.closeButton} onPress={closeFeedbackModal}>
-                  <Text style={styles.closeButton}>Cerrar</Text>
+                  <Text onPress={closeFeedbackModal} style={styles.closeButton}>Cerrar</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -472,11 +472,11 @@ const Situacion1Optimizacion = () => {
             </View>
 
             <View style={styles.navigationContainer}>
-              <TouchableOpacity onPress={previousQuestion} style={styles.navButton}>
-                <Text>Anterior</Text>
+              <TouchableOpacity  style={styles.navButton}>
+                <Text onPress={previousQuestion}>Anterior</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={nextQuestion} style={styles.navButton}>
-                <Text>Siguiente</Text>
+              <TouchableOpacity style={styles.navButton}>
+                <Text onPress={nextQuestion}>Siguiente</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>

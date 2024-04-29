@@ -621,7 +621,7 @@ const progress = (currentQuestionIndex + 1) / totalQuestions;
                 style={styles.closeButton}
                 onPress={closeFeedbackModal}
               >
-                <Text>Cerrar</Text>
+                <Text onPress={closeFeedbackModal}>Cerrar</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -651,11 +651,11 @@ const progress = (currentQuestionIndex + 1) / totalQuestions;
 
 
           <View style={styles.navigationContainer}>
-            <TouchableOpacity onPress={previousQuestion} style={styles.navButton}>
-              <Text>Anterior</Text>
+            <TouchableOpacity  style={styles.navButton}>
+              <Text onPress={previousQuestion}>Anterior</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={nextQuestion} style={styles.navButton}>
-              <Text>Siguiente</Text>
+            <TouchableOpacity style={styles.navButton}>
+              <Text onPress={nextQuestion} >Siguiente</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

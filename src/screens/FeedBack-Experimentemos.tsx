@@ -61,9 +61,11 @@ const FeedbackExperimentemos = ({ route }) => {
           </Text>
         ))}
         {question.isCorrect ? (
-        <Text style={styles.correctText}>
-          La respuesta seleccionada es correcta.
-        </Text>
+        <><Text style={styles.correctText}>
+            La respuesta seleccionada es correcta.
+          </Text><Text style={styles.selectedOptionText}>
+              La respuesta seleccionada fue: {question.options[question.selectedOption]}
+            </Text></>
       ) : (
         <>
           <Text style={styles.incorrectText}>
@@ -224,6 +226,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'justify', // Justifica el texto para una lectura más natural
   },
+  selectedOptionText:{
+    fontSize: 14,
+    color: 'blue',
+    fontWeight: 'bold',
+  }
 });
 
 export default FeedbackExperimentemos;
