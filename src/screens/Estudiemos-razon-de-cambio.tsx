@@ -9,6 +9,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { RootStackParamList } from '../navigation';
 import NavBar from '../utils/NavBar';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'Situacion1RazonDeCambio', 'Situacion2RazonDeCambio'  >;
 
@@ -68,12 +69,14 @@ const EstudiemosRazonDeCambio = () => {
           <Ionicons name="md-walk-sharp" size={32} color="green" />
         </TouchableOpacity>
       </View>
-      <Text style={styles.reflection}>
-        ¡Completa las situaciones para acceder a la reflexión!
-        Y continua perfeccionando tus conocimientos.
-        Ten presente que las respuestas que selecciones no se pueden desmarcar, pero puedes 
-        realizar las situaciones las veces que desees.
-      </Text>
+     
+  <Text style={styles.reflection}>
+    ¡Completa las situaciones para acceder a la reflexión!
+    Y continua perfeccionando tus conocimientos.
+    Ten presente que las respuestas que selecciones no se pueden desmarcar, pero puedes 
+    realizar las situaciones las veces que desees.
+  </Text>
+
 
       {/* <View style={styles.footer}>
       <Ionicons name="home" size={24} />
@@ -128,8 +131,8 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#fff',
-    height: '55%',
-    marginTop: 32,
+    height: '45%',
+    marginTop: 20,
     width: '100%',
     borderRadius: 8,
     padding: 16,
@@ -155,8 +158,9 @@ const styles = StyleSheet.create({
   reflection: {
     textAlign: 'center',
     fontSize: 14,
-    paddingHorizontal: 20,
-    marginBottom: 20,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+    lineHeight: 20,
   },
   footer: {
     flexDirection: 'row',

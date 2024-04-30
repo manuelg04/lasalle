@@ -71,11 +71,19 @@ const Experimentemos = ({ route }) => {
           theme,
         }
       );
-
+  
       if (response.status === 201) {
-        const problemText = response.data.problem.content;
+        let problemText = response.data.problem.content;
+  
+        // Extraer las respuestas correctas del texto del problema
+        const correctAnswersMatch = problemText.match(/Respuestas correctas:\s*([\s\S]*)/);
+        const correctAnswers = correctAnswersMatch ? correctAnswersMatch[1].trim() : '';
+  
+        // Eliminar las respuestas correctas del texto del problema
+        problemText = problemText.replace(/Respuestas correctas:[^]*$/, '').trim();
+  
         setGeneratedProblem(problemText);
-
+  
         // Extrae el nombre de la misión del problemText
         const missionNameMatch = problemText.match(/Nombre de la misión: "(.+)"/);
         if (missionNameMatch) {
@@ -83,8 +91,8 @@ const Experimentemos = ({ route }) => {
           // Guarda el nombre de la misión actual como la misión anterior
           await AsyncStorage.setItem('currentMissionName', missionName);
         }
-
-        navigation.navigate('ExpCustomMission', { problemText });
+  
+        navigation.navigate('ExpCustomMission', { problemText, correctAnswers });
       }
     } catch (error) {
       console.error('Error al generar el problema:', error);

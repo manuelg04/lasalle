@@ -37,35 +37,30 @@ const ExpCustomMission = () => {
     console.log('Respuestas seleccionadas:', selectedOptions);
   }, [selectedOptions]);
 
-  // Esta función convierte un índice numérico a la letra de respuesta correspondiente.
-  const indexToLetter = (index) => {
-    const letters = ['A', 'B', 'C', 'D']; // Asumiendo que solo hay 4 opciones
-    return letters[index];
-  };
 
   const handleSubmit = async () => {
     try {
       // Suponiendo que tienes una manera de obtener el studentId, posiblemente de los props, el estado global o almacenamiento local
       const studentId = await AsyncStorage.getItem('userId');
+      
+      // Recopilar datos de las preguntas con las respuestas seleccionadas
+      const answeredQuestions = missionData.questions.map((question, index) => {
+        const questionNumber = index + 1;
+        const selectedOptionIndex = selectedOptions[questionNumber];
+        const isCorrect =
+          selectedOptionIndex !== undefined &&
+          selectedOptionIndex === question.correctOption;
 
-         // Recopilar datos de las preguntas con las respuestas seleccionadas
-         const answeredQuestions = missionData.questions.map((question, index) => {
-          const questionNumber = index + 1;
-          const selectedOptionIndex = selectedOptions[questionNumber];
-          const isCorrect =
-            selectedOptionIndex !== undefined &&
-            selectedOptionIndex === question.correctOption;
-  
-          return {
-            ...question,
-            selectedOption: selectedOptionIndex,
-            isCorrect,
-          };
-        });
+        return {
+          ...question,
+          selectedOption: selectedOptionIndex,
+          isCorrect,
+        };
+      });
       console.log('🚀 ~ answeredQuestions:', answeredQuestions);
-        // Obtener la fecha y hora actual en formato ISO 8601
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString();
+      // Obtener la fecha y hora actual en formato ISO 8601
+      const currentDate = new Date();
+      const formattedDate = currentDate.toISOString();
 
       const postData = {
         studentId,
@@ -108,20 +103,32 @@ const ExpCustomMission = () => {
   };
 
   const parseProblemText = (text) => {
+    const { correctAnswers }: any = route.params;
+    console.log('🚀 ~ correctAnswers:', correctAnswers);
     const lines = text
       .split('\n')
       .map((line) => line.trim())
       .filter((line) => line);
-  
+
     let missionName = '';
     let missionContext = '';
     const questions = [];
-    const correctAnswers = {};
     let currentPhase = '';
     let currentQuestion = null;
     let questionIndex = 0;
     let isContextContinuation = false;
-  
+
+    // Parsear las respuestas correctas en un objeto
+    const correctAnswersMap = {};
+    correctAnswers.split('\n').forEach((line) => {
+      const match = line.match(/Pregunta (\d+)\. es la ([A-D])/);
+      if (match) {
+        const questionNumber = match[1];
+        const correctAnswer = match[2].charCodeAt(0) - 65;
+        correctAnswersMap[`Pregunta ${questionNumber}`] = correctAnswer;
+      }
+    });
+
     lines.forEach((line) => {
       if (line.startsWith('Nombre de la misión:')) {
         missionName = line.substring('Nombre de la misión:'.length).trim();
@@ -149,27 +156,21 @@ const ExpCustomMission = () => {
         }
       } else if (line.match(/^[a-d]\)/)) {
         currentQuestion?.options.push(line.trim());
-      } else if (line.startsWith('Pregunta') && line.includes('es la')) {
-        const answerMatch = line.match(/Pregunta (\d+)\. es la ([A-D])/);
-        if (answerMatch && answerMatch.length > 2) {
-          const questionNumber = answerMatch[1];
-          const correctAnswer = answerMatch[2].charCodeAt(0) - 65;
-          correctAnswers[`Pregunta ${questionNumber}`] = correctAnswer;
-        }
       }
     });
-  
+
     if (currentQuestion) {
       questions.push(currentQuestion);
     }
-  
+
     questions.forEach((question) => {
       const questionNumber = question.text.match(/Pregunta (\d+):/)[1];
-      if (correctAnswers.hasOwnProperty(`Pregunta ${questionNumber}`)) {
-        question.correctOption = correctAnswers[`Pregunta ${questionNumber}`];
+      if (correctAnswersMap.hasOwnProperty(`Pregunta ${questionNumber}`)) {
+        const correctAnswer = correctAnswersMap[`Pregunta ${questionNumber}`];
+        question.correctOption = correctAnswer;
       }
     });
-  
+
     return { name: missionName, context: missionContext.trim(), questions, correctAnswers };
   };
 

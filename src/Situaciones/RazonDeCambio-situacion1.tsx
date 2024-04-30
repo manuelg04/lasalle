@@ -21,24 +21,12 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 // @ts-ignore
 import ImageViewer from 'react-native-image-zoom-viewer';
 // @ts-ignore
-import MathComponent from '../utils/MathSvg';
-// @ts-ignore
-import { MathJax } from 'react-native-mathjax';
-// @ts-ignore
-import { Svg, SvgUri } from 'react-native-svg';
-// @ts-ignore
-import { MathJaxSvg } from 'react-native-mathjax-text-svg';
-// @ts-ignore
 import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
 import {recursos} from "../screens/Recordemos"
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
-import MathSvg from '../utils/MathSvg';
-import MathWebView from '../utils/MathSvg';
-import MathImage from '../utils/MathSvg';
-import EquationRenderer from '../utils/MathSvg';
 
 
 const situacion1 :any = [
@@ -639,7 +627,7 @@ const renderImagenes = () => {
         </TouchableOpacity>
       ))}
 
-      <Modal visible={isViewerVisible} transparent>
+      <Modal visible={isViewerVisible} transparent onRequestClose={() => setIsViewerVisible(false)}>
         <ImageViewer
           imageUrls={imagesForViewer}
           index={currentImageIndex}

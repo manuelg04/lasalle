@@ -18,6 +18,7 @@ import AnswerWrong from '../utils/AnswerWrong';
 import MathRenderer from '../utils/MathRenderer';
 import MathWithTextRenderer from '../utils/MathWithText';
 import FractionRenderer from '../utils/MathWithText';
+import { Ionicons } from '@expo/vector-icons';
 
 
 
@@ -573,7 +574,7 @@ const renderImagenes = () => {
         </TouchableOpacity>
       ))}
 
-      <Modal visible={isViewerVisible} transparent>
+      <Modal visible={isViewerVisible} transparent onRequestClose={() => setIsViewerVisible(false)}>
         <ImageViewer
           imageUrls={imagesForViewer}
           index={currentImageIndex}
@@ -631,6 +632,12 @@ const progress = (currentQuestionIndex + 1) / totalQuestions;
       </View>    
         <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
           <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
+          <Ionicons
+              name={isEnunciadoVisible ? 'chevron-up' : 'chevron-down'}
+              size={20}
+              color="#000"
+              style={{ textAlign: 'right' }}
+            />
         </TouchableOpacity>
 
         {isEnunciadoVisible && (

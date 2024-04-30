@@ -25,14 +25,12 @@ import { recursos } from '../screens/Recordemos';
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
 import EquationRenderer from '../utils/MathSvg';
-import MixedContentRenderer from '../utils/MixedContentRenderer';
+import { Ionicons } from '@expo/vector-icons';
 /* eslint-disable prettier/prettier */
 const situacion2: any = [
   {
     tituloSituacion: 'Situación 2. Caminando a la U',
-    enunciado:
-      'La posición (en metros) de un estudiante que se dirige a la universidad caminando está determinado por la función ',
-    textoDespues: ', donde t se mide en segundos. El estudiante desea encontrar algunas velocidades promedias en cierto intervalo de tiempo y la velocidad en un instante específico.',
+    enunciado: 'La posición (en metros) de un estudiante que se dirige a la universidad caminando está determinado por la función x(t) = t² - 8t + 18, donde t se mide en segundos. El estudiante desea encontrar algunas velocidades promedias en cierto intervalo de tiempo y la velocidad en un instante específico.',
     postEnunciado: 'Con respecto a la situación planteada anteriormente responda:',
     Subtitulo: '¿Qué comprendes de la situación?',
     postSubtitulo: 'El objetivo de la situacion planteada es',
@@ -517,7 +515,7 @@ const Situacion2RazonDeCambio = () => {
           </TouchableOpacity>
         ))}
 
-        <Modal visible={isViewerVisible} transparent>
+        <Modal visible={isViewerVisible} transparent onRequestClose={() => setIsViewerVisible(false)}>
           <ImageViewer
             imageUrls={imagesForViewer}
             index={currentImageIndex}
@@ -564,15 +562,23 @@ const Situacion2RazonDeCambio = () => {
             </View>
           </Modal>
           <View style={styles.progressContainer}>
-        <Progress.Bar progress={progress} width={null} />
-      </View>      
-          <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
+            <Progress.Bar progress={progress} width={null} />
+          </View>
+          <TouchableOpacity
+            onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}
+            style={styles.tituloSituacionContainer}>
             <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
+            <Ionicons
+              name={isEnunciadoVisible ? 'chevron-up' : 'chevron-down'}
+              size={20}
+              color="#000"
+              style={{ margin:'auto', paddingRight: 12}}
+            />
           </TouchableOpacity>
 
           {isEnunciadoVisible && (
             <View>
-              <Text style={styles.enunciado}>La posición (en metros) de un estudiante que se dirige a la universidad caminando está determinado por la función  x(t) = t² - 8t + 18,  donde t se mide en segundos. El estudiante desea encontrar algunas velocidades promedias en cierto intervalo de tiempo y la velocidad en un instante específico.</Text>
+            <Text style={styles.enunciado}>{situacion.enunciado}</Text>
               <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
             </View>
           )}
@@ -617,7 +623,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-    width: '100%',
+    height: 'auto',
+    width: 'auto'
   },
   situacion: {
     marginBottom: 20,
@@ -638,19 +645,18 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: 'black',
-  },
+},
   enunciado: {
     color: 'black',
     fontSize: 16,
     padding: 16,
-    paddingTop: 4,
-  },
+},
   postEnunciado: {
     color: '#facc15',
     fontSize: 16,
     fontWeight: 'bold',
     padding: 16,
-    paddingTop: 5,
+    paddingTop: 0,
   },
   preguntaContainer: {
     padding: 16,
@@ -705,7 +711,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: 'black',
-    marginRight: 10,
+    marginRight: 5,
     
   },
   radioButtonSelected: {
@@ -793,6 +799,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  tituloSituacionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // Añade cualquier otro estilo como padding si es necesario
   },
 
 });

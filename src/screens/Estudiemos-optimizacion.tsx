@@ -103,8 +103,8 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#fff',
-    height: '55%',
-    marginTop: 32,
+    height: '45%',
+    marginTop: 20,
     width: '100%',
     borderRadius: 8,
     padding: 16,
@@ -130,8 +130,9 @@ const styles = StyleSheet.create({
   reflection: {
     textAlign: 'center',
     fontSize: 14,
-    paddingHorizontal: 20,
-    marginBottom: 20,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+    lineHeight: 20,
   },
   footer: {
     flexDirection: 'row',

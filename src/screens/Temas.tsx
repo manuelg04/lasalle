@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ECEFF1', // Fondo gris claro
     width: '100%',
+    marginBottom: 50,
 },
   card: {
     borderRadius: 15, // Bordes más redondeados

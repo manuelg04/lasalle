@@ -30,6 +30,7 @@ import { RootStackParamList } from '../navigation';
 import { recursos } from '../screens/Recordemos';
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
+import { Ionicons } from '@expo/vector-icons';
 
 const situacion1Opt = [
   {
@@ -441,6 +442,12 @@ const Situacion1Optimizacion = () => {
           </View>
           <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
             <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
+            <Ionicons
+              name={isEnunciadoVisible ? 'chevron-up' : 'chevron-down'}
+              size={20}
+              color="#000"
+              style={{ textAlign: 'right' }}
+            />
           </TouchableOpacity>
 
           {isEnunciadoVisible && (

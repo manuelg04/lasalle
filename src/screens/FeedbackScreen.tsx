@@ -313,8 +313,7 @@ const FeedbackScreen = ({ route }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.feedbackContainer}>
-        <Text style={styles.headerText}>Retroalimentación</Text>
-        <Text style={styles.headerText}>Has finalizado de responder exitosamente</Text>
+        <Text style={styles.headerText}>Has finalizado y esta es tu retroalimentación. Recuerda que puedes volver a intentarlo</Text>
         {renderFeedbackInfo(feedbackData)}
         <TouchableOpacity
           style={styles.button}
@@ -349,7 +348,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerText: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#263238', // Azul oscuro/gris para el texto del encabezado
