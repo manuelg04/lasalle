@@ -24,9 +24,6 @@ const FeedbackScreen = ({ route }) => {
   const [feedbackData, setFeedbackData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { idCuestionarioNormalizado, idEstudiante } = route.params;
-  console.log(
-    `idCuestionarioNormalizado: ${idCuestionarioNormalizado}, idEstudiante: ${idEstudiante}`
-  );
 
   useEffect(() => {
     const fetchLatestAttempt = async () => {

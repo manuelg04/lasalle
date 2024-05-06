@@ -49,7 +49,6 @@ const Perfil = () => {
         carrera: career,
         fotoPerfil: imageUrl,
       });
-      console.log("🚀 ~ usuario:", usuario)
     };
 
     obtenerDatosUsuario();
