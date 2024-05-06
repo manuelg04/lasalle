@@ -27,7 +27,6 @@ export default function LoginScreen() {
   }, [navigation]);
 
   const handleLogin = async () => {
-    console.log('iniciaando sesion');
     // Asegúrate de validar las entradas según sea necesario
     if (!email || !password) {
       Alert.alert('Error', 'Por favor, ingresa tu correo electrónico y contraseña.');
