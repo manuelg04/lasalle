@@ -21,10 +21,6 @@ export const recursos = {
             url: "https://h5p.org/h5p/embed/131374"
         },
         {
-            subtematica: "Ecuaciones de segundo grado",
-            url: "https://unisallevirtual.lasalle.edu.co/mod/hvp/embed.php?id=1766793"
-        },
-        {
             subtematica: "Factorización",
             url: "https://h5p.org/h5p/embed/135794"
         },

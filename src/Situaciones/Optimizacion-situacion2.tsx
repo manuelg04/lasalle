@@ -657,14 +657,14 @@ const progress = (currentQuestionIndex + 1) / totalQuestions;
 </View>
 
 
-          <View style={styles.navigationContainer}>
-            <TouchableOpacity  style={styles.navButton}>
-              <Text onPress={previousQuestion}>Anterior</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.navButton}>
-              <Text onPress={nextQuestion} >Siguiente</Text>
-            </TouchableOpacity>
-          </View>
+<View style={styles.navigationContainer}>
+  <TouchableOpacity style={styles.navButton} onPress={previousQuestion}>
+    <Text>Anterior</Text>
+  </TouchableOpacity>
+  <TouchableOpacity style={styles.navButton} onPress={nextQuestion}>
+    <Text>Siguiente</Text>
+  </TouchableOpacity>
+</View>
         </ScrollView>
       </>
     )}
