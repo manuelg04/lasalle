@@ -69,7 +69,6 @@ const ExpCustomMission = () => {
         questions: answeredQuestions,
         sentDate: formattedDate,
       };
-      console.log("🚀 ~ postData:", postData)
 
       // Realizar la petición POST con axios
       const response = await axios.post(
@@ -122,11 +121,11 @@ const ExpCustomMission = () => {
     // Parsear las respuestas correctas en un objeto
     const correctAnswersMap = {};
     correctAnswers.split('\n').forEach((line) => {
-      const match = line.match(/Pregunta (\d+)\. es la ([A-D])/);
+      const match = line.match(/Pregunta (\d+): ([a-d])/);
       if (match) {
         const questionNumber = match[1];
-        const correctAnswer = match[2].charCodeAt(0) - 65;
-        correctAnswersMap[`Pregunta ${questionNumber}`] = correctAnswer;
+        const correctAnswer = match[2].charCodeAt(0) - 97;
+        correctAnswersMap[questionNumber] = correctAnswer;
       }
     });
 
@@ -166,8 +165,8 @@ const ExpCustomMission = () => {
 
     questions.forEach((question) => {
       const questionNumber = question.text.match(/Pregunta (\d+):/)[1];
-      if (correctAnswersMap.hasOwnProperty(`Pregunta ${questionNumber}`)) {
-        const correctAnswer = correctAnswersMap[`Pregunta ${questionNumber}`];
+      if (correctAnswersMap.hasOwnProperty(questionNumber)) {
+        const correctAnswer = correctAnswersMap[questionNumber];
         question.correctOption = correctAnswer;
       }
     });
