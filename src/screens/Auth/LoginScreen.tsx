@@ -43,7 +43,7 @@ export default function LoginScreen() {
       if (response.status === 200) {
         const { token, userId, fullName, userType, career, faculty, imageUrl } = response.data;
         await AsyncStorage.setItem('userToken', token);
-        await AsyncStorage.setItem('userId', userId);
+        await AsyncStorage.setItem('studentId', userId);
         if (career !== undefined && faculty !== undefined && imageUrl !== undefined) {
           await AsyncStorage.setItem('career', career);
           await AsyncStorage.setItem('faculty', faculty);
