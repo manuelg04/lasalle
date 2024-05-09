@@ -43,7 +43,7 @@ const EstudiemosRazonDeCambio = () => {
     <><View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Estudiemos razón de cambio</Text>
-        <Ionicons name="md-school-sharp" size={32} color="green" />
+        <Ionicons name="school-sharp" size={32} color="green" />
 
         {/* <View style={styles.menu}>
       <Ionicons name="menu" size={24} />
@@ -59,14 +59,14 @@ const EstudiemosRazonDeCambio = () => {
           onPress={() => navigation.navigate('Situacion1RazonDeCambio')}
         >
           <Text style={styles.situationText}>Situación 1. ¡Tiempo de empacar!</Text>
-          <Ionicons name="md-rocket-sharp" size={32} color="green" />
+          <Ionicons name="rocket-sharp" size={32} color="green" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.situation}
           onPress={() => navigation.navigate('Situacion2RazonDeCambio')}
         >
           <Text style={styles.situationText}>Situación 2. Caminando a la U</Text>
-          <Ionicons name="md-walk-sharp" size={32} color="green" />
+          <Ionicons name="walk-sharp" size={32} color="green" />
         </TouchableOpacity>
       </View>
      

@@ -1,47 +1,34 @@
 {
-  "expo": {
-    "name": "MISION-MATEMATICA",
-    "slug": "mision-matematica",
-    "version": "1.0.0",
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "package": "com.mision-matematica-lasalle.lasalleapp",
-    "extra": {
-      "eas": {
-        "projectId": "db9c1dc2-4071-4b71-80d1-c041a370eb7c"
-      }
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/db9c1dc2-4071-4b71-80d1-c041a370eb7c"
-    },
-    "plugins": [
-      "expo-font"
-    ]
+  "name": "MISION-MATEMATICA",
+  "slug": "mision-matematica",
+  "version": "1.0.0",
+  "web": {
+    "favicon": "./assets/favicon.png"
   },
+  "orientation": "portrait",
+  "icon": "./assets/icon.png",
+  "userInterfaceStyle": "light",
+  "splash": {
+    "image": "./assets/splash.png",
+    "resizeMode": "contain",
+    "backgroundColor": "#ffffff"
+  },
+  "assetBundlePatterns": [
+    "**/*"
+  ],
+  "ios": {
+    "supportsTablet": true
+  },
+  "android": {
+    "adaptiveIcon": {
+      "foregroundImage": "./assets/adaptive-icon.png",
+      "backgroundColor": "#ffffff"
+    }
+  },
+  "package": "com.mision-matematica-lasalle.lasalleapp",
+  "plugins": [
+    "expo-font"
+  ],
   "extra": {
     "eas": {
       "projectId": "db9c1dc2-4071-4b71-80d1-c041a370eb7c"

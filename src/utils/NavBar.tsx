@@ -17,14 +17,14 @@ const NavBar = () => {
       style={styles.button}
         onPress={() => navigation.navigate('Temas')}
       >
-        <Ionicons name="md-bulb-outline" size={32} color="gray" />
+        <Ionicons name="bulb-outline" size={32} color="gray" />
         <Text style={styles.iconText}>Temas</Text>
       </TouchableOpacity>
       <TouchableOpacity 
       onPress={() => navigation.navigate('Perfil')}
       style={styles.button}
       >
-      <Ionicons name="md-settings-outline" size={32} color="gray" />
+      <Ionicons name="settings-outline" size={32} color="gray" />
         <Text style={styles.iconText}>Ajustes</Text>
       </TouchableOpacity>
     </View>
