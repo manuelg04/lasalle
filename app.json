@@ -33,11 +33,14 @@
       }
     },
     "runtimeVersion": {
-      "policy": "sdkVersion"
+      "policy": "appVersion"
     },
     "updates": {
       "url": "https://u.expo.dev/db9c1dc2-4071-4b71-80d1-c041a370eb7c"
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   },
   "extra": {
     "eas": {
