@@ -13,50 +13,50 @@ import TermsAndConditions from '../TermsAndConditions';
 
 const facultadesConProgramas: any = {
   'Facultad de Economía Empresa y Desarrollo Sostenible FEEDS': [
-    'Administración de Empresas',
-    'Contaduría Pública',
-    'Finanzas y Comercio Internacional',
-    'Economía',
-    'Negocios y Relaciones Internacionales',
+  'Administración de Empresas',
+  'Contaduría Pública',
+  'Finanzas y Comercio Internacional',
+  'Economía',
+  'Negocios y Relaciones Internacionales',
   ],
-  'Escuela de Ciencias Básicas y Aplicadas': ['Biologia'],
-  'Facultad de Ciencias de la Salud': ['Optometria'],
+  'Escuela de Ciencias Básicas y Aplicadas': ['Biología'],
+  'Facultad de Ciencias de la Salud': ['Optometría'],
   'Facultad de Ciencias Sociales y Humanas': [
-    'Archivistica e inteligencia de negocios',
-    'Bibliotecologia y estudios de la informacion',
-    'Trabajo social',
-    'Filosofia y letras',
+  'Archivística e inteligencia de negocios',
+  'Bibliotecología y estudios de la información',
+  'Trabajo social',
+  'Filosofía y letras',
   ],
-  'Facultad de Ingenieria': [
-    'Ingenieria de Software',
-    'Ingenieria civil',
-    'Ingenieria de alimentos',
-    'Ingenieria Electrica',
-    'Ingenieria ambiental y sanitaria',
-    'Ingenieria en Automatizacion',
-    'Ingenieria industrial',
-    'Ingenieria de quimica',
+  'Facultad de Ingeniería': [
+  'Ingeniería de Software',
+  'Ingeniería civil',
+  'Ingeniería de alimentos',
+  'Ingeniería Eléctrica',
+  'Ingeniería ambiental y sanitaria',
+  'Ingeniería en Automatización',
+  'Ingeniería industrial',
+  'Ingeniería química',
   ],
   'Facultad de Ciencias Agropecuarias': [
-    'Administracion de agronecios',
-    'Ingenieria agronomica',
-    'Medicina y veterinario',
-    'Zootecnia',
+  'Administración de agronegocios',
+  'Ingeniería agronómica',
+  'Medicina veterinaria',
+  'Zootecnia',
   ],
-  'Facultad de Ciencias de la Educacion': [
-    'Licenciatura en espanol y lenguajes extranjeras',
-    'Licenciatura en educacion religiosa',
-    'Licenciatura en educacion basica primaria',
-    'Licenciatura en ciencias naturales y educacion ambiental',
-    'Licenciatura en literatura y lengua castellana',
+  'Facultad de Ciencias de la Educación': [
+  'Licenciatura en español y lenguajes extranjeras',
+  'Licenciatura en educación religiosa',
+  'Licenciatura en educación básica primaria',
+  'Licenciatura en ciencias naturales y educación ambiental',
+  'Licenciatura en literatura y lengua castellana',
   ],
-  'Facultad de arquitectura diseno y urbanismo': [
-    'Arquitectura',
-    'Urbanismo',
-    'Diseno visual',
-    'Diseno industrial',
+  'Facultad de arquitectura diseño y urbanismo': [
+  'Arquitectura',
+  'Urbanismo',
+  'Diseño visual',
+  'Diseño industrial',
   ],
-};
+  };
 
 
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FirstScreen'>;
@@ -206,12 +206,14 @@ const SignUpStudent = () => {
         const fullName = response.data.fullName;
         const career = response.data.career;
         const faculty = response.data.faculty;
+        const studentId = response.data.studentId;
         
         await AsyncStorage.setItem('career', career);
         await AsyncStorage.setItem('faculty', faculty);
         await AsyncStorage.setItem('fullName', fullName);
         await AsyncStorage.setItem('userToken', token);
         await AsyncStorage.setItem('userImageUrl', imageUrl);
+        await AsyncStorage.setItem('studentId', studentId);
         setIsRegistering(false);
         alert('Registro completado');
         navigation.navigate('TermsAndConditions');
@@ -229,7 +231,7 @@ const SignUpStudent = () => {
         console.log(error.response.data);
         alert('Error en el registro: ' + error.response.data.message);
       } else {
-        console.log(error);
+        console.log(error.message);
         alert('Algo salió mal');
       }
     }

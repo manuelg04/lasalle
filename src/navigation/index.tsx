@@ -89,7 +89,7 @@ export default function RootStack() {
         <Stack.Screen
           name="Situacion1RazonDeCambio"
           component={Situacion1RazonDeCambio}
-          options={{ title: 'Razon de cambio' }}
+          options={{ title: 'Razón de cambio' }}
         />
         <Stack.Screen
           name="TermsAndConditions"

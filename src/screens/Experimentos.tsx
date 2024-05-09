@@ -30,10 +30,27 @@ const Experimentemos = ({ route }) => {
   const [studentCareer, setStudentCareer] = useState('');
   const [favoriteSport, setFavoriteSport] = useState('');
   const [favoriteHobby, setFavoriteHobby] = useState('');
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const [generatedProblem, setGeneratedProblem] = useState('');
   const [loading, setLoading] = useState(false);
   const { theme } = route.params;
   console.log('🚀 ~ theme:', theme);
+
+  useEffect(() => {
+    const getCareerFromAsyncStorage = async () => {
+      const storedCareer = await AsyncStorage.getItem('career');
+      if (storedCareer) {
+        setStudentCareer(storedCareer);
+      } else {
+        const storedUserId = await AsyncStorage.getItem('userId');
+        if (storedUserId) {
+          fetchStudentCareer(storedUserId);
+        }
+      }
+    };
+
+    getCareerFromAsyncStorage();
+  }, []);
 
   const fetchStudentCareer = async (userId: any) => {
     try {
@@ -41,6 +58,7 @@ const Experimentemos = ({ route }) => {
         `https://lasalleapp.onrender.com/getStudents/student/${userId}`
       );
       const { career } = response.data;
+      console.log("🚀 ~ career:", career)
       setStudentCareer(career);
     } catch (error) {
       console.error('Error al obtener la carrera:', error.response.data);
@@ -61,6 +79,7 @@ const Experimentemos = ({ route }) => {
 
   const handleGenerateProblem = async () => {
     setLoading(true);
+    setButtonDisabled(true);
     try {
       const response = await axios.post(
         'https://lasalleapp.onrender.com/api/experiment/generate-custom-problem',
@@ -99,6 +118,7 @@ const Experimentemos = ({ route }) => {
       // Manejar el error adecuadamente
     }
     setLoading(false);
+    setButtonDisabled(false);
   };
 
   const handleViewPreviousFeedback = async () => {
@@ -140,7 +160,7 @@ const Experimentemos = ({ route }) => {
         <ScrollView style={styles.container}>
           <View style={styles.contentContainer}>
             <View style={styles.header}>
-              <Ionicons name="md-cube-outline" size={36} color="#4B5563" />
+              <Ionicons name="cube-outline" size={36} color="#4B5563" />
               <Text style={styles.headerText}>Experimentemos</Text>
             </View>
 
@@ -181,7 +201,10 @@ const Experimentemos = ({ route }) => {
               />
             </View>
 
-            <TouchableOpacity style={styles.button} onPress={handleGenerateProblem}>
+            <TouchableOpacity
+              style={[styles.button, buttonDisabled && styles.disabledButton]}
+              onPress={handleGenerateProblem}
+              disabled={buttonDisabled}>
               <Text style={styles.buttonText}>Genera tu propia Misión</Text>
             </TouchableOpacity>
 
@@ -316,6 +339,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  disabledButton: {
+    backgroundColor: '#D1D5DB',
   },
 });
 

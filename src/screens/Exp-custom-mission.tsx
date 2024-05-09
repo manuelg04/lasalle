@@ -41,7 +41,7 @@ const ExpCustomMission = () => {
   const handleSubmit = async () => {
     try {
       // Suponiendo que tienes una manera de obtener el studentId, posiblemente de los props, el estado global o almacenamiento local
-      const studentId = await AsyncStorage.getItem('userId');
+      const studentId = await AsyncStorage.getItem('studentId');
       
       // Recopilar datos de las preguntas con las respuestas seleccionadas
       const answeredQuestions = missionData.questions.map((question, index) => {
@@ -69,6 +69,7 @@ const ExpCustomMission = () => {
         questions: answeredQuestions,
         sentDate: formattedDate,
       };
+      console.log("🚀 ~ postData:", postData)
 
       // Realizar la petición POST con axios
       const response = await axios.post(
