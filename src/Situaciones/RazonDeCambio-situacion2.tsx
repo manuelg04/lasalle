@@ -572,13 +572,13 @@ const Situacion2RazonDeCambio = () => {
               name={isEnunciadoVisible ? 'chevron-up' : 'chevron-down'}
               size={20}
               color="#000"
-              style={{ margin:'auto', paddingRight: 12}}
+              style={{ margin: 'auto', paddingRight: 12 }}
             />
           </TouchableOpacity>
 
           {isEnunciadoVisible && (
             <View>
-            <Text style={styles.enunciado}>{situacion.enunciado}</Text>
+              <Text style={styles.enunciado}>{situacion.enunciado}</Text>
               <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
             </View>
           )}
@@ -605,11 +605,11 @@ const Situacion2RazonDeCambio = () => {
             />
 
             <View style={styles.navigationContainer}>
-              <TouchableOpacity style={styles.navButton}>
-                <Text onPress={previousQuestion}>Anterior</Text>
+              <TouchableOpacity style={styles.navButton} onPress={previousQuestion}>
+                <Text>Anterior</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.navButton}>
-                <Text onPress={nextQuestion}>Siguiente</Text>
+              <TouchableOpacity style={styles.navButton} onPress={nextQuestion}>
+                <Text>Siguiente</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>

@@ -666,7 +666,7 @@ const renderImagenes = () => {
                 {feedbackModal.type === 'incorrect' && (
                   <AnswerWrong tip={feedbackModal.tip} url={feedbackModal.url} />
                 )}
-                
+
                 <TouchableOpacity style={styles.closeButton} onPress={closeFeedbackModal}>
                   <Text onPress={closeFeedbackModal}>Cerrar</Text>
                 </TouchableOpacity>
@@ -674,8 +674,8 @@ const renderImagenes = () => {
             </View>
           </Modal>
           <View style={styles.progressContainer}>
-        <Progress.Bar progress={progress} width={null} />
-      </View>
+            <Progress.Bar progress={progress} width={null} />
+          </View>
           <TouchableOpacity
             onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}
             style={styles.tituloSituacionContainer}>
@@ -710,11 +710,11 @@ const renderImagenes = () => {
             </View>
 
             <View style={styles.navigationContainer}>
-              <TouchableOpacity style={styles.navButton}>
-                <Text onPress={previousQuestion}>Anterior</Text>
+              <TouchableOpacity style={styles.navButton} onPress={previousQuestion}>
+                <Text>Anterior</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.navButton}>
-                <Text onPress={nextQuestion}>Siguiente</Text>
+              <TouchableOpacity style={styles.navButton} onPress={nextQuestion}>
+                <Text>Siguiente</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
