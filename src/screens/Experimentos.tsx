@@ -42,7 +42,7 @@ const Experimentemos = ({ route }) => {
       if (storedCareer) {
         setStudentCareer(storedCareer);
       } else {
-        const storedUserId = await AsyncStorage.getItem('userId');
+        const storedUserId = await AsyncStorage.getItem('studentId');
         if (storedUserId) {
           fetchStudentCareer(storedUserId);
         }

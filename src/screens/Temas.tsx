@@ -67,16 +67,31 @@ const Temas = () => {
   }
 
   const handleLogout = async () => {
-    try {
-      // Enumera todas las claves que quieres eliminar
-      const keys = ['userToken', 'userId', 'career', 'faculty', 'fullName', 'userType', 'userImageUrl'];
-      // Elimina todas las claves
-      await AsyncStorage.multiRemove(keys);
-      // Navega a la pantalla de inicio de sesión
-      navigation.replace('LoginScreen');
-    } catch (error) {
-      console.error('Error al cerrar sesión', error);
-    }
+    Alert.alert(
+      "Cerrar sesión",
+      "¿Deseas cerrar sesión?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel"
+        },
+        { 
+          text: "Aceptar", 
+          onPress: async () => {
+            try {
+              // Enumera todas las claves que quieres eliminar
+              const keys = ['userToken', 'studentId', 'career', 'faculty', 'fullName', 'userType', 'userImageUrl'];
+              // Elimina todas las claves
+              await AsyncStorage.multiRemove(keys);
+              // Navega a la pantalla de inicio de sesión
+              navigation.replace('LoginScreen');
+            } catch (error) {
+              console.error('Error al cerrar sesión', error);
+            }
+          }
+        }
+      ]
+    );
   };
   
 

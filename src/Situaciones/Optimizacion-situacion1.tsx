@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 // @ts-ignore
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // @ts-ignore
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -18,19 +19,18 @@ import {
   Image,
   Modal,
   ActivityIndicator,
-  Button,
 } from 'react-native';
 // @ts-ignore
 import { TouchableOpacity } from 'react-native-gesture-handler';
 // @ts-ignore
 // @ts-ignore
+import { RadioButton, Button } from 'react-native-paper';
 import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
 import { recursos } from '../screens/Recordemos';
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
-import { Ionicons } from '@expo/vector-icons';
 
 const situacion1Opt = [
   {
@@ -150,16 +150,16 @@ const situacion1Opt = [
   },
 ];
 
-const RadioButton = ({ label, isSelected, onPress, disabled }) => (
-  <TouchableOpacity
-    style={styles.radioButtonContainer}
-    onPress={onPress}
-    disabled={disabled} // Deshabilita el botón si disabled es true
-  >
-    <View style={[styles.radioButton, isSelected ? styles.radioButtonSelected : null]} />
-    <Text style={styles.radioButtonLabel}>{label}</Text>
-  </TouchableOpacity>
-);
+// const RadioButton = ({ label, isSelected, onPress, disabled }) => (
+//   <TouchableOpacity
+//     style={styles.radioButtonContainer}
+//     onPress={onPress}
+//     disabled={disabled} // Deshabilita el botón si disabled es true
+//   >
+//     <View style={[styles.radioButton, isSelected ? styles.radioButtonSelected : null]} />
+//     <Text style={styles.radioButtonLabel}>{label}</Text>
+//   </TouchableOpacity>
+// );
 
 const getSubtitulo = (questionIndex: any) => {
   if (questionIndex >= 0 && questionIndex <= 2) {
@@ -245,10 +245,24 @@ const Situacion1Optimizacion = () => {
   const nextQuestion = () => {
     if (currentQuestionIndex < situacion.preguntas.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setShowFeedback(null); // Resetear el estado de feedback
+      setShowFeedback(null);
     } else {
-      // Si es la última pregunta, envía las respuestas
-      enviarRespuestas();
+      // Si es la última pregunta, muestra el Alert para confirmar
+      Alert.alert(
+        'Finalizar situación',
+        '¿Estás seguro de que deseas finalizar la situación?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Finalizar',
+            onPress: enviarRespuestas,
+          },
+        ],
+        { cancelable: false }
+      );
     }
   };
 
@@ -276,15 +290,32 @@ const Situacion1Optimizacion = () => {
       }
     };
 
-    return respuestas.map((respuesta, index) => (
-      <RadioButton
-        key={index}
-        label={renderMathOrText(respuesta)}
-        isSelected={selectedAnswers[currentQuestionIndex] === index}
-        onPress={() => handleAnswer(index)}
-        disabled={isAnswerSelected}
-      />
-    ));
+    return respuestas.map((respuesta, index) => {
+      console.log('Rendering RadioButton', index);
+      return (
+        <View style={styles.radioButtonContainer} key={index}>
+          <RadioButton.Android
+            value={index.toString()}
+            status={selectedAnswers[currentQuestionIndex] === index ? 'checked' : 'unchecked'}
+            onPress={() => {
+              if (selectedAnswers[currentQuestionIndex] === undefined) {
+                console.log('RadioButton onPress called', index);
+                handleAnswer(index);
+              }
+            }}
+          />
+          <Text
+            onPress={() => {
+              if (selectedAnswers[currentQuestionIndex] === undefined) {
+                handleAnswer(index);
+              }
+            }}
+            style={styles.radioButtonLabel}>
+            {renderMathOrText(respuesta)}
+          </Text>
+        </View>
+      );
+    });
   };
 
   const startCuestionario = () => {
@@ -324,7 +355,7 @@ const Situacion1Optimizacion = () => {
     const tiempoTranscurridoMinutos = tiempoTranscurridoMs / 60000;
 
     try {
-      const idEstudiante = await AsyncStorage.getItem('userId');
+      const idEstudiante = await AsyncStorage.getItem('studentId');
       const idCuestionario = situacion.tituloSituacion; // Asumiendo que 'situacion' es tu objeto de preguntas actual
 
       if (!idEstudiante || !idCuestionario) {
@@ -355,27 +386,6 @@ const Situacion1Optimizacion = () => {
         await mostrarFeedbackAnterior();
       }
 
-      // if (response.status === 201) {
-      //   // Tras enviar las respuestas, procedemos a analizarlas
-      //   const analizarRespuestasUrl = 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas';
-      //   const responseAnalizar = await axios.post(analizarRespuestasUrl, {
-      //     idEstudiante,
-      //     idCuestionario,
-      //     tiempoTranscurridoMinutos
-      //   });
-
-      //   if (responseAnalizar.data.feedback) {
-
-      //     // Si recibimos feedback del análisis, lo mostramos
-      //     await marcarComoCompletada();
-      //     await AsyncStorage.setItem('feedback_situacion_1', JSON.stringify(responseAnalizar.data.feedback));
-      //     await AsyncStorage.setItem('situacion_1_completada', 'true');
-      //      navigation.navigate('FeedbackScreen', {
-      //       feedbackData: responseAnalizar.data.feedback,
-      //       situacionCompletada: true
-      //      });
-      //   }
-      // }
     } catch (error) {
       console.error('Error al enviar respuestas:', error);
       if (axios.isAxiosError(error) && error.response) {
@@ -390,7 +400,7 @@ const Situacion1Optimizacion = () => {
   // Maneja la visualización del feedback anterior
   const mostrarFeedbackAnterior = async () => {
     // Si la situación ya ha sido completada, mostramos el feedback
-    const idEstudiante = await AsyncStorage.getItem('userId');
+    const idEstudiante = await AsyncStorage.getItem('studentId');
     const idCuestionarioNormalizado = situacion.tituloSituacion;
     // Solo procedemos si tenemos los IDs necesarios
     if (idEstudiante && idCuestionarioNormalizado) {
@@ -411,7 +421,7 @@ const Situacion1Optimizacion = () => {
   return (
     <View style={styles.container}>
       {situacionCompletada && (
-        <Button title="Ver Feedback Anterior" onPress={mostrarFeedbackAnterior} />
+        <Button onPress={mostrarFeedbackAnterior}>Ver Feedback Anterior</Button>
       )}
       {isLoading ? (
         // Mostrar el loader cuando isLoading sea true
@@ -441,6 +451,7 @@ const Situacion1Optimizacion = () => {
           <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
             <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
             <Ionicons
+              onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}
               name={isEnunciadoVisible ? 'chevron-up' : 'chevron-down'}
               size={20}
               color="#000"
@@ -476,12 +487,14 @@ const Situacion1Optimizacion = () => {
             </View>
 
             <View style={styles.navigationContainer}>
-              <TouchableOpacity style={styles.navButton} onPress={previousQuestion}>
-                <Text>Anterior</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.navButton} onPress={nextQuestion}>
-                <Text>Siguiente</Text>
-              </TouchableOpacity>
+              <Button compact textColor='black' mode="contained" onPress={previousQuestion} style={styles.navButton}>
+                Anterior
+              </Button>
+              <Button compact textColor='black' mode="contained" onPress={nextQuestion} style={styles.navButton}>
+                {currentQuestionIndex === situacion.preguntas.length - 1
+                  ? 'Finalizar situación'
+                  : 'Siguiente'}
+              </Button>
             </View>
           </ScrollView>
         </>

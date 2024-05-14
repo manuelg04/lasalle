@@ -17,7 +17,7 @@ const EstudiemosOptimizacion = () => {
     <><View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Estudiemos optimización</Text>
-        <Ionicons name="md-school-sharp" size={32} color="green" />
+        <Ionicons name="school-sharp" size={32} color="green" />
         {/* <View style={styles.menu}>
       <Ionicons name="menu" size={24} />
       <Ionicons name="wifi" size={24} />
@@ -39,7 +39,7 @@ const EstudiemosOptimizacion = () => {
           onPress={() => navigation.navigate('Situacion2Optimizacion')}
         >
           <Text style={styles.situationText}>Situación 2. Aprovechando los materiales</Text>
-          <Ionicons name="ios-reload-circle-sharp" size={24} color="#fab005" />
+          <Ionicons name="reload-circle-sharp" size={24} color="#fab005" />
         </TouchableOpacity>
       </View>
 

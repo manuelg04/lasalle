@@ -6,16 +6,17 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { RadioButton } from 'react-native-paper';
 
 import { RootStackParamList } from '../navigation';
 
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'ExpCustomMission'>;
 
-const RadioButton = ({ isSelected, onPress }) => (
-  <TouchableOpacity onPress={onPress} style={styles.radioButton}>
-    {isSelected ? <View style={styles.radioButtonSelected} /> : null}
-  </TouchableOpacity>
-);
+// const RadioButton = ({ isSelected, onPress }) => (
+//   <TouchableOpacity onPress={onPress} style={styles.radioButton}>
+//     {isSelected ? <View style={styles.radioButtonSelected} /> : null}
+//   </TouchableOpacity>
+// );
 
 const ExpCustomMission = () => {
   const navigation = useNavigation<OverviewScreenNavigationProps>();
@@ -37,19 +38,17 @@ const ExpCustomMission = () => {
     console.log('Respuestas seleccionadas:', selectedOptions);
   }, [selectedOptions]);
 
-
   const handleSubmit = async () => {
     try {
       // Suponiendo que tienes una manera de obtener el studentId, posiblemente de los props, el estado global o almacenamiento local
       const studentId = await AsyncStorage.getItem('studentId');
-      
+
       // Recopilar datos de las preguntas con las respuestas seleccionadas
       const answeredQuestions = missionData.questions.map((question, index) => {
         const questionNumber = index + 1;
         const selectedOptionIndex = selectedOptions[questionNumber];
         const isCorrect =
-          selectedOptionIndex !== undefined &&
-          selectedOptionIndex === question.correctOption;
+          selectedOptionIndex !== undefined && selectedOptionIndex === question.correctOption;
 
         return {
           ...question,
@@ -191,7 +190,13 @@ const ExpCustomMission = () => {
                 key={optionIndex}
                 style={styles.optionContainer}
                 onPress={() => handleSelectOption(questionIndex + 1, optionIndex)}>
-                <RadioButton isSelected={selectedOptions[questionIndex + 1] === optionIndex} />
+                <RadioButton
+                  value={optionIndex.toString()}
+                  status={
+                    selectedOptions[questionIndex + 1] === optionIndex ? 'checked' : 'unchecked'
+                  }
+                  onPress={() => handleSelectOption(questionIndex + 1, optionIndex)}
+                />
                 <Text style={styles.optionText}>{option}</Text>
               </TouchableOpacity>
             ))}

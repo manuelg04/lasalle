@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -13,11 +14,11 @@ import {
   Image,
   Modal,
   ActivityIndicator,
-  Button,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageView from 'react-native-image-viewing';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import { RadioButton, Button } from 'react-native-paper';
 import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
@@ -25,7 +26,6 @@ import { recursos } from '../screens/Recordemos';
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
 import EquationRenderer from '../utils/MathSvg';
-import { Ionicons } from '@expo/vector-icons';
 /* eslint-disable prettier/prettier */
 const situacion2: any = [
   {
@@ -166,34 +166,34 @@ const situacion2: any = [
   },
 ];
 
-const RadioButton = ({ label, isSelected, onPress, disabled }) => {
+// const RadioButton = ({ label, isSelected, onPress, disabled }) => {
   
-  // Verifica si label es un string o un componente
-  const content = typeof label === 'string' ? (
-  <Text style={styles.radioButtonLabel}>{label}</Text>
-  ) : (
-  label // Si label es un componente (MathText), lo renderiza directamente
-  );
+//   // Verifica si label es un string o un componente
+//   const content = typeof label === 'string' ? (
+//   <Text style={styles.radioButtonLabel}>{label}</Text>
+//   ) : (
+//   label // Si label es un componente (MathText), lo renderiza directamente
+//   );
 
-  const handlePress = () => {
-  console.log('Radio button touched'); // Add console.log to see when the radio button is touched
-  onPress();
-  };
+//   const handlePress = () => {
+//   console.log('Radio button touched'); // Add console.log to see when the radio button is touched
+//   onPress();
+//   };
 
-  return (
-  <TouchableOpacity
-    style={styles.radioButtonContainer}
-    onPress={handlePress}
-    disabled={disabled}
-  >
-    <View style={[
-    styles.radioButton,
-    isSelected ? styles.radioButtonSelected : null
-    ]} />
-    {content}
-  </TouchableOpacity>
-  );
-};
+//   return (
+//   <TouchableOpacity
+//     style={styles.radioButtonContainer}
+//     onPress={handlePress}
+//     disabled={disabled}
+//   >
+//     <View style={[
+//     styles.radioButton,
+//     isSelected ? styles.radioButtonSelected : null
+//     ]} />
+//     {content}
+//   </TouchableOpacity>
+//   );
+// };
 
 
 const getSubtitulo = (questionIndex: any) => {
@@ -284,10 +284,24 @@ const Situacion2RazonDeCambio = () => {
   const nextQuestion = () => {
     if (currentQuestionIndex < situacion.preguntas.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setShowFeedback(null); // Resetear el estado de feedback
+      setShowFeedback(null);
     } else {
-      // Si es la última pregunta, envía las respuestas
-      enviarRespuestas();
+      // Si es la última pregunta, muestra el Alert para confirmar
+      Alert.alert(
+        'Finalizar situación',
+        '¿Estás seguro de que deseas finalizar la situación?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Finalizar',
+            onPress: enviarRespuestas,
+          },
+        ],
+        { cancelable: false }
+      );
     }
   };
 
@@ -380,15 +394,32 @@ const Situacion2RazonDeCambio = () => {
       }
     };
   
-    return respuestas.map((respuesta, index) => (
-      <RadioButton
-        key={index}
-        label={renderMathOrText(respuesta)} // Pasamos el componente MathText o el string directamente
-        isSelected={selectedAnswers[currentQuestionIndex] === index}
-        onPress={() => handleAnswer(index)}
-        disabled={isAnswerSelected}
-      />
-    ));
+    return respuestas.map((respuesta, index) => {
+      console.log('Rendering RadioButton', index);
+      return (
+        <View style={styles.radioButtonContainer} key={index}>
+          <RadioButton.Android
+            value={index.toString()}
+            status={selectedAnswers[currentQuestionIndex] === index ? 'checked' : 'unchecked'}
+            onPress={() => {
+              if (selectedAnswers[currentQuestionIndex] === undefined) {
+                console.log('RadioButton onPress called', index);
+                handleAnswer(index);
+              }
+            }}
+          />
+          <Text
+            onPress={() => {
+              if (selectedAnswers[currentQuestionIndex] === undefined) {
+                handleAnswer(index);
+              }
+            }}
+            style={styles.radioButtonLabel}>
+            {renderMathOrText(respuesta)}
+          </Text>
+        </View>
+      );
+    });
   };
   
   const startCuestionario = () => {
@@ -428,7 +459,7 @@ const Situacion2RazonDeCambio = () => {
     const tiempoTranscurridoMinutos = tiempoTranscurridoMs / 60000;
 
     try {
-      const idEstudiante = await AsyncStorage.getItem('userId');
+      const idEstudiante = await AsyncStorage.getItem('studentId');
       const idCuestionario = situacion.tituloSituacion; // Asumiendo que 'situacion' es tu objeto de preguntas actual
 
       if (!idEstudiante || !idCuestionario) {
@@ -470,7 +501,7 @@ const Situacion2RazonDeCambio = () => {
 
   // Maneja la visualización del feedback anterior
   const mostrarFeedbackAnterior = async () => {
-    const idEstudiante = await AsyncStorage.getItem('userId');
+    const idEstudiante = await AsyncStorage.getItem('studentId');
     const idCuestionarioNormalizado = situacion.tituloSituacion;
     if (idEstudiante && idCuestionarioNormalizado) {
       navigation.navigate('FeedbackScreen', {
@@ -536,7 +567,8 @@ const Situacion2RazonDeCambio = () => {
   return (
     <View style={styles.container}>
       {situacionCompletada && (
-        <Button title="Ver Feedback Anterior" onPress={mostrarFeedbackAnterior} />
+        <Button onPress={mostrarFeedbackAnterior}> Ver Feedback Anterior</Button>
+          
       )}
       {isLoading ? (
         // Mostrar el loader cuando isLoading sea true
@@ -569,6 +601,7 @@ const Situacion2RazonDeCambio = () => {
             style={styles.tituloSituacionContainer}>
             <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
             <Ionicons
+              onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}
               name={isEnunciadoVisible ? 'chevron-up' : 'chevron-down'}
               size={20}
               color="#000"
@@ -605,12 +638,24 @@ const Situacion2RazonDeCambio = () => {
             />
 
             <View style={styles.navigationContainer}>
-              <TouchableOpacity style={styles.navButton} onPress={previousQuestion}>
-                <Text>Anterior</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.navButton} onPress={nextQuestion}>
-                <Text>Siguiente</Text>
-              </TouchableOpacity>
+              <Button
+                compact
+                textColor="black"
+                mode="contained"
+                onPress={previousQuestion}
+                style={styles.navButton}>
+                Anterior
+              </Button>
+              <Button
+                compact
+                textColor="black"
+                mode="contained"
+                onPress={nextQuestion}
+                style={styles.navButton}>
+                {currentQuestionIndex === situacion.preguntas.length - 1
+                  ? 'Finalizar situación'
+                  : 'Siguiente'}
+              </Button>
             </View>
           </ScrollView>
         </>

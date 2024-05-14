@@ -6,21 +6,27 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert, Image, Modal, ActivityIndicator, Button } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  Image,
+  Modal,
+  ActivityIndicator,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import * as Progress from 'react-native-progress';
 
 import { RootStackParamList } from '../navigation';
-import {recursos} from "../screens/Recordemos"
+import { recursos } from '../screens/Recordemos';
 import AnswerCorrectly from '../utils/AnswerCorrectly';
 import AnswerWrong from '../utils/AnswerWrong';
 import MathRenderer from '../utils/MathRenderer';
-import MathWithTextRenderer from '../utils/MathWithText';
-import FractionRenderer from '../utils/MathWithText';
+import { RadioButton, Button } from 'react-native-paper'
 import { Ionicons } from '@expo/vector-icons';
-
-
 
 const situacion2Opt = [
   {
@@ -52,7 +58,7 @@ const situacion2Opt = [
       {
         enunciado:
           '3. La cantidad o dato que se proporciona en el problema es (información dada): ',
-          url: 'https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/',
+        url: 'https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_PASOS_RP5/Pasos_para_RP/',
         respuestas: [
           'a. Volumen',
           'b. Área superficial',
@@ -77,7 +83,7 @@ const situacion2Opt = [
       {
         enunciado:
           '5. Si L es el largo, A es el ancho y h la altura, entonces un diagrama que ilustre la situación es:',
-          url: 'https://drive.google.com/file/d/10Xx_scheSiMvdZzWwVYWywBrNRADtoZ6/view?usp=sharing',
+        url: 'https://drive.google.com/file/d/10Xx_scheSiMvdZzWwVYWywBrNRADtoZ6/view?usp=sharing',
         imagen:
           'https://drive.google.com/file/d/1Q-V9EJF2L9NtkTL1o0yIgGFM3lOW55k2/view?usp=sharing',
         respuestas: ['a', 'b', 'c'],
@@ -88,7 +94,7 @@ const situacion2Opt = [
         Subtitulo: '¿Qué plan diseñarías?',
         enunciado:
           '6. Si A es el largo de la base y h la altura de la caja de almacenaje, entonces una expresión para el volumen es:  ',
-          url: "https://youtu.be/xOOMcb5OrWo",
+        url: 'https://youtu.be/xOOMcb5OrWo',
         respuestas: ['2048=A^2+4Ah', '2048=A^2(4h)', '2048=A^2*h^2', '2048=A^2*h'],
         respuestaCorrecta: 3,
         tip: 'Es importante identificar conceptos previos de apoyo para resolver la situación. Ten presente estudiar operaciones algebraicas',
@@ -96,14 +102,16 @@ const situacion2Opt = [
       {
         enunciado:
           '7. Si A es el largo de la base y h la altura, entonces el área superficial de la caja para el almacenaje es:',
-          url: "https://youtu.be/xOOMcb5OrWo" && "https://drive.google.com/file/d/10Xx_scheSiMvdZzWwVYWywBrNRADtoZ6/view?usp=sharing",
+        url:
+          'https://youtu.be/xOOMcb5OrWo' &&
+          'https://drive.google.com/file/d/10Xx_scheSiMvdZzWwVYWywBrNRADtoZ6/view?usp=sharing',
         respuestas: ['2A^2+4Ah', 'A^2+4Ah', 'A^2+2Ah', '6Ah'],
         respuestaCorrecta: 1,
         tip: 'Es importante identificar conceptos previos de apoyo para resolver la situación. Ten presente estudiar áreas, volúmenes y operaciones algebraicas.',
       },
       {
         enunciado: '8. Para resolver el problema se debe plantear una función que expresa:',
-        url: "https://www.youtube.com/watch?v=-UPzQwTQhAU",
+        url: 'https://www.youtube.com/watch?v=-UPzQwTQhAU',
         respuestas: [
           'a. El volumen en función del largo del área superficial ',
           'b. El área superficial en función del ancho de la base',
@@ -116,7 +124,7 @@ const situacion2Opt = [
       {
         enunciado:
           '9. La cantidad de material utilizado en función del ancho de la base A es se puede representar por la expresión:',
-          url:"https://h5p.org/h5p/embed/1465798",
+        url: 'https://h5p.org/h5p/embed/1465798',
         respuestas: ['A^2+2048/A', 'A^2+8192/A', 'A^2-8192/A', 'A^2+8192/A^2'],
         respuestaCorrecta: 1,
         tip: 'Es importante identificar conceptos previos de apoyo para resolver la situación. Ten presente estudiar funciones',
@@ -125,7 +133,7 @@ const situacion2Opt = [
         Subtitulo: '¿Cómo llevarías a cabo el plan?',
         enunciado:
           '10, Al derivar la expresión que me determina la cantidad de material utilizado se obtiene:',
-          url:"https://view.genial.ly/5d6d7ca539c592100c2d71fd",
+        url: 'https://view.genial.ly/5d6d7ca539c592100c2d71fd',
         respuestas: ['2A-2048/A', '2A+8192/A', '2A-8192/A^2', '2A+8192/A^2'],
         respuestaCorrecta: 2,
         tip: 'Es importante realizar correctamente los procedimientos. Ten presente estudiar  reglas de derivación',
@@ -133,7 +141,7 @@ const situacion2Opt = [
       {
         enunciado:
           '11. El punto crítico por analizar para que el ancho de la base A sea un extremo absoluto es: ',
-          url:"https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_EL_APP5/OVA_Ecuaciones_Lineales_V2/",
+        url: 'https://a7h7o2dls3piqoqkxnv0mw.on.drv.tw/Recursos_APP_Francisco/OVA_EL_APP5/OVA_Ecuaciones_Lineales_V2/',
         respuestas: ['a. 64', 'b. 32', 'c. 16', 'd. 8'],
         respuestaCorrecta: 2,
         tip: 'Es importante realizar correctamente los procedimientos. Ten presente estudiar ecuaciones',
@@ -141,7 +149,7 @@ const situacion2Opt = [
       {
         enunciado:
           '12. Al usar el criterio de la primera derivada en la función “cantidad de material utilizado” (área superficial), es correcto afirmar que para el valor del ancho de la base A se cumple: ',
-            url:"https://drive.google.com/file/d/1mns5u6TVmj5pV0AQBKjH8OwBC9ZAl4md/view?usp=sharing",
+        url: 'https://drive.google.com/file/d/1mns5u6TVmj5pV0AQBKjH8OwBC9ZAl4md/view?usp=sharing',
         respuestas: [
           'a. La derivada es positiva antes del punto 16 y negativa después del 16, por lo tanto, en 16 hay un punto mínimo.',
           'b. La derivada es negativa antes del punto 16 y positiva después del 16, por lo tanto, en 16 hay un punto mínimo.',
@@ -155,7 +163,7 @@ const situacion2Opt = [
         Subtitulo: '¿Qué resultados obtienes?',
         enunciado:
           '13. Las dimensiones de la caja que proporcionan la menor cantidad de material utilizado son',
-          url:"https://drive.google.com/file/d/1mns5u6TVmj5pV0AQBKjH8OwBC9ZAl4md/view?usp=sharing",
+        url: 'https://drive.google.com/file/d/1mns5u6TVmj5pV0AQBKjH8OwBC9ZAl4md/view?usp=sharing',
         respuestas: [
           'a. El ancho de la base 8 pulgadas y altura 16 pulgadas',
           'b. El ancho de la base 8 pulgadas y altura 32 pulgadas',
@@ -168,7 +176,7 @@ const situacion2Opt = [
       {
         enunciado:
           '14. Si el área de la base es de 256 pulgadas cuadradas, entonces es correcto afirmar que menor cantidad de material utilizado en la fabricación de una caja es de:  ',
-          url:"https://drive.google.com/file/d/1mns5u6TVmj5pV0AQBKjH8OwBC9ZAl4md/view?usp=sharing",
+        url: 'https://drive.google.com/file/d/1mns5u6TVmj5pV0AQBKjH8OwBC9ZAl4md/view?usp=sharing',
         respuestas: [
           'a. 2048 pulgadas cuadradas',
           'b. 768 pulgadas cuadradas',
@@ -181,7 +189,7 @@ const situacion2Opt = [
       {
         enunciado:
           '15. Otra forma de comprobar que en A=16 hay un valor mínimo asociado al ancho de la base de la caja es: ',
-          url:"https://drive.google.com/file/d/1sHFC150lWG3ZQ_5Kgiq1e_7H_ay_aYqX/view?usp=sharing",
+        url: 'https://drive.google.com/file/d/1sHFC150lWG3ZQ_5Kgiq1e_7H_ay_aYqX/view?usp=sharing',
         respuestas: [
           'Derivando la expresión 2A-8192/A^2, evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo',
           'Derivando la expresión 2A-8192/A^2, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo',
@@ -195,57 +203,52 @@ const situacion2Opt = [
   },
 ];
 
-const RadioButton = ({ label, isSelected, onPress, disabled }) => (
-  <TouchableOpacity
-    style={styles.radioButtonContainer}
-    onPress={onPress}
-    disabled={disabled} // Deshabilita el botón si disabled es true
-  >
-    <View style={[
-      styles.radioButton,
-      isSelected ? styles.radioButtonSelected : null
-    ]} />
-    <Text style={styles.radioButtonLabel}>{label}</Text>
-  </TouchableOpacity>
-);
-
+// const RadioButton = ({ label, isSelected, onPress, disabled }) => (
+//   <TouchableOpacity
+//     style={styles.radioButtonContainer}
+//     onPress={onPress}
+//     disabled={disabled} // Deshabilita el botón si disabled es true
+//   >
+//     <View style={[styles.radioButton, isSelected ? styles.radioButtonSelected : null]} />
+//     <Text style={styles.radioButtonLabel}>{label}</Text>
+//   </TouchableOpacity>
+// );
 
 const getSubtitulo = (questionIndex: any) => {
-    if (questionIndex >= 0 && questionIndex <= 4) {
-        return "¿Qué comprendes de la situación?";
-    } else if (questionIndex >= 5 && questionIndex <= 8) {
-        return "¿Qué plan diseñarías?";
-    } else if (questionIndex >= 9 && questionIndex <= 11) {
-        return "¿Cómo llevarías a cabo el plan?";
-    } else if (questionIndex >= 12 && questionIndex <= 14) {
-        return "¿Qué resultados obtienes?";
-    }
-    return "";
+  if (questionIndex >= 0 && questionIndex <= 4) {
+    return '¿Qué comprendes de la situación?';
+  } else if (questionIndex >= 5 && questionIndex <= 8) {
+    return '¿Qué plan diseñarías?';
+  } else if (questionIndex >= 9 && questionIndex <= 11) {
+    return '¿Cómo llevarías a cabo el plan?';
+  } else if (questionIndex >= 12 && questionIndex <= 14) {
+    return '¿Qué resultados obtienes?';
+  }
+  return '';
 };
 
 type FeedbackState = 'correct' | 'incorrect' | null;
-``
+``;
 type DetailsSreenRouteProp = RouteProp<RootStackParamList, 'Situacion1Optimizacion'>;
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FeedbackScreen'>;
-
 
 const Situacion2Optimizacion = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({}) as any;
   const [isEnunciadoVisible, setIsEnunciadoVisible] = useState(true);
   const [showFeedback, setShowFeedback] = useState<FeedbackState>(null);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState({
     visible: false,
     type: null, // 'correct' o 'incorrect'
-});
-const [startTime, setStartTime] = useState<Date | null>(null);
-const [endTime, setEndTime] = useState<Date | null>(null);
-const navigation = useNavigation<OverviewScreenNavigationProps>();
-const router = useRoute<DetailsSreenRouteProp>();
-const [situacionCompletada, setSituacionCompletada] = useState(true);
-const [isViewerVisible, setIsViewerVisible] = useState(false);
-const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  });
+  const [startTime, setStartTime] = useState<Date | null>(null);
+  const [endTime, setEndTime] = useState<Date | null>(null);
+  const navigation = useNavigation<OverviewScreenNavigationProps>();
+  const router = useRoute<DetailsSreenRouteProp>();
+  const [situacionCompletada, setSituacionCompletada] = useState(true);
+  const [isViewerVisible, setIsViewerVisible] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Verifica si la situación ya ha sido completada
   useEffect(() => {
@@ -259,89 +262,94 @@ const [currentImageIndex, setCurrentImageIndex] = useState(0);
     verificarCompletada();
   }, []);
 
-
-
   const situacion = situacion2Opt[0]; // Asumiendo que solo trabajas con la situación 1
 
   const handleAnswer = (respuestaIndex) => {
     const question = situacion.preguntas[currentQuestionIndex];
-    if (selectedAnswers[currentQuestionIndex] === undefined){
+    if (selectedAnswers[currentQuestionIndex] === undefined) {
       setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: respuestaIndex });
     }
-    
+
     let resourceUrl;
 
     if (question.url.startsWith('http')) {
-        resourceUrl = question.url;
+      resourceUrl = question.url;
     } else if (recursos[question.url]) {
-        resourceUrl = recursos[question.url][0].url; // Asume que quieres el primer recurso de la temática
+      resourceUrl = recursos[question.url][0].url; // Asume que quieres el primer recurso de la temática
     }
 
     if (respuestaIndex === question.respuestaCorrecta) {
-        setFeedbackModal({
-            visible: true,
-            type: 'correct'
-        });
+      setFeedbackModal({
+        visible: true,
+        type: 'correct',
+      });
     } else {
-        setFeedbackModal({
-            visible: true,
-            type: 'incorrect',
-            tip : question.tip, // Pasa el tip aquí
-            url: resourceUrl, // Pasar URL aquí
-        });
-    }
-};
-
-
-
-const closeFeedbackModal = () => {
-    setFeedbackModal({ visible: false, type: null });
-};
-
-
-
-const nextQuestion = () => {
-    if (currentQuestionIndex < situacion.preguntas.length - 1) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setShowFeedback(null); // Resetear el estado de feedback
-    } else {
-        // Si es la última pregunta, envía las respuestas
-        enviarRespuestas();
+      setFeedbackModal({
+        visible: true,
+        type: 'incorrect',
+        tip: question.tip, // Pasa el tip aquí
+        url: resourceUrl, // Pasar URL aquí
+      });
     }
   };
-  
+
+  const closeFeedbackModal = () => {
+    setFeedbackModal({ visible: false, type: null });
+  };
+
+  const nextQuestion = () => {
+    if (currentQuestionIndex < situacion.preguntas.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setShowFeedback(null);
+    } else {
+      // Si es la última pregunta, muestra el Alert para confirmar
+      Alert.alert(
+        'Finalizar situación',
+        '¿Estás seguro de que deseas finalizar la situación?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Finalizar',
+            onPress: enviarRespuestas,
+          },
+        ],
+        { cancelable: false }
+      );
+    }
+  };
 
   const previousQuestion = () => {
-      if (currentQuestionIndex > 0) {
-          setCurrentQuestionIndex(currentQuestionIndex - 1);
-          setShowFeedback(null); // Resetear el estado de feedback
-      }
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setShowFeedback(null); // Resetear el estado de feedback
+    }
   };
 
   const renderRespuestas = (respuestas, pregunta) => {
     const isAnswerSelected = selectedAnswers[currentQuestionIndex] !== undefined;
-  
+
     // Función para determinar si la respuesta contiene una fórmula matemática y devolver el componente MathText correspondiente
     const renderMathOrText = (respuesta) => {
       if (respuesta === '2048=A^2+4Ah') {
-        return <Text>2048 = A² + 4Ah</Text>
+        return <Text>2048 = A² + 4Ah</Text>;
       } else if (respuesta === '2048=A^2(4h)') {
-        return <Text>2048 = A²(4h)</Text>
+        return <Text>2048 = A²(4h)</Text>;
       } else if (respuesta === '2048=A^2*h^2') {
-        return <Text>2048 = A²h²</Text>
+        return <Text>2048 = A²h²</Text>;
       } else if (respuesta === '2048=A^2*h') {
-        return <Text>2048 = A²h</Text>
-      }
-      else if (respuesta === '2A^2+4Ah') {
-        return <Text>2A² + 4Ah</Text>
+        return <Text>2048 = A²h</Text>;
+      } else if (respuesta === '2A^2+4Ah') {
+        return <Text>2A² + 4Ah</Text>;
       } else if (respuesta === 'A^2+4Ah') {
-        return <Text>A² + 4Ah</Text>
+        return <Text>A² + 4Ah</Text>;
       } else if (respuesta === 'A^2+2Ah') {
-        return <Text>A² + 2Ah</Text>
+        return <Text>A² + 2Ah</Text>;
       } else if (respuesta === '6Ah') {
-        return <Text>6Ah</Text>
-      }
-      else if (respuesta === 'A^2+2048/A') {
+        return <Text>6Ah</Text>;
+      } else if (respuesta === 'A^2+2048/A') {
         return <MathRenderer equation={respuesta} />;
       } else if (respuesta === 'A^2+8192/A') {
         return <MathRenderer equation={respuesta} />;
@@ -349,8 +357,7 @@ const nextQuestion = () => {
         return <MathRenderer equation={respuesta} />;
       } else if (respuesta === 'A^2+8192/A^2') {
         return <MathRenderer equation={respuesta} />;
-      }
-      else if (respuesta === '2A-2048/A') {
+      } else if (respuesta === '2A-2048/A') {
         return <MathRenderer equation={respuesta} />;
       } else if (respuesta === '2A+8192/A') {
         return <MathRenderer equation={respuesta} />;
@@ -358,474 +365,506 @@ const nextQuestion = () => {
         return <MathRenderer equation={respuesta} />;
       } else if (respuesta === '2A+8192/A^2') {
         return <MathRenderer equation={respuesta} />;
-      }
-      else if (respuesta === 'Derivando la expresión 2A-8192/A^2, evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo') {
+      } else if (
+        respuesta ===
+        'Derivando la expresión 2A-8192/A^2, evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo'
+      ) {
         return (
-         <Text>Derivando la expresión 2A-8192 / A² , evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo  </Text>
+          <Text>
+            Derivando la expresión 2A-8192 / A² , evaluando el punto critico A=16 en la derivada
+            encontrada y chequeando que el valor dado sea positivo{' '}
+          </Text>
         );
-      } else if (respuesta === 'Derivando la expresión 2A-8192/A^2, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo') {
+      } else if (
+        respuesta ===
+        'Derivando la expresión 2A-8192/A^2, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo'
+      ) {
         return (
-          <Text>Derivando la expresión 2A-8192 / A² , evaluando el punto critico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo  </Text>
+          <Text>
+            Derivando la expresión 2A-8192 / A² , evaluando el punto critico A=16 en la derivada
+            encontrada y chequeando que el valor dado sea negativo{' '}
+          </Text>
         );
-      } else if (respuesta === 'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo') {
+      } else if (
+        respuesta ===
+        'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo'
+      ) {
         return (
-          <Text>Derivando la expresión A² + 8192 / A , evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea positivo  </Text>
+          <Text>
+            Derivando la expresión A² + 8192 / A , evaluando el punto crítico A=16 en la derivada
+            encontrada y chequeando que el valor dado sea positivo{' '}
+          </Text>
         );
-      } else if (respuesta === 'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo') {
+      } else if (
+        respuesta ===
+        'Derivando la expresión A^2+8192/A, evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo'
+      ) {
         return (
-          <Text>Derivando la expresión A² + 8192 / A , evaluando el punto crítico A=16 en la derivada encontrada y chequeando que el valor dado sea negativo  </Text>
+          <Text>
+            Derivando la expresión A² + 8192 / A , evaluando el punto crítico A=16 en la derivada
+            encontrada y chequeando que el valor dado sea negativo{' '}
+          </Text>
         );
-      }
-      
-       else {
+      } else {
         return respuesta; // Si no es una fórmula matemática, devuelve el string
       }
     };
-  
-    return respuestas.map((respuesta, index) => (
-      <RadioButton
-        key={index}
-        label={renderMathOrText(respuesta)} // Pasamos el componente MathText o el string directamente
-        isSelected={selectedAnswers[currentQuestionIndex] === index}
-        onPress={() => handleAnswer(index)}
-        disabled={isAnswerSelected}
-      />
-    ));
-  };
-  
-  
 
-const renderImages = (opciones) => {
-  // Asigna la fuente de la imagen basada en la opción
-  const imageSource = (opcion) => {
-    switch (opcion) {
-      case 'a':
-        return require('../../assets/aResponse.png');
-      case 'b':
-        return require('../../assets/bResponse.png');
-      case 'c':
-        return require('../../assets/cResponse.png');
-      case 'd':
-        return require('../../assets/dResponse.png');
-      default:
-        return null;
+    return respuestas.map((respuesta, index) => {
+      console.log('Rendering RadioButton', index);
+      return (
+        <View style={styles.radioButtonContainer} key={index}>
+          <RadioButton.Android
+            value={index.toString()}
+            status={selectedAnswers[currentQuestionIndex] === index ? 'checked' : 'unchecked'}
+            onPress={() => {
+              if (selectedAnswers[currentQuestionIndex] === undefined) {
+                console.log('RadioButton onPress called', index);
+                handleAnswer(index);
+              }
+            }}
+          />
+          <Text
+            onPress={() => {
+              if (selectedAnswers[currentQuestionIndex] === undefined) {
+                handleAnswer(index);
+              }
+            }}
+            style={styles.radioButtonLabel}>
+            {renderMathOrText(respuesta)}
+          </Text>
+        </View>
+      );
+    });
+  };
+
+  const renderImages = (opciones) => {
+    // Asigna la fuente de la imagen basada en la opción
+    const imageSource = (opcion) => {
+      switch (opcion) {
+        case 'a':
+          return require('../../assets/aResponse.png');
+        case 'b':
+          return require('../../assets/bResponse.png');
+        case 'c':
+          return require('../../assets/cResponse.png');
+        case 'd':
+          return require('../../assets/dResponse.png');
+        default:
+          return null;
+      }
+    };
+
+    return (
+      <View style={styles.imagesContainer}>
+        {opciones.map((opcion, index) => (
+          <Image key={index} source={imageSource(opcion)} style={styles.imagen} />
+        ))}
+      </View>
+    );
+  };
+
+  const startCuestionario = () => {
+    // Guarda la hora de inicio
+    setStartTime(new Date());
+  };
+
+  useEffect(() => {
+    startCuestionario();
+  }, []);
+
+  const marcarComoCompletada = async () => {
+    try {
+      await AsyncStorage.setItem('situacion4_completada', 'true');
+      console.log('Situación 1 marcada como completada');
+    } catch (error) {
+      console.error('Error al marcar la situación como completada', error);
     }
   };
 
-  return (
-    <View style={styles.imagesContainer}>
-      {opciones.map((opcion, index) => (
-        <Image
-          key={index}
-          source={imageSource(opcion)}
-          style={styles.imagen}
-        />
-      ))}
-    </View>
-  );
-};
-
-const startCuestionario = () => {
-  // Guarda la hora de inicio
-  setStartTime(new Date());
-};
-
-useEffect(() => {
-  startCuestionario();
-}, []);
-
-const marcarComoCompletada = async () => {
-  try {
-    await AsyncStorage.setItem('situacion4_completada', 'true');
-    console.log('Situación 1 marcada como completada');
-  } catch (error) {
-    console.error('Error al marcar la situación como completada', error);
-  }
-};
-
-const enviarRespuestas = async () => {
-  setIsLoading(true);
-  if (!startTime) {
-    console.error('El tiempo de inicio no está establecido.');
-    setIsLoading(false);
-    return;
-  }
-
-  const end = new Date();
-  const tiempoTranscurridoMs = end.getTime() - startTime.getTime();
-  if (tiempoTranscurridoMs < 0) {
-    console.error('El tiempo de inicio es posterior al tiempo de finalización.');
-    setIsLoading(false);
-    return;
-  }
-
-  const tiempoTranscurridoMinutos = tiempoTranscurridoMs / 60000;
-  
-  try {
-    const idEstudiante = await AsyncStorage.getItem('userId');
-    const idCuestionario = situacion.tituloSituacion; // Asumiendo que 'situacion' es tu objeto de preguntas actual
-    console.log("🚀 ~ idCuestionario:", idCuestionario)
-
-    if (!idEstudiante || !idCuestionario) {
-      console.error('Falta ID del estudiante o ID del cuestionario');
+  const enviarRespuestas = async () => {
+    setIsLoading(true);
+    if (!startTime) {
+      console.error('El tiempo de inicio no está establecido.');
       setIsLoading(false);
       return;
     }
 
-    const respuestasEstudiante = situacion.preguntas.map((pregunta, indice) => ({
-      preguntaId: indice,
-      respuestaSeleccionada: selectedAnswers[indice],
-      esRespuestaCorrecta: selectedAnswers[indice] === pregunta.respuestaCorrecta
-    }));
-
-    const response = await axios.post('https://lasalleapp.onrender.com/save-answer/guardar-respuesta', {
-      idEstudiante,
-      idCuestionario,
-      respuestasEstudiante,
-      tiempoTranscurrido: tiempoTranscurridoMinutos
-    });
-    console.log("🚀 ~ response:", response)
-
-    if(response.status === 201){
-      
-      await marcarComoCompletada();
-      await mostrarFeedbackAnterior();
+    const end = new Date();
+    const tiempoTranscurridoMs = end.getTime() - startTime.getTime();
+    if (tiempoTranscurridoMs < 0) {
+      console.error('El tiempo de inicio es posterior al tiempo de finalización.');
+      setIsLoading(false);
+      return;
     }
 
-    // if (response.status === 201) {
-    //   // Tras enviar las respuestas, procedemos a analizarlas
-    //   const analizarRespuestasUrl = 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas';
-    //   const responseAnalizar = await axios.post(analizarRespuestasUrl, {
-    //     idEstudiante,
-    //     idCuestionario,
-    //     tiempoTranscurridoMinutos
-    //   });
-      
-    //   if (responseAnalizar.data.feedback) {
-  
-    //     // Si recibimos feedback del análisis, lo mostramos
-    //     await marcarComoCompletada();
-    //     await AsyncStorage.setItem('feedback_situacion_1', JSON.stringify(responseAnalizar.data.feedback));
-    //     await AsyncStorage.setItem('situacion_1_completada', 'true');
-    //      navigation.navigate('FeedbackScreen', { 
-    //       feedbackData: responseAnalizar.data.feedback,
-    //       situacionCompletada: true
-    //      });
-    //   }
-    // }
-  } catch (error) {
-    console.error('Error al enviar respuestas:', error);
-    if (axios.isAxiosError(error) && error.response) {
-      // Manejo específico para errores de Axios con respuesta
-      console.error('Detalles del error:', error.response.data);
+    const tiempoTranscurridoMinutos = tiempoTranscurridoMs / 60000;
+
+    try {
+      const idEstudiante = await AsyncStorage.getItem('studentId');
+      const idCuestionario = situacion.tituloSituacion; // Asumiendo que 'situacion' es tu objeto de preguntas actual
+      console.log('🚀 ~ idCuestionario:', idCuestionario);
+
+      if (!idEstudiante || !idCuestionario) {
+        console.error('Falta ID del estudiante o ID del cuestionario');
+        setIsLoading(false);
+        return;
+      }
+
+      const respuestasEstudiante = situacion.preguntas.map((pregunta, indice) => ({
+        preguntaId: indice,
+        respuestaSeleccionada: selectedAnswers[indice],
+        esRespuestaCorrecta: selectedAnswers[indice] === pregunta.respuestaCorrecta,
+      }));
+
+      const response = await axios.post(
+        'https://lasalleapp.onrender.com/save-answer/guardar-respuesta',
+        {
+          idEstudiante,
+          idCuestionario,
+          respuestasEstudiante,
+          tiempoTranscurrido: tiempoTranscurridoMinutos,
+        }
+      );
+      console.log('🚀 ~ response:', response);
+
+      if (response.status === 201) {
+        await marcarComoCompletada();
+        await mostrarFeedbackAnterior();
+      }
+
+      // if (response.status === 201) {
+      //   // Tras enviar las respuestas, procedemos a analizarlas
+      //   const analizarRespuestasUrl = 'https://lasalleapp-dev-sjta.1.us-1.fl0.io/analizar/analizar-respuestas';
+      //   const responseAnalizar = await axios.post(analizarRespuestasUrl, {
+      //     idEstudiante,
+      //     idCuestionario,
+      //     tiempoTranscurridoMinutos
+      //   });
+
+      //   if (responseAnalizar.data.feedback) {
+
+      //     // Si recibimos feedback del análisis, lo mostramos
+      //     await marcarComoCompletada();
+      //     await AsyncStorage.setItem('feedback_situacion_1', JSON.stringify(responseAnalizar.data.feedback));
+      //     await AsyncStorage.setItem('situacion_1_completada', 'true');
+      //      navigation.navigate('FeedbackScreen', {
+      //       feedbackData: responseAnalizar.data.feedback,
+      //       situacionCompletada: true
+      //      });
+      //   }
+      // }
+    } catch (error) {
+      console.error('Error al enviar respuestas:', error);
+      if (axios.isAxiosError(error) && error.response) {
+        // Manejo específico para errores de Axios con respuesta
+        console.error('Detalles del error:', error.response.data);
+      }
+    } finally {
+      setIsLoading(false); // Asegúrate de quitar el estado de carga independientemente del resultado
     }
-  } finally {
-    setIsLoading(false); // Asegúrate de quitar el estado de carga independientemente del resultado
-  }
-};
+  };
 
   // Maneja la visualización del feedback anterior
   const mostrarFeedbackAnterior = async () => {
     // Si la situación ya ha sido completada, mostramos el feedback
-    const idEstudiante = await AsyncStorage.getItem('userId');
+    const idEstudiante = await AsyncStorage.getItem('studentId');
     const idCuestionarioNormalizado = situacion.tituloSituacion;
-  // Solo procedemos si tenemos los IDs necesarios
+    // Solo procedemos si tenemos los IDs necesarios
     if (idEstudiante && idCuestionarioNormalizado) {
-    navigation.navigate('FeedbackScreen', { 
-      idEstudiante,
-      idCuestionarioNormalizado: idCuestionarioNormalizado.toString(), // Convierte a cadena de texto
-      situacionCompletada: true
-    });
-  } else {
-    // Manejar el caso donde no se puedan obtener los IDs
-    console.error('No se pudo obtener el idEstudiante o el idCuestionarioNormalizado');
-  }
-  
-};
+      navigation.navigate('FeedbackScreen', {
+        idEstudiante,
+        idCuestionarioNormalizado: idCuestionarioNormalizado.toString(), // Convierte a cadena de texto
+        situacionCompletada: true,
+      });
+    } else {
+      // Manejar el caso donde no se puedan obtener los IDs
+      console.error('No se pudo obtener el idEstudiante o el idCuestionarioNormalizado');
+    }
+  };
 
-const opcionesDeRespuesta = [
-  { opcion: 'a', imagen: require('../../assets/5a.png') },
-  { opcion: 'b', imagen: require('../../assets/5b.png') },
-  { opcion: 'c', imagen: require('../../assets/5c.png') },
-  // Agrega más si es necesario
-];
+  const opcionesDeRespuesta = [
+    { opcion: 'a', imagen: require('../../assets/5a.png') },
+    { opcion: 'b', imagen: require('../../assets/5b.png') },
+    { opcion: 'c', imagen: require('../../assets/5c.png') },
+    // Agrega más si es necesario
+  ];
 
-// Convertir las imágenes para ser compatibles con ImageViewer
-const imagesForViewer = opcionesDeRespuesta.map((item) => ({
-  url: '', // No se usa, pero se mantiene para cumplir con la estructura de datos esperada por ImageViewer
-  props: { source: item.imagen },
-}));
+  // Convertir las imágenes para ser compatibles con ImageViewer
+  const imagesForViewer = opcionesDeRespuesta.map((item) => ({
+    url: '', // No se usa, pero se mantiene para cumplir con la estructura de datos esperada por ImageViewer
+    props: { source: item.imagen },
+  }));
 
-const handleImagePress = (index) => {
-  setCurrentImageIndex(index);
-  setIsViewerVisible(true);
-};
+  const handleImagePress = (index) => {
+    setCurrentImageIndex(index);
+    setIsViewerVisible(true);
+  };
 
-const renderImagenes = () => {
-  return (
-    <View style={styles.imagesContainer}>
-      {opcionesDeRespuesta.map((item, index) => (
-        <TouchableOpacity
-          key={index}
-          onPress={() => handleImagePress(index)}
-          style={styles.imageOptionContainer}>
-          <Text style={styles.imageOptionText}>Opción {item.opcion.toUpperCase()}</Text>
-          <Image source={item.imagen} style={styles.imagen} />
-        </TouchableOpacity>
-      ))}
-
-      <Modal visible={isViewerVisible} transparent onRequestClose={() => setIsViewerVisible(false)}>
-        <ImageViewer
-          imageUrls={imagesForViewer}
-          index={currentImageIndex}
-          onSwipeDown={() => setIsViewerVisible(false)}
-          enableSwipeDown
-          enableImageZoom
-          onCancel={() => setIsViewerVisible(false)}
-        />
-      </Modal>
-    </View>
-  );
-};
-
-const totalQuestions = 15; // El número total de preguntas
-const progress = (currentQuestionIndex + 1) / totalQuestions;
-  
-  return (
-<View style={styles.container}>
-{situacionCompletada && (
-        <Button
-          title="Ver Feedback Anterior"
-          onPress={mostrarFeedbackAnterior}
-        />
-      )}
-    {isLoading ? (
-      // Mostrar el loader cuando isLoading sea true
-      <ActivityIndicator size="large" color="#0000ff" />
-    ) : (
-      // El contenido de tu pantalla cuando isLoading sea false
-      <>
+  const renderImagenes = () => {
+    return (
+      <View style={styles.imagesContainer}>
+        {opcionesDeRespuesta.map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => handleImagePress(index)}
+            style={styles.imageOptionContainer}>
+            <Text style={styles.imageOptionText}>Opción {item.opcion.toUpperCase()}</Text>
+            <Image source={item.imagen} style={styles.imagen} />
+          </TouchableOpacity>
+        ))}
 
         <Modal
-          animationType="slide"
+          visible={isViewerVisible}
           transparent
-          visible={feedbackModal.visible}
-          onRequestClose={closeFeedbackModal}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              {feedbackModal.type === 'correct' && <AnswerCorrectly />}
-              {feedbackModal.type === 'incorrect' && (
-                <AnswerWrong tip={feedbackModal.tip} url={feedbackModal.url} />
-              )}
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={closeFeedbackModal}
-              >
-                <Text onPress={closeFeedbackModal}>Cerrar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          onRequestClose={() => setIsViewerVisible(false)}>
+          <ImageViewer
+            imageUrls={imagesForViewer}
+            index={currentImageIndex}
+            onSwipeDown={() => setIsViewerVisible(false)}
+            enableSwipeDown
+            enableImageZoom
+            onCancel={() => setIsViewerVisible(false)}
+          />
         </Modal>
-        <View style={styles.progressContainer}>
-        <Progress.Bar progress={progress} width={null} />
-      </View>    
-        <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
-          <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
-          <Ionicons
+      </View>
+    );
+  };
+
+  const totalQuestions = 15; // El número total de preguntas
+  const progress = (currentQuestionIndex + 1) / totalQuestions;
+
+  return (
+    <View style={styles.container}>
+      {situacionCompletada && (
+        <Button onPress={mostrarFeedbackAnterior}>Ver Feedback Anterior</Button>
+      )}
+      {isLoading ? (
+        // Mostrar el loader cuando isLoading sea true
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        // El contenido de tu pantalla cuando isLoading sea false
+        <>
+          <Modal
+            animationType="slide"
+            transparent
+            visible={feedbackModal.visible}
+            onRequestClose={closeFeedbackModal}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                {feedbackModal.type === 'correct' && <AnswerCorrectly />}
+                {feedbackModal.type === 'incorrect' && (
+                  <AnswerWrong tip={feedbackModal.tip} url={feedbackModal.url} />
+                )}
+                <TouchableOpacity style={styles.closeButton} onPress={closeFeedbackModal}>
+                  <Text onPress={closeFeedbackModal}>Cerrar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+          <View style={styles.progressContainer}>
+            <Progress.Bar progress={progress} width={null} />
+          </View>
+          <TouchableOpacity onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}>
+            <Text style={styles.tituloSituacion}>{situacion.tituloSituacion}</Text>
+            <Ionicons
+              onPress={() => setIsEnunciadoVisible(!isEnunciadoVisible)}
               name={isEnunciadoVisible ? 'chevron-up' : 'chevron-down'}
               size={20}
               color="#000"
               style={{ textAlign: 'right' }}
             />
-        </TouchableOpacity>
+          </TouchableOpacity>
 
-        {isEnunciadoVisible && (
-          <View>
-            <Text style={styles.enunciado}>{situacion.enunciado}</Text>
-            <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
-          </View>
-        )}
+          {isEnunciadoVisible && (
+            <View>
+              <Text style={styles.enunciado}>{situacion.enunciado}</Text>
+              <Text style={styles.postEnunciado}>{situacion.postEnunciado}</Text>
+            </View>
+          )}
 
-        <ScrollView style={styles.scrollView}>
-        <View style={styles.preguntaContainer}>
-  <Text style={styles.subtitulo}>{getSubtitulo(currentQuestionIndex)}</Text>
-  <Text style={styles.preguntaEnunciado}>{situacion.preguntas[currentQuestionIndex].enunciado}</Text>
-  {renderRespuestas(situacion.preguntas[currentQuestionIndex].respuestas, situacion.preguntas[currentQuestionIndex])}
-  {/* Verifica si la pregunta actual es la cuarta pregunta (índice 3 ya que los índices comienzan en 0) */}
-  {currentQuestionIndex === 4 && renderImagenes()}
-</View>
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.preguntaContainer}>
+              <Text style={styles.subtitulo}>{getSubtitulo(currentQuestionIndex)}</Text>
+              <Text style={styles.preguntaEnunciado}>
+                {situacion.preguntas[currentQuestionIndex].enunciado}
+              </Text>
+              {renderRespuestas(
+                situacion.preguntas[currentQuestionIndex].respuestas,
+                situacion.preguntas[currentQuestionIndex]
+              )}
+              {/* Verifica si la pregunta actual es la cuarta pregunta (índice 3 ya que los índices comienzan en 0) */}
+              {currentQuestionIndex === 4 && renderImagenes()}
+            </View>
 
-
-<View style={styles.navigationContainer}>
-  <TouchableOpacity style={styles.navButton} onPress={previousQuestion}>
-    <Text>Anterior</Text>
-  </TouchableOpacity>
-  <TouchableOpacity style={styles.navButton} onPress={nextQuestion}>
-    <Text>Siguiente</Text>
-  </TouchableOpacity>
-</View>
-        </ScrollView>
-      </>
-    )}
-  </View>
+            <View style={styles.navigationContainer}>
+              <Button compact textColor='black' mode="contained" onPress={previousQuestion} style={styles.navButton}>
+                Anterior
+              </Button>
+              <Button compact textColor='black' mode="contained" onPress={nextQuestion} style={styles.navButton}>
+                {currentQuestionIndex === situacion.preguntas.length - 1
+                  ? 'Finalizar situación'
+                  : 'Siguiente'}
+              </Button>
+            </View>
+          </ScrollView>
+        </>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'white',
-        flex: 1,
-    },
-    situacion: {
-      marginBottom: 20,
-      padding: 10,
-      backgroundColor: 'white',
-      borderRadius: 8,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 1.41,
-      elevation: 2,
-    },
-    tituloSituacion: {
-        color: '#facc15',
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        padding: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: 'black',
-    },
-    enunciado: {
-        color: 'black',
-        fontSize: 16,
-        padding: 16,
-    },
-    postEnunciado: {
-        color: '#facc15',
-        fontSize: 16,
-        fontWeight: 'bold',
-        padding: 16,
-        paddingTop: 0,
-    },
-    preguntaContainer: {
-        padding: 16,
-        paddingTop: 0,
-      
-    },
-    preguntaEnunciado: {
-        color: '#facc15',
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
-    respuesta: {
-      fontSize: 16,
-      paddingLeft: 20,
-      marginBottom: 2,
-    },
-    selectedAnswer: {
-        backgroundColor: '#e2e8f0',
-      },
-      scrollView: {
-        maxHeight: 500, // Ajusta esto según el tamaño que desees
-    },
-    navigationContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 10,
-        // ... otros estilos que necesites
-    },
-    navButton: {
-        padding: 10,
-        backgroundColor: '#ddd', // Cambia esto por el color que prefieras
-        // ... otros estilos para tus botones
-    },
-    respuestaText: {
-      fontSize: 16,
-    
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
+  situacion: {
+    marginBottom: 20,
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 1.41,
+    elevation: 2,
+  },
+  tituloSituacion: {
+    color: '#facc15',
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+  },
+  enunciado: {
+    color: 'black',
+    fontSize: 16,
+    padding: 16,
+  },
+  postEnunciado: {
+    color: '#facc15',
+    fontSize: 16,
+    fontWeight: 'bold',
+    padding: 16,
+    paddingTop: 0,
+  },
+  preguntaContainer: {
+    padding: 16,
+    paddingTop: 0,
+  },
+  preguntaEnunciado: {
+    color: '#facc15',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  respuesta: {
+    fontSize: 16,
+    paddingLeft: 20,
+    marginBottom: 2,
+  },
+  selectedAnswer: {
+    backgroundColor: '#e2e8f0',
+  },
+  scrollView: {
+    maxHeight: 500, // Ajusta esto según el tamaño que desees
+  },
+  navigationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+    // ... otros estilos que necesites
+  },
+  navButton: {
+    padding: 10,
+    backgroundColor: '#ddd', // Cambia esto por el color que prefieras
+    // ... otros estilos para tus botones
+  },
+  respuestaText: {
+    fontSize: 16,
   },
   imagen: {
     width: '100%', // Puedes ajustar esto como necesites
     height: 200, // Altura fija para la imagen, también es ajustable
     resizeMode: 'contain', // Esto es para asegurarse de que la imagen se ajuste sin perder la proporción
     marginTop: 20, // Añade un poco de espacio arriba de la imagen
-},
-radioButtonContainer: {
+  },
+  radioButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-},
-radioButton: {
+  },
+  radioButton: {
     height: 20,
     width: 20,
     borderRadius: 10,
     borderWidth: 2,
     borderColor: 'black',
     marginRight: 10,
-},
-radioButtonSelected: {
+  },
+  radioButtonSelected: {
     height: 10,
     width: 10,
     borderRadius: 5,
     backgroundColor: 'black',
-},
-radioButtonLabel: {
-  color: 'black', // Texto en blanco
-  fontSize: 16,
-  flex: 1,
-  flexShrink: 1,
-  marginLeft: 10,
-},
-subtitulo: {
+  },
+  radioButtonLabel: {
+    color: 'black', // Texto en blanco
+    fontSize: 16,
+    flex: 1,
+    flexShrink: 1,
+    marginLeft: 10,
+  },
+  subtitulo: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
     color: '#facc15',
-},
+  },
 
-centeredView: {
+  centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
-},
-modalView: {
-  margin: 20,
-  borderRadius: 20,
-  padding: 35,
-  alignItems: 'center',
-  justifyContent: 'center',
-},
-closeButton: {
+  },
+  modalView: {
+    margin: 20,
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  closeButton: {
     backgroundColor: '#2196F3',
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    marginTop: 15
-},
-imagesContainer: {
-  flexDirection: 'row',
-  justifyContent: 'center',
-  flexWrap: 'wrap',
-  // Añade estilos adicionales si es necesario
-},
-imageOptionContainer: {
-  alignItems: 'center',
-  margin: 10,
-  // Añade estilos adicionales si es necesario
-},
-imageOptionText: {
-  marginBottom: 5,
-  fontWeight: 'bold',
-  // Añade estilos adicionales si es necesario
-},
-progressContainer: {
-  marginTop: 10,
-  padding: 10,
-  alignItems: 'stretch',
-},
-
-  });
+    marginTop: 15,
+  },
+  imagesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    // Añade estilos adicionales si es necesario
+  },
+  imageOptionContainer: {
+    alignItems: 'center',
+    margin: 10,
+    // Añade estilos adicionales si es necesario
+  },
+  imageOptionText: {
+    marginBottom: 5,
+    fontWeight: 'bold',
+    // Añade estilos adicionales si es necesario
+  },
+  progressContainer: {
+    marginTop: 10,
+    padding: 10,
+    alignItems: 'stretch',
+  },
+});
 export default Situacion2Optimizacion;
