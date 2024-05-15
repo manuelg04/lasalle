@@ -41,14 +41,14 @@ const TeacherFirstScreen = ({ navigation }) => {
       const querySnapshot = await getDocs(collection(db, 'student-users'));
       const studentsList = querySnapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data(),
+        fullName: doc.data().fullName,
       }));
       setStudents(studentsList);
     };
 
     fetchStudents();
   }, []);
-
+  console.log(students);
   const arrayBufferToBase64 = (buffer) => {
     const binary = new Uint8Array(buffer).reduce(
       (acc, byte) => acc + String.fromCharCode(byte),
