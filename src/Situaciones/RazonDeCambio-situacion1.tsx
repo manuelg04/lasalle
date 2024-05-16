@@ -394,14 +394,14 @@ const nextQuestion = () => {
       } else if (respuesta.includes(`Reemplazar el valor de V=3 en la ecuación dV/da=3a^2 y despejar a`)) {
         return (
           <>
-        <Text>Reemplazar el valor de en la ecuación dV/da = 3a²</Text>
+        <Text>Reemplazar el valor de V=3 en la ecuación dV/da = 3a² y despejar a</Text>
           </>
         );
       } else if (respuesta.includes('Reemplazar el valor de a=3 en la ecuación dV/da=a^2')) {
         return (
           <>
             {"Reemplazar el valor de a=3 en la ecuación "}
-            <Text> dV/da = a² </Text>
+            <Text>dV/da = a² </Text>
           </>
         );
       }

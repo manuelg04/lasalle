@@ -190,7 +190,7 @@ const ExpCustomMission = () => {
                 key={optionIndex}
                 style={styles.optionContainer}
                 onPress={() => handleSelectOption(questionIndex + 1, optionIndex)}>
-                <RadioButton
+                <RadioButton.Android
                   value={optionIndex.toString()}
                   status={
                     selectedOptions[questionIndex + 1] === optionIndex ? 'checked' : 'unchecked'
