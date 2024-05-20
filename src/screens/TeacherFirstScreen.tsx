@@ -10,10 +10,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Share } from 'react-native';
 
 import db from '../utils/firebase'; // Asegúrate de importar db correctamente
+import { ActivityIndicator } from 'react-native-paper';
 
 const TeacherFirstScreen = ({ navigation }) => {
   const [students, setStudents] = useState([]);
   const [fullName, setFullName] = useState('');
+  const [isDownloading, setIsDownloading] = useState(false); // Estado para controlar el spinner
+
 
   useEffect(() => {
     const fetchFullName = async () => {
@@ -48,7 +51,6 @@ const TeacherFirstScreen = ({ navigation }) => {
 
     fetchStudents();
   }, []);
-  console.log(students);
   const arrayBufferToBase64 = (buffer) => {
     const binary = new Uint8Array(buffer).reduce(
       (acc, byte) => acc + String.fromCharCode(byte),
@@ -88,6 +90,41 @@ const TeacherFirstScreen = ({ navigation }) => {
     }
   };
 
+  const downloadConsolidatedReport = async () => {
+    setIsDownloading(true); // Mostrar el spinner de carga
+    try {
+      const url = `https://lasalleapp.onrender.com/excel/generate-consolidated-report`;
+      
+      // Descargar el archivo con axios
+      const response = await axios({
+        url,
+        method: 'GET',
+        responseType: 'arraybuffer', // Importante para manejar la respuesta como un archivo binario
+      });
+
+      // Convertir los datos a un formato de cadena base64
+      const base64 = arrayBufferToBase64(response.data);
+
+      // Definir la ruta del archivo local donde se guardará
+      const localUri = `${FileSystem.documentDirectory}reporte_consolidado.xlsx`;
+
+      // Escribir el archivo en el sistema de archivos
+      await FileSystem.writeAsStringAsync(localUri, base64, { encoding: FileSystem.EncodingType.Base64 });
+
+      // Compartir el archivo local
+      await Sharing.shareAsync(localUri, {
+        mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        dialogTitle: 'Compartir reporte consolidado',
+        UTI: 'com.microsoft.excel.xlsx',
+      });
+    } catch (error) {
+      console.error('Error al descargar el reporte consolidado:', error.message);
+    } finally {
+      setIsDownloading(false); // Ocultar el spinner de carga
+    }
+  };
+
+
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('userToken');
@@ -104,6 +141,10 @@ const TeacherFirstScreen = ({ navigation }) => {
         <Ionicons name="log-out-outline" size={24} color="black" />
         <Text style={styles.logoutText}>Cerrar sesión</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.downloadButton} onPress={downloadConsolidatedReport}>
+        <Text style={styles.buttonText}>Descargar Reporte Consolidado</Text>
+      </TouchableOpacity>
+      {isDownloading && <ActivityIndicator size="large" color="#0000ff" />}
       <Text style={styles.sectionTitle}>Listado de Estudiantes:</Text>
       <FlatList
         data={students}
@@ -183,6 +224,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
     marginBottom: 20,
+  },
+  downloadButton: {
+    marginBottom: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#28a745',
+    borderRadius: 5,
   },
 });
 

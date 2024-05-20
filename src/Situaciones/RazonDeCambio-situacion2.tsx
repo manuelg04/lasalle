@@ -139,7 +139,7 @@ const situacion2: any = [
           '10. Un proceso correcto para encontrar la razón de cambio en un instante de tiempo t es: ',
         url: 'https://view.genial.ly/5d6d7ca539c592100c2d71fd',
         respuestas: ["vt=x(t)=2t-8", "vt=x(t)=2t-8t", "vt=x(t)=2t2-8t", "vt=x(t)=2t-18"],
-        respuestaCorrecta: 2,
+        respuestaCorrecta: 0,
         tip: 'Recuerde realizar correctamente los procedimientos Se sugiere estudiar la temática reglas de derivación en recordemos',
       },
       {
@@ -344,14 +344,14 @@ const Situacion2RazonDeCambio = () => {
       } else if (respuesta === 'xt2-xt1t2-t1') {
         return (
           <View style={styles.container}>
-          <EquationRenderer equation="xt₂- xt₁t₂ -t₁" />
+          <EquationRenderer equation="xt₂- xt₁ / t₂ -t₁" />
         </View>
         );
       }
       else if (respuesta === 't2-t1xt2-xt1') {
         return (
           <View style={styles.container}>
-          <EquationRenderer equation="t₂-t₁xt₂-xt₁" />
+          <EquationRenderer equation="t₂-t₁ / xt₂-xt₁" />
         </View>
         );
       }

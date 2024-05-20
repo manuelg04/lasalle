@@ -141,7 +141,7 @@ const situacion1Opt = [
           'a. Obteniendo el valor de x del vértice de la parábola de la siguiente manera -4000/2',
           'b. Derivando la expresión 2(x-2000), evaluando el punto crítico 2000 en la derivada encontrada y chequeando que el valor dado sea negativo.',
           'c. Derivando la expresión -2(x-2000), evaluando el punto crítico 2000 en la derivada encontrada y chequeando que el valor dado sea positivo.',
-          'd. Obteniendo el valor de x del vértice de la parábola de la siguiente manera   -40002(-1)',
+          'd. Obteniendo el valor de x del vértice de la parábola de la siguiente manera -40002/2(-1)',
         ],
         respuestaCorrecta: 3,
         tip: 'Es importante analizar otras formas de obtener y mostrar la solución. Ten presente estudiar la función cuadrática',
