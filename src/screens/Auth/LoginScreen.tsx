@@ -1,12 +1,13 @@
 /* eslint-disable prettier/prettier */
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
+
 import { RootStackParamList } from '../../navigation';
-import { Ionicons } from '@expo/vector-icons';
 
 type DetailsSreenRouteProp = RouteProp<RootStackParamList, 'LoginScreen'>;
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FirstScreen'>;
@@ -41,7 +42,8 @@ export default function LoginScreen() {
       });
 
       if (response.status === 200) {
-        const { token, userId, fullName, userType, career, faculty, imageUrl } = response.data;
+        const { token, userId, fullName, userType, career, faculty, imageUrl, email } =
+          response.data;
         await AsyncStorage.setItem('userToken', token);
         await AsyncStorage.setItem('studentId', userId);
         if (career !== undefined && faculty !== undefined && imageUrl !== undefined) {
@@ -49,6 +51,7 @@ export default function LoginScreen() {
           await AsyncStorage.setItem('faculty', faculty);
           await AsyncStorage.setItem('userImageUrl', imageUrl);
         }
+        await AsyncStorage.setItem('email', email);
         await AsyncStorage.setItem('fullName', fullName);
         await AsyncStorage.setItem('userType', userType);
         // Guarda la imageUrl en AsyncStorage
@@ -71,6 +74,10 @@ export default function LoginScreen() {
         Alert.alert('Error', 'Ocurrió un error al iniciar sesión');
       }
     }
+  };
+
+  const handleForgotPassword = () => {
+    navigation.navigate('ForgotPasswordScreen');
   };
 
   return (
@@ -122,6 +129,9 @@ export default function LoginScreen() {
         </View>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Acceder</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleForgotPassword}>
+          <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -236,5 +246,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 20,
+  },
+  forgotPasswordText: {
+    marginTop: 10,
+    color: '#007bff',
+    textAlign: 'center',
   },
 });

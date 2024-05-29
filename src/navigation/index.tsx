@@ -9,6 +9,8 @@ import Situacion2Optimizacion from '../Situaciones/Optimizacion-situacion2';
 import Situacion1RazonDeCambio from '../Situaciones/RazonDeCambio-situacion1';
 import Situacion2RazonDeCambio from '../Situaciones/RazonDeCambio-situacion2';
 import LoginScreen from '../screens/Auth/LoginScreen';
+import ForgotPasswordScreen from '../screens/Auth/RecoverPassword';
+import ResetPasswordScreen from '../screens/Auth/ResetPasswordScreen';
 import SignUpGeneralScreen from '../screens/Auth/SignUpGeneralScreen';
 import SignUpStudent from '../screens/Auth/SignUpStudent';
 import SignUpTeacher from '../screens/Auth/SignUpTeacher';
@@ -46,6 +48,8 @@ export type RootStackParamList = {
   ExpCustomMission: undefined;
   TeacherFirstScreen: undefined;
   FeedbackExperimentemos: undefined;
+  ForgotPasswordScreen: undefined;
+  ResetPasswordScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -154,6 +158,16 @@ export default function RootStack() {
               </View>
             ),
           })}
+        />
+        <Stack.Screen
+          name="ForgotPasswordScreen"
+          component={ForgotPasswordScreen}
+          options={{ title: 'Restablecer contraseña' }}
+        />
+        <Stack.Screen
+          name="ResetPasswordScreen"
+          component={ResetPasswordScreen}
+          options={{ title: 'Restablecer contraseña' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -24,7 +24,6 @@ const Perfil = () => {
     carrera: '',
     fotoPerfil: '', // inicialmente null, será actualizado después
   });
-
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => null, // Esto elimina el botón de regreso
@@ -40,6 +39,8 @@ const Perfil = () => {
       const faculty = await AsyncStorage.getItem('faculty');
       const career = await AsyncStorage.getItem('career');
       const imageUrl = await AsyncStorage.getItem('userImageUrl');
+      const email = await AsyncStorage.getItem('email');
+      console.log("🚀 ~ email:", email)
       console.log("🚀 ~ imageUrl:", imageUrl)
       
 
