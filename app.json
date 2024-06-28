@@ -40,5 +40,15 @@
   },
   "updates": {
     "url": "https://u.expo.dev/db9c1dc2-4071-4b71-80d1-c041a370eb7c"
+  },
+  "expo": {
+    "android": {
+      "package": "com.misionmatematicalasalle.misionmatematica"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f39f534f-dcd1-439d-ae06-e728fec740ce"
+      }
+    }
   }
 }

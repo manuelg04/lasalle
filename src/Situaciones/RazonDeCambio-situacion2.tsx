@@ -74,7 +74,7 @@ const situacion2: any = [
           'La posición del estudiante aumenta entre los 3 y 4 segundos',
           'La posición del estudiante es constante entre los 3 y 4 segundos.',
         ],
-        respuestaCorrecta: 2,
+        respuestaCorrecta: 1,
         tip: 'Es importante relacionar la incógnita con los datos dados - Ten presente estudiar la evaluación de funciones en recordemos',
       },
       {
@@ -82,7 +82,7 @@ const situacion2: any = [
           '5. Para hallar la velocidad promedio de la partícula en un tiempo t1 y t2 específico se debe:',
         url: 'https://view.genial.ly/5d8387fa7d6fa60fcf658f94/interactive-content-derivada-de-una-funcion',
         respuestas: ['Usar el cociente xt2-xt1t2-t1 entre las diferencias de las posiciones sobre las diferencias de los tiempos', 
-        'Usar el cociente t2-t1xt2-xt1 entre las diferencias de las posiciones sobre las diferencias de los tiempos'
+        'Usar el cociente t2-t1xt2-xt1 entre las diferencias los tiempos sobre las diferencias de las posiciones en esos instantes de tiempos.'
       ],
         respuestaCorrecta: 0,
         tip: 'Es importante identificar los conceptos previos necesarios para resolver la situación - Ten presente estudiar la definición de derivada en recordemos',
@@ -92,10 +92,10 @@ const situacion2: any = [
           '6. Una forma de encontrar la velocidad del estudiante en un instante de tiempo t es resolviendo el siguiente límite:',
         url: 'https://view.genial.ly/5d8387fa7d6fa60fcf658f94/interactive-content-derivada-de-una-funcion',
         respuestas: [
-          'xt2-xt1t2-t1',
-          'xt2-xt1t2-t1',
-          't2-t1xt2-xt1',
-          'vt2-vt1t2-t1 donde v es la velocidad de la partícula',
+          'lim₍t₂→t₁₎ (x(t₁) - x(t₂)) / (t₁ - t₂)',
+          'lim₍t₂→t₁₎ (x(t₂) - x(t₁)) / (t₂ - t₁)',
+          'lim₍t₂→t₁₎ (t₂ - t₁) / (x(t₂) - x(t₁))',
+          'lim₍t₂→t₁₎ (v(t₂) - v(t₁)) / (t₂ - t₁) donde v es la velocidad de la partícula',
         ],
         respuestaCorrecta: 1,
         tip: 'Es importante identificar los conceptos previos necesarios para resolver la situación - Ten presente estudiar la derivada como razón de cambio ',
