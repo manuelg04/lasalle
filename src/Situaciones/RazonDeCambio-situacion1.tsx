@@ -544,7 +544,7 @@ const enviarRespuestas = async () => {
       esRespuestaCorrecta: selectedAnswers[indice] === pregunta.respuestaCorrecta
     }));
 
-    const response = await axios.post('https://lasalleapp.onrender.com/save-answer/guardar-respuesta', {
+    const response = await axios.post('https://lasalleapp-mmgp.onrender.com/save-answer/guardar-respuesta', {
       idEstudiante,
       idCuestionario,
       respuestasEstudiante,

@@ -174,7 +174,7 @@ const SignUpStudent = () => {
       
         uploadResponse = await axios({
           method: 'post',
-          url: 'https://lasalleapp.onrender.com/profileImage/upload',
+          url: 'https://lasalleapp-mmgp.onrender.com/profileImage/upload',
           data: formData,
           headers: { 'Content-Type': 'multipart/form-data' },
         });
@@ -189,7 +189,7 @@ const SignUpStudent = () => {
       }
       
       const response = await axios.post(
-        'https://lasalleapp.onrender.com/student/register',
+        'https://lasalleapp-mmgp.onrender.com/student/register',
         {
           email,
           fullName,

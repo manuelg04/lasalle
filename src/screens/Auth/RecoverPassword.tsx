@@ -20,7 +20,7 @@ export default function ForgotPasswordScreen() {
     }
 
     try {
-      const response = await axios.post('https://lasalleapp.onrender.com/request-code/forgot-password', {
+      const response = await axios.post('https://lasalleapp-mmgp.onrender.com/request-code/forgot-password', {
         email,
       });
 

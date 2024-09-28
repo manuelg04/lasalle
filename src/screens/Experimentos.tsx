@@ -55,7 +55,7 @@ const Experimentemos = ({ route }) => {
   const fetchStudentCareer = async (userId: any) => {
     try {
       const response = await axios.get(
-        `https://lasalleapp.onrender.com/getStudents/student/${userId}`
+        `https://lasalleapp-mmgp.onrender.com/getStudents/student/${userId}`
       );
       const { career } = response.data;
       console.log("🚀 ~ career:", career)
@@ -82,7 +82,7 @@ const Experimentemos = ({ route }) => {
     setButtonDisabled(true);
     try {
       const response = await axios.post(
-        'https://lasalleapp.onrender.com/api/experiment/generate-custom-problem',
+        'https://lasalleapp-mmgp.onrender.com/experiment/generate-custom-problem',
         {
           input1: studentCareer,
           input2: favoriteSport,

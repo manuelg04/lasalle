@@ -29,7 +29,7 @@ const SignUpTeacher = () => {
 
     try {
       const response = await axios.post(
-        'https://lasalleapp.onrender.com/teacher/register',
+        'https://lasalleapp-mmgp.onrender.com/teacher/register',
         {
           email,
           fullName,

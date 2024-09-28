@@ -61,7 +61,7 @@ const TeacherFirstScreen = ({ navigation }) => {
 
   const downloadReport = async (studentId) => {
     try {
-      const url = `https://lasalleapp.onrender.com/excel/generate-report?studentId=${studentId}`;
+      const url = `https://lasalleapp-mmgp.onrender.com/excel/generate-report?studentId=${studentId}`;
       
       // Descargar el archivo con axios
       const response = await axios({
@@ -93,7 +93,7 @@ const TeacherFirstScreen = ({ navigation }) => {
   const downloadConsolidatedReport = async () => {
     setIsDownloading(true); // Mostrar el spinner de carga
     try {
-      const url = `https://lasalleapp.onrender.com/excel/generate-consolidated-report`;
+      const url = `https://lasalleapp-mmgp.onrender.com/excel/generate-consolidated-report`;
       
       // Descargar el archivo con axios
       const response = await axios({

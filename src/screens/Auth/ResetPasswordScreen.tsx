@@ -15,7 +15,7 @@ export default function ResetPasswordScreen({ route, navigation }) {
     }
 
     try {
-      const response = await axios.post('https://lasalleapp.onrender.com/new-password/reset-password', {
+      const response = await axios.post('https://lasalleapp-mmgp.onrender.com/new-password/reset-password', {
         email,
         code,
         newPassword,
